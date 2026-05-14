@@ -14,6 +14,7 @@ import {
   Trash2,
   Eye,
   Search,
+  HeartPulse,
 } from "lucide-react";
 
 import {
@@ -25,28 +26,28 @@ import {
 
 import { db } from "@/lib/firebase";
 
-interface Balita {
+interface IbuHamil {
   id: string;
 
   nama: string;
 
-  jk: string;
-
   umur: string;
 
-  ibu: string;
+  usiaKehamilan: string;
 
   alamat: string;
+
+  noHp: string;
 }
 
-export default function BalitaPage() {
+export default function IbuHamilPage() {
 
-  // DATA
-  const [dataBalita, setDataBalita] =
-    useState<Balita[]>([]);
+  // STATE
+  const [dataIbu, setDataIbu] =
+    useState<IbuHamil[]>([]);
 
   const [filteredData, setFilteredData] =
-    useState<Balita[]>([]);
+    useState<IbuHamil[]>([]);
 
   const [search, setSearch] =
     useState("");
@@ -63,11 +64,11 @@ export default function BalitaPage() {
         await getDocs(
           collection(
             db,
-            "balita"
+            "ibu_hamil"
           )
         );
 
-      const result: Balita[] = [];
+      const result: IbuHamil[] = [];
 
       querySnapshot.forEach((doc) => {
 
@@ -80,25 +81,27 @@ export default function BalitaPage() {
             data.nama || ""
           ),
 
-          jk: String(
-            data.jk || ""
-          ),
-
           umur: String(
             data.umur || ""
           ),
 
-          ibu: String(
-            data.ibu || ""
-          ),
+          usiaKehamilan:
+            String(
+              data.usiaKehamilan ||
+                ""
+            ),
 
           alamat: String(
             data.alamat || ""
           ),
+
+          noHp: String(
+            data.noHp || ""
+          ),
         });
       });
 
-      setDataBalita(result);
+      setDataIbu(result);
 
       setFilteredData(result);
 
@@ -122,7 +125,7 @@ export default function BalitaPage() {
   useEffect(() => {
 
     const filtered =
-      dataBalita.filter((item) =>
+      dataIbu.filter((item) =>
         item.nama
           .toLowerCase()
           .includes(
@@ -132,7 +135,7 @@ export default function BalitaPage() {
 
     setFilteredData(filtered);
 
-  }, [search, dataBalita]);
+  }, [search, dataIbu]);
 
   // DELETE
   const handleDelete = async (
@@ -151,7 +154,7 @@ export default function BalitaPage() {
       await deleteDoc(
         doc(
           db,
-          "balita",
+          "ibu_hamil",
           id
         )
       );
@@ -174,7 +177,7 @@ export default function BalitaPage() {
       <main className="flex-1 p-6 md:p-8">
 
         {/* HEADER */}
-        <Header title="Data Balita" />
+        <Header title="Data Ibu Hamil" />
 
         {/* TOP */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-8">
@@ -182,13 +185,25 @@ export default function BalitaPage() {
           {/* TITLE */}
           <div>
 
-            <h1 className="text-3xl font-black text-gray-800">
-              Data Balita
-            </h1>
+            <div className="flex items-center gap-3">
 
-            <p className="text-gray-500 mt-2">
-              Kelola data balita posyandu
-            </p>
+              <div className="w-14 h-14 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center">
+                <HeartPulse size={28} />
+              </div>
+
+              <div>
+
+                <h1 className="text-3xl font-black text-gray-800">
+                  Data Ibu Hamil
+                </h1>
+
+                <p className="text-gray-500 mt-1">
+                  Kelola data ibu hamil posyandu
+                </p>
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -211,7 +226,7 @@ export default function BalitaPage() {
                     e.target.value
                   )
                 }
-                placeholder="Cari nama balita..."
+                placeholder="Cari nama ibu..."
                 className="ml-3 w-full outline-none text-sm text-gray-700 placeholder:text-gray-400"
               />
 
@@ -219,8 +234,8 @@ export default function BalitaPage() {
 
             {/* BUTTON */}
             <Link
-              href="/balita/tambah"
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-5 py-3 rounded-2xl shadow-lg hover:scale-[1.02] transition"
+              href="/ibu-hamil/tambah"
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-5 py-3 rounded-2xl shadow-lg hover:scale-[1.02] transition"
             >
 
               <Plus size={20} />
@@ -236,34 +251,34 @@ export default function BalitaPage() {
         {/* TABLE */}
         <div className="mt-8 bg-white rounded-[30px] shadow-sm overflow-hidden overflow-x-auto">
 
-          <table className="w-full min-w-[900px]">
+          <table className="w-full min-w-[1000px]">
 
             {/* HEAD */}
-            <thead className="bg-green-50 border-b">
+            <thead className="bg-pink-50 border-b">
 
               <tr>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Nama Balita
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  Nama
                 </th>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Jenis Kelamin
-                </th>
-
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
                   Umur
                 </th>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Nama Ibu
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  Usia Kehamilan
                 </th>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  No HP
+                </th>
+
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
                   Alamat
                 </th>
 
-                <th className="text-center py-5 px-6 text-gray-700 font-bold">
+                <th className="text-center py-5 px-6 font-bold text-gray-700">
                   Action
                 </th>
 
@@ -280,7 +295,7 @@ export default function BalitaPage() {
 
                     <tr
                       key={item.id}
-                      className="border-b hover:bg-green-50 transition"
+                      className="border-b hover:bg-pink-50 transition"
                     >
 
                       {/* NAMA */}
@@ -289,11 +304,11 @@ export default function BalitaPage() {
                         <div className="flex items-center gap-4">
 
                           {/* AVATAR */}
-                          <div className="w-12 h-12 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold text-lg">
+                          <div className="w-12 h-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-lg">
                             {item.nama
                               ?.charAt(0)
                               ?.toUpperCase() ||
-                              "B"}
+                              "I"}
                           </div>
 
                           {/* INFO */}
@@ -305,7 +320,7 @@ export default function BalitaPage() {
                             </h2>
 
                             <p className="text-sm text-gray-500">
-                              Balita Posyandu
+                              Ibu Hamil
                             </p>
 
                           </div>
@@ -314,19 +329,24 @@ export default function BalitaPage() {
 
                       </td>
 
-                      {/* JK */}
-                      <td className="py-5 px-6 text-gray-600">
-                        {item.jk || "-"}
-                      </td>
-
                       {/* UMUR */}
                       <td className="py-5 px-6 text-gray-600">
-                        {item.umur || "-"}
+                        {item.umur ||
+                          "-"}
                       </td>
 
-                      {/* IBU */}
+                      {/* USIA */}
                       <td className="py-5 px-6 text-gray-600">
-                        {item.ibu || "-"}
+                        {
+                          item.usiaKehamilan
+                        }{" "}
+                        Bulan
+                      </td>
+
+                      {/* HP */}
+                      <td className="py-5 px-6 text-gray-600">
+                        {item.noHp ||
+                          "-"}
                       </td>
 
                       {/* ALAMAT */}
@@ -342,7 +362,7 @@ export default function BalitaPage() {
 
                           {/* DETAIL */}
                           <Link
-                            href={`/balita/detail/${item.id}`}
+                            href={`/ibu-hamil/detail/${item.id}`}
                             className="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center hover:scale-105 transition"
                           >
                             <Eye
@@ -352,7 +372,7 @@ export default function BalitaPage() {
 
                           {/* EDIT */}
                           <Link
-                            href={`/balita/edit/${item.id}`}
+                            href={`/ibu-hamil/edit/${item.id}`}
                             className="w-11 h-11 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center hover:scale-105 transition"
                           >
                             <Pencil
@@ -398,7 +418,7 @@ export default function BalitaPage() {
                 </h2>
 
                 <p className="text-gray-500 mt-2">
-                  Belum ada data balita
+                  Belum ada data ibu hamil
                 </p>
 
               </div>

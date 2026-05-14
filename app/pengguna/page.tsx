@@ -9,11 +9,14 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/header";
 
 import {
+  Users,
   Plus,
   Pencil,
   Trash2,
   Eye,
   Search,
+  ShieldCheck,
+  UserCircle2,
 } from "lucide-react";
 
 import {
@@ -25,28 +28,26 @@ import {
 
 import { db } from "@/lib/firebase";
 
-interface Balita {
+interface Pengguna {
   id: string;
 
   nama: string;
 
-  jk: string;
+  username: string;
 
-  umur: string;
+  role: string;
 
-  ibu: string;
-
-  alamat: string;
+  createdAt?: any;
 }
 
-export default function BalitaPage() {
+export default function PenggunaPage() {
 
-  // DATA
-  const [dataBalita, setDataBalita] =
-    useState<Balita[]>([]);
+  // STATE
+  const [dataPengguna, setDataPengguna] =
+    useState<Pengguna[]>([]);
 
   const [filteredData, setFilteredData] =
-    useState<Balita[]>([]);
+    useState<Pengguna[]>([]);
 
   const [search, setSearch] =
     useState("");
@@ -63,11 +64,11 @@ export default function BalitaPage() {
         await getDocs(
           collection(
             db,
-            "balita"
+            "users"
           )
         );
 
-      const result: Balita[] = [];
+      const result: Pengguna[] = [];
 
       querySnapshot.forEach((doc) => {
 
@@ -80,25 +81,23 @@ export default function BalitaPage() {
             data.nama || ""
           ),
 
-          jk: String(
-            data.jk || ""
+          username:
+            String(
+              data.username ||
+                ""
+            ),
+
+          role: String(
+            data.role || "user"
           ),
 
-          umur: String(
-            data.umur || ""
-          ),
-
-          ibu: String(
-            data.ibu || ""
-          ),
-
-          alamat: String(
-            data.alamat || ""
-          ),
+          createdAt:
+            data.createdAt ||
+            null,
         });
       });
 
-      setDataBalita(result);
+      setDataPengguna(result);
 
       setFilteredData(result);
 
@@ -122,17 +121,18 @@ export default function BalitaPage() {
   useEffect(() => {
 
     const filtered =
-      dataBalita.filter((item) =>
-        item.nama
-          .toLowerCase()
-          .includes(
-            search.toLowerCase()
-          )
+      dataPengguna.filter(
+        (item) =>
+          item.nama
+            .toLowerCase()
+            .includes(
+              search.toLowerCase()
+            )
       );
 
     setFilteredData(filtered);
 
-  }, [search, dataBalita]);
+  }, [search, dataPengguna]);
 
   // DELETE
   const handleDelete = async (
@@ -141,7 +141,7 @@ export default function BalitaPage() {
 
     const confirmDelete =
       confirm(
-        "Yakin ingin menghapus data?"
+        "Yakin ingin menghapus pengguna?"
       );
 
     if (!confirmDelete) return;
@@ -151,7 +151,7 @@ export default function BalitaPage() {
       await deleteDoc(
         doc(
           db,
-          "balita",
+          "users",
           id
         )
       );
@@ -174,7 +174,7 @@ export default function BalitaPage() {
       <main className="flex-1 p-6 md:p-8">
 
         {/* HEADER */}
-        <Header title="Data Balita" />
+        <Header title="Pengguna" />
 
         {/* TOP */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-8">
@@ -182,13 +182,25 @@ export default function BalitaPage() {
           {/* TITLE */}
           <div>
 
-            <h1 className="text-3xl font-black text-gray-800">
-              Data Balita
-            </h1>
+            <div className="flex items-center gap-3">
 
-            <p className="text-gray-500 mt-2">
-              Kelola data balita posyandu
-            </p>
+              <div className="w-14 h-14 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center">
+                <Users size={28} />
+              </div>
+
+              <div>
+
+                <h1 className="text-3xl font-black text-gray-800">
+                  Data Pengguna
+                </h1>
+
+                <p className="text-gray-500 mt-1">
+                  Kelola data pengguna sistem
+                </p>
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -211,7 +223,7 @@ export default function BalitaPage() {
                     e.target.value
                   )
                 }
-                placeholder="Cari nama balita..."
+                placeholder="Cari pengguna..."
                 className="ml-3 w-full outline-none text-sm text-gray-700 placeholder:text-gray-400"
               />
 
@@ -219,13 +231,13 @@ export default function BalitaPage() {
 
             {/* BUTTON */}
             <Link
-              href="/balita/tambah"
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-5 py-3 rounded-2xl shadow-lg hover:scale-[1.02] transition"
+              href="/pengguna/tambah"
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-violet-500 to-purple-600 text-white px-5 py-3 rounded-2xl shadow-lg hover:scale-[1.02] transition"
             >
 
               <Plus size={20} />
 
-              Tambah Data
+              Tambah Pengguna
 
             </Link>
 
@@ -239,31 +251,27 @@ export default function BalitaPage() {
           <table className="w-full min-w-[900px]">
 
             {/* HEAD */}
-            <thead className="bg-green-50 border-b">
+            <thead className="bg-violet-50 border-b">
 
               <tr>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Nama Balita
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  Nama
                 </th>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Jenis Kelamin
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  Username
                 </th>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Umur
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  Role
                 </th>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Nama Ibu
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  Status
                 </th>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Alamat
-                </th>
-
-                <th className="text-center py-5 px-6 text-gray-700 font-bold">
+                <th className="text-center py-5 px-6 font-bold text-gray-700">
                   Action
                 </th>
 
@@ -280,7 +288,7 @@ export default function BalitaPage() {
 
                     <tr
                       key={item.id}
-                      className="border-b hover:bg-green-50 transition"
+                      className="border-b hover:bg-violet-50 transition"
                     >
 
                       {/* NAMA */}
@@ -289,11 +297,11 @@ export default function BalitaPage() {
                         <div className="flex items-center gap-4">
 
                           {/* AVATAR */}
-                          <div className="w-12 h-12 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold text-lg">
+                          <div className="w-12 h-12 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center font-bold text-lg">
                             {item.nama
                               ?.charAt(0)
                               ?.toUpperCase() ||
-                              "B"}
+                              "U"}
                           </div>
 
                           {/* INFO */}
@@ -305,7 +313,7 @@ export default function BalitaPage() {
                             </h2>
 
                             <p className="text-sm text-gray-500">
-                              Balita Posyandu
+                              Pengguna Sistem
                             </p>
 
                           </div>
@@ -314,25 +322,52 @@ export default function BalitaPage() {
 
                       </td>
 
-                      {/* JK */}
+                      {/* USERNAME */}
                       <td className="py-5 px-6 text-gray-600">
-                        {item.jk || "-"}
-                      </td>
-
-                      {/* UMUR */}
-                      <td className="py-5 px-6 text-gray-600">
-                        {item.umur || "-"}
-                      </td>
-
-                      {/* IBU */}
-                      <td className="py-5 px-6 text-gray-600">
-                        {item.ibu || "-"}
-                      </td>
-
-                      {/* ALAMAT */}
-                      <td className="py-5 px-6 text-gray-600 max-w-[250px] truncate">
-                        {item.alamat ||
+                        {item.username ||
                           "-"}
+                      </td>
+
+                      {/* ROLE */}
+                      <td className="py-5 px-6">
+
+                        <div
+                          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold
+                            
+                            ${
+                              item.role ===
+                              "admin"
+                                ? "bg-red-100 text-red-700"
+                                : "bg-green-100 text-green-700"
+                            }
+                          `}
+                        >
+
+                          {item.role ===
+                          "admin" ? (
+                            <ShieldCheck
+                              size={16}
+                            />
+                          ) : (
+                            <UserCircle2
+                              size={16}
+                            />
+                          )}
+
+                          {item.role ||
+                            "user"}
+
+                        </div>
+
+                      </td>
+
+                      {/* STATUS */}
+                      <td className="py-5 px-6">
+
+                        <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold">
+                          Active
+                        </span>
+
                       </td>
 
                       {/* ACTION */}
@@ -342,7 +377,7 @@ export default function BalitaPage() {
 
                           {/* DETAIL */}
                           <Link
-                            href={`/balita/detail/${item.id}`}
+                            href={`/pengguna/detail/${item.id}`}
                             className="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center hover:scale-105 transition"
                           >
                             <Eye
@@ -352,7 +387,7 @@ export default function BalitaPage() {
 
                           {/* EDIT */}
                           <Link
-                            href={`/balita/edit/${item.id}`}
+                            href={`/pengguna/edit/${item.id}`}
                             className="w-11 h-11 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center hover:scale-105 transition"
                           >
                             <Pencil
@@ -391,14 +426,14 @@ export default function BalitaPage() {
             filteredData.length ===
               0 && (
 
-              <div className="py-16 text-center">
+              <div className="py-20 text-center">
 
-                <h2 className="text-2xl font-bold text-gray-700">
-                  Data Tidak Ada
+                <h2 className="text-3xl font-black text-gray-700">
+                  Pengguna Tidak Ada
                 </h2>
 
-                <p className="text-gray-500 mt-2">
-                  Belum ada data balita
+                <p className="text-gray-500 mt-3">
+                  Belum ada data pengguna
                 </p>
 
               </div>
@@ -407,9 +442,9 @@ export default function BalitaPage() {
           {/* LOADING */}
           {loading && (
 
-            <div className="py-16 text-center">
+            <div className="py-20 text-center">
 
-              <h2 className="text-xl font-semibold text-gray-600">
+              <h2 className="text-2xl font-semibold text-gray-600">
                 Loading...
               </h2>
 

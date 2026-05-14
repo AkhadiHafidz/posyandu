@@ -1,10 +1,22 @@
 "use client";
 
 import { useState } from "react";
+
 import Link from "next/link";
+
+import Image from "next/image";
+
 import { useRouter } from "next/navigation";
 
-import { db } from "@/lib/firebase";
+import { motion } from "framer-motion";
+
+import {
+  Mail,
+  LockKeyhole,
+  ArrowLeft,
+} from "lucide-react";
+
+import { db, auth } from "@/lib/firebase";
 
 import {
   collection,
@@ -14,7 +26,6 @@ import {
 } from "firebase/firestore";
 
 import {
-  getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
@@ -23,14 +34,14 @@ export default function LoginPage() {
   const router = useRouter();
 
   // STATE
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] =
+    useState("");
 
-  // LOADING
-  const [loading, setLoading] = useState(false);
+  const [password, setPassword] =
+    useState("");
 
-  // FIREBASE AUTH
-  const auth = getAuth();
+  const [loading, setLoading] =
+    useState(false);
 
   // LOGIN
   const handleLogin = async (
@@ -40,7 +51,11 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!username || !password) {
-      alert("Username dan password wajib diisi");
+
+      alert(
+        "Username dan password wajib diisi"
+      );
+
       return;
     }
 
@@ -48,54 +63,95 @@ export default function LoginPage() {
 
       setLoading(true);
 
-      // =========================
-      // LOGIN ADMIN
-      // =========================
-      // admin login pakai email firebase auth
+      // ==========================
+      // LOGIN ADMIN FIREBASE AUTH
+      // ==========================
 
       if (username.includes("@")) {
 
-        await signInWithEmailAndPassword(
-          auth,
-          username,
-          password
+        const userCredential =
+          await signInWithEmailAndPassword(
+            auth,
+            username,
+            password
+          );
+
+        // SIMPAN ADMIN
+        localStorage.setItem(
+          "admin",
+          JSON.stringify({
+            uid:
+              userCredential.user.uid,
+
+            email:
+              userCredential.user
+                .email,
+
+            role: "admin",
+          })
         );
 
-        alert("Login admin berhasil");
+        alert(
+          "Login admin berhasil"
+        );
 
-        router.push("/dashboard");
+        router.push("/user");
 
         return;
       }
 
-      // =========================
-      // LOGIN USER
-      // =========================
+      // ==========================
+      // LOGIN USER FIRESTORE
+      // ==========================
 
       const q = query(
         collection(db, "users"),
-        where("username", "==", username),
-        where("password", "==", password)
+
+        where(
+          "username",
+          "==",
+          username
+        ),
+
+        where(
+          "password",
+          "==",
+          password
+        )
       );
 
-      const querySnapshot = await getDocs(q);
+      const querySnapshot =
+        await getDocs(q);
 
       // USER TIDAK ADA
       if (querySnapshot.empty) {
-        alert("Username atau password salah");
+
+        alert(
+          "Username atau password salah"
+        );
+
         return;
       }
 
       // AMBIL DATA USER
-      const userData = querySnapshot.docs[0].data();
+      const userData =
+        querySnapshot.docs[0].data();
 
-      // SIMPAN
+      // SIMPAN LOCAL STORAGE
       localStorage.setItem(
         "user",
-        JSON.stringify(userData)
+        JSON.stringify({
+          ...userData,
+
+          role:
+            userData.role ||
+            "user",
+        })
       );
 
-      alert("Login user berhasil");
+      alert(
+        "Login berhasil"
+      );
 
       router.push("/user");
 
@@ -103,96 +159,340 @@ export default function LoginPage() {
 
       console.log(error);
 
-      alert(error.message);
+      // HANDLE ERROR AUTH
+      if (
+        error.code ===
+        "auth/invalid-credential"
+      ) {
+
+        alert(
+          "Email atau password admin salah"
+        );
+
+      } else if (
+        error.code ===
+        "auth/user-not-found"
+      ) {
+
+        alert(
+          "Akun admin tidak ditemukan"
+        );
+
+      } else if (
+        error.code ===
+        "auth/wrong-password"
+      ) {
+
+        alert(
+          "Password admin salah"
+        );
+
+      } else {
+
+        alert(error.message);
+      }
 
     } finally {
 
       setLoading(false);
-
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-green-100 to-green-50 px-4">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-green-200 via-green-100 to-emerald-200 flex items-center justify-center px-6">
 
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
+      {/* BLUR */}
+      <div className="absolute top-[-120px] right-[-120px] w-[400px] h-[400px] bg-green-300/40 rounded-full blur-3xl"></div>
 
-        {/* TITLE */}
-        <div className="text-center mb-6">
+      <div className="absolute bottom-[-120px] left-[-120px] w-[350px] h-[350px] bg-emerald-300/40 rounded-full blur-3xl"></div>
 
-          <h1 className="text-3xl font-bold text-green-600">
-            Posyandu Cempaka
-          </h1>
+      {/* BACK */}
+      <button
+        onClick={() =>
+          router.push("/")
+        }
+        className="absolute top-6 left-6 flex items-center gap-2 bg-white/80 backdrop-blur-xl px-5 py-3 rounded-2xl shadow-lg hover:scale-105 transition text-gray-700 font-medium"
+      >
+
+        <ArrowLeft size={18} />
+
+        Kembali
+
+      </button>
+
+      {/* CARD */}
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: 40,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 0.8,
+        }}
+        className="w-full max-w-5xl bg-white rounded-[35px] overflow-hidden shadow-2xl grid md:grid-cols-2"
+      >
+
+        {/* LEFT */}
+        <div className="relative bg-gradient-to-br from-green-500 to-emerald-600 hidden md:flex items-center justify-center overflow-hidden">
+
+          {/* SHAPE */}
+          <div className="absolute top-[-80px] left-[-80px] w-[240px] h-[240px] border-[20px] border-green-200/30 rounded-full"></div>
+
+          <div className="absolute bottom-[-100px] left-[-100px] w-[250px] h-[250px] bg-green-300/20 rounded-full"></div>
+
+          {/* CONTENT */}
+          <div className="relative z-10 px-10 text-center">
+
+            <motion.h1
+              initial={{
+                opacity: 0,
+                x: -20,
+              }}
+              animate={{
+                opacity: 1,
+                x: 0,
+              }}
+              transition={{
+                delay: 0.2,
+              }}
+              className="text-5xl font-black text-white"
+            >
+              Welcome
+            </motion.h1>
+
+            <motion.p
+              initial={{
+                opacity: 0,
+                x: -20,
+              }}
+              animate={{
+                opacity: 1,
+                x: 0,
+              }}
+              transition={{
+                delay: 0.4,
+              }}
+              className="mt-6 text-green-100 leading-relaxed text-lg"
+            >
+              Sistem Informasi Posyandu Digital
+              untuk pelayanan kesehatan
+              masyarakat yang lebih modern,
+              cepat, dan terintegrasi.
+            </motion.p>
+
+            {/* IMAGE */}
+            <motion.div
+              animate={{
+                y: [0, -12, 0],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+              }}
+              className="mt-10 flex justify-center"
+            >
+
+              <Image
+                src="/healt.png"
+                alt="Healthcare"
+                width={300}
+                height={300}
+                priority
+                className="drop-shadow-2xl"
+              />
+
+            </motion.div>
+
+          </div>
 
         </div>
 
-        {/* FORM */}
-        <form
-          onSubmit={handleLogin}
-          className="flex flex-col gap-4"
-        >
+        {/* RIGHT */}
+        <div className="flex items-center justify-center px-8 py-12 bg-[#FAFFFC]">
 
-          {/* USERNAME */}
-          <div>
+          <div className="w-full max-w-md">
 
-            <label className="text-sm font-medium text-gray-700">
-              Username / Email Admin
-            </label>
+            {/* TITLE */}
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                delay: 0.2,
+              }}
+              className="text-center"
+            >
 
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Masukkan username atau email admin"
-              className="w-full mt-1 p-3 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-400"
-            />
+              <h1 className="text-4xl font-black">
+                <span className="text-green-600">
+                  Posyandu
+                </span>{" "}
+                <span className="text-gray-500 font-medium">
+                  Cempaka
+                </span>
+              </h1>
+
+              <p className="text-gray-400 mt-3">
+                Login untuk melanjutkan
+              </p>
+
+            </motion.div>
+
+            {/* FORM */}
+            <form
+              onSubmit={handleLogin}
+              className="mt-10 space-y-5"
+            >
+
+              {/* USERNAME */}
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  x: 20,
+                }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                }}
+                transition={{
+                  delay: 0.3,
+                }}
+              >
+
+                <label className="text-sm font-semibold text-gray-700">
+                  Username / Email
+                </label>
+
+                <div className="mt-2 flex items-center bg-white border border-green-100 rounded-2xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-green-400">
+
+                  <Mail
+                    size={20}
+                    className="text-green-500"
+                  />
+
+                  <input
+                    type="text"
+                    value={
+                      username || ""
+                    }
+                    onChange={(e) =>
+                      setUsername(
+                        e.target.value
+                      )
+                    }
+                    placeholder="Masukkan username atau email"
+                    className="w-full ml-3 outline-none text-gray-700"
+                  />
+
+                </div>
+
+              </motion.div>
+
+              {/* PASSWORD */}
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  x: 20,
+                }}
+                animate={{
+                  opacity: 1,
+                  x: 0,
+                }}
+                transition={{
+                  delay: 0.4,
+                }}
+              >
+
+                <label className="text-sm font-semibold text-gray-700">
+                  Password
+                </label>
+
+                <div className="mt-2 flex items-center bg-white border border-green-100 rounded-2xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-green-400">
+
+                  <LockKeyhole
+                    size={20}
+                    className="text-green-500"
+                  />
+
+                  <input
+                    type="password"
+                    value={
+                      password || ""
+                    }
+                    onChange={(e) =>
+                      setPassword(
+                        e.target.value
+                      )
+                    }
+                    placeholder="Masukkan password"
+                    className="w-full ml-3 outline-none text-gray-700"
+                  />
+
+                </div>
+
+              </motion.div>
+
+              {/* FORGOT */}
+              <div className="text-right">
+
+                <button
+                  type="button"
+                  className="text-sm text-green-600 hover:underline"
+                >
+                  Forgot Password?
+                </button>
+
+              </div>
+
+              {/* BUTTON */}
+              <motion.button
+                whileHover={{
+                  scale: 1.02,
+                }}
+                whileTap={{
+                  scale: 0.98,
+                }}
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold shadow-lg hover:shadow-2xl transition disabled:opacity-70"
+              >
+                {loading
+                  ? "Loading..."
+                  : "Login"}
+              </motion.button>
+
+            </form>
+
+            {/* REGISTER */}
+            <div className="mt-8 text-center">
+
+              <p className="text-gray-500">
+                Belum punya akun?
+              </p>
+
+              <Link
+                href="/register"
+                className="inline-block mt-2 text-green-600 font-semibold hover:underline"
+              >
+                Daftar Sekarang
+              </Link>
+
+            </div>
 
           </div>
 
-          {/* PASSWORD */}
-          <div>
+        </div>
 
-            <label className="text-sm font-medium text-gray-700">
-              Password
-            </label>
-
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Masukkan password"
-              className="w-full mt-1 p-3 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-400"
-            />
-
-          </div>
-
-          {/* BUTTON */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-2 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition disabled:bg-gray-400"
-          >
-            {loading ? "Loading..." : "Login"}
-          </button>
-
-        </form>
-
-        {/* REGISTER */}
-        <p className="text-center text-sm text-gray-500 mt-6">
-
-          Belum punya akun?{" "}
-
-          <Link
-            href="/register"
-            className="text-green-600 font-medium"
-          >
-            Daftar
-          </Link>
-
-        </p>
-
-      </div>
-
+      </motion.div>
     </div>
   );
 }

@@ -14,6 +14,7 @@ import {
   Trash2,
   Eye,
   Search,
+  ClipboardList,
 } from "lucide-react";
 
 import {
@@ -25,28 +26,28 @@ import {
 
 import { db } from "@/lib/firebase";
 
-interface Balita {
+interface Pemeriksaan {
   id: string;
 
   nama: string;
 
-  jk: string;
+  tanggal: string;
 
-  umur: string;
+  beratBadan: string;
 
-  ibu: string;
+  tinggiBadan: string;
 
-  alamat: string;
+  status: string;
 }
 
-export default function BalitaPage() {
+export default function PemeriksaanPage() {
 
-  // DATA
-  const [dataBalita, setDataBalita] =
-    useState<Balita[]>([]);
+  // STATE
+  const [dataPemeriksaan, setDataPemeriksaan] =
+    useState<Pemeriksaan[]>([]);
 
   const [filteredData, setFilteredData] =
-    useState<Balita[]>([]);
+    useState<Pemeriksaan[]>([]);
 
   const [search, setSearch] =
     useState("");
@@ -63,11 +64,11 @@ export default function BalitaPage() {
         await getDocs(
           collection(
             db,
-            "balita"
+            "pemeriksaan"
           )
         );
 
-      const result: Balita[] = [];
+      const result: Pemeriksaan[] = [];
 
       querySnapshot.forEach((doc) => {
 
@@ -80,25 +81,29 @@ export default function BalitaPage() {
             data.nama || ""
           ),
 
-          jk: String(
-            data.jk || ""
+          tanggal: String(
+            data.tanggal || ""
           ),
 
-          umur: String(
-            data.umur || ""
-          ),
+          beratBadan:
+            String(
+              data.beratBadan ||
+                ""
+            ),
 
-          ibu: String(
-            data.ibu || ""
-          ),
+          tinggiBadan:
+            String(
+              data.tinggiBadan ||
+                ""
+            ),
 
-          alamat: String(
-            data.alamat || ""
+          status: String(
+            data.status || ""
           ),
         });
       });
 
-      setDataBalita(result);
+      setDataPemeriksaan(result);
 
       setFilteredData(result);
 
@@ -122,17 +127,18 @@ export default function BalitaPage() {
   useEffect(() => {
 
     const filtered =
-      dataBalita.filter((item) =>
-        item.nama
-          .toLowerCase()
-          .includes(
-            search.toLowerCase()
-          )
+      dataPemeriksaan.filter(
+        (item) =>
+          item.nama
+            .toLowerCase()
+            .includes(
+              search.toLowerCase()
+            )
       );
 
     setFilteredData(filtered);
 
-  }, [search, dataBalita]);
+  }, [search, dataPemeriksaan]);
 
   // DELETE
   const handleDelete = async (
@@ -141,7 +147,7 @@ export default function BalitaPage() {
 
     const confirmDelete =
       confirm(
-        "Yakin ingin menghapus data?"
+        "Yakin ingin menghapus data pemeriksaan?"
       );
 
     if (!confirmDelete) return;
@@ -151,7 +157,7 @@ export default function BalitaPage() {
       await deleteDoc(
         doc(
           db,
-          "balita",
+          "pemeriksaan",
           id
         )
       );
@@ -174,7 +180,7 @@ export default function BalitaPage() {
       <main className="flex-1 p-6 md:p-8">
 
         {/* HEADER */}
-        <Header title="Data Balita" />
+        <Header title="Pemeriksaan" />
 
         {/* TOP */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-8">
@@ -182,13 +188,25 @@ export default function BalitaPage() {
           {/* TITLE */}
           <div>
 
-            <h1 className="text-3xl font-black text-gray-800">
-              Data Balita
-            </h1>
+            <div className="flex items-center gap-3">
 
-            <p className="text-gray-500 mt-2">
-              Kelola data balita posyandu
-            </p>
+              <div className="w-14 h-14 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center">
+                <ClipboardList size={28} />
+              </div>
+
+              <div>
+
+                <h1 className="text-3xl font-black text-gray-800">
+                  Data Pemeriksaan
+                </h1>
+
+                <p className="text-gray-500 mt-1">
+                  Kelola data pemeriksaan kesehatan
+                </p>
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -211,7 +229,7 @@ export default function BalitaPage() {
                     e.target.value
                   )
                 }
-                placeholder="Cari nama balita..."
+                placeholder="Cari nama..."
                 className="ml-3 w-full outline-none text-sm text-gray-700 placeholder:text-gray-400"
               />
 
@@ -219,7 +237,7 @@ export default function BalitaPage() {
 
             {/* BUTTON */}
             <Link
-              href="/balita/tambah"
+              href="/pemeriksaan/tambah"
               className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-5 py-3 rounded-2xl shadow-lg hover:scale-[1.02] transition"
             >
 
@@ -236,34 +254,34 @@ export default function BalitaPage() {
         {/* TABLE */}
         <div className="mt-8 bg-white rounded-[30px] shadow-sm overflow-hidden overflow-x-auto">
 
-          <table className="w-full min-w-[900px]">
+          <table className="w-full min-w-[950px]">
 
             {/* HEAD */}
             <thead className="bg-green-50 border-b">
 
               <tr>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Nama Balita
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  Nama
                 </th>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Jenis Kelamin
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  Tanggal
                 </th>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Umur
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  Berat Badan
                 </th>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Nama Ibu
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  Tinggi Badan
                 </th>
 
-                <th className="text-left py-5 px-6 text-gray-700 font-bold">
-                  Alamat
+                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                  Status
                 </th>
 
-                <th className="text-center py-5 px-6 text-gray-700 font-bold">
+                <th className="text-center py-5 px-6 font-bold text-gray-700">
                   Action
                 </th>
 
@@ -293,7 +311,7 @@ export default function BalitaPage() {
                             {item.nama
                               ?.charAt(0)
                               ?.toUpperCase() ||
-                              "B"}
+                              "P"}
                           </div>
 
                           {/* INFO */}
@@ -305,7 +323,7 @@ export default function BalitaPage() {
                             </h2>
 
                             <p className="text-sm text-gray-500">
-                              Balita Posyandu
+                              Pemeriksaan Balita
                             </p>
 
                           </div>
@@ -314,25 +332,49 @@ export default function BalitaPage() {
 
                       </td>
 
-                      {/* JK */}
+                      {/* TANGGAL */}
                       <td className="py-5 px-6 text-gray-600">
-                        {item.jk || "-"}
-                      </td>
-
-                      {/* UMUR */}
-                      <td className="py-5 px-6 text-gray-600">
-                        {item.umur || "-"}
-                      </td>
-
-                      {/* IBU */}
-                      <td className="py-5 px-6 text-gray-600">
-                        {item.ibu || "-"}
-                      </td>
-
-                      {/* ALAMAT */}
-                      <td className="py-5 px-6 text-gray-600 max-w-[250px] truncate">
-                        {item.alamat ||
+                        {item.tanggal ||
                           "-"}
+                      </td>
+
+                      {/* BERAT */}
+                      <td className="py-5 px-6 text-gray-600">
+                        {
+                          item.beratBadan
+                        }{" "}
+                        Kg
+                      </td>
+
+                      {/* TINGGI */}
+                      <td className="py-5 px-6 text-gray-600">
+                        {
+                          item.tinggiBadan
+                        }{" "}
+                        Cm
+                      </td>
+
+                      {/* STATUS */}
+                      <td className="py-5 px-6">
+
+                        <span
+                          className={`px-4 py-2 rounded-full text-sm font-semibold
+                            
+                            ${
+                              item.status ===
+                              "Sehat"
+                                ? "bg-green-100 text-green-700"
+                                : item.status ===
+                                  "Monitoring"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : "bg-red-100 text-red-700"
+                            }
+                          `}
+                        >
+                          {item.status ||
+                            "-"}
+                        </span>
+
                       </td>
 
                       {/* ACTION */}
@@ -342,7 +384,7 @@ export default function BalitaPage() {
 
                           {/* DETAIL */}
                           <Link
-                            href={`/balita/detail/${item.id}`}
+                            href={`/pemeriksaan/detail/${item.id}`}
                             className="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center hover:scale-105 transition"
                           >
                             <Eye
@@ -352,7 +394,7 @@ export default function BalitaPage() {
 
                           {/* EDIT */}
                           <Link
-                            href={`/balita/edit/${item.id}`}
+                            href={`/pemeriksaan/edit/${item.id}`}
                             className="w-11 h-11 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center hover:scale-105 transition"
                           >
                             <Pencil
@@ -398,7 +440,7 @@ export default function BalitaPage() {
                 </h2>
 
                 <p className="text-gray-500 mt-2">
-                  Belum ada data balita
+                  Belum ada data pemeriksaan
                 </p>
 
               </div>
