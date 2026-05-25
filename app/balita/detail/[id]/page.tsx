@@ -63,6 +63,18 @@ export default function DetailBalitaPage() {
 
               <div>
 
+            <p className="text-sm text-gray-500">
+            NIK
+            </p>
+
+            <h1 className="text-xl font-semibold text-gray-800 mt-1">
+            {data.nik}
+            </h1>
+
+            </div>  
+
+              <div>
+
                 <p className="text-sm text-gray-500">
                   Nama Balita
                 </p>

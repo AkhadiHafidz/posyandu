@@ -20,6 +20,8 @@ import Sidebar from "@/components/Sidebar";
 import Header from "@/components/header";
 
 interface BalitaForm {
+  nik: string;
+
   nama: string;
 
   jk: string;
@@ -42,6 +44,7 @@ export default function EditBalitaPage() {
   // FORM
   const [form, setForm] =
     useState<BalitaForm>({
+      nik: "",
       nama: "",
       jk: "",
       umur: "",
@@ -71,6 +74,11 @@ export default function EditBalitaPage() {
         const data = docSnap.data();
 
         setForm({
+          nik:
+            String(
+              data.nik || ""
+            ),
+
           nama:
             String(
               data.nama || ""
@@ -125,6 +133,9 @@ export default function EditBalitaPage() {
       await updateDoc(
         doc(db, "balita", id),
         {
+          nik:
+            form.nik || "",
+
           nama:
             form.nama || "",
 
@@ -191,6 +202,28 @@ export default function EditBalitaPage() {
 
           {/* FORM */}
           <div className="grid md:grid-cols-2 gap-5 mt-8">
+            {/* NIK */}
+<div>
+
+<label className="text-sm font-semibold text-gray-700">
+NIK
+</label>
+
+<input
+type="text"
+value={form.nik}
+onChange={(e)=>
+setForm({
+...form,
+nik:e.target.value
+})
+}
+placeholder="Masukkan NIK"
+maxLength={16}
+className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+/>
+
+</div>
 
             {/* NAMA */}
             <div>

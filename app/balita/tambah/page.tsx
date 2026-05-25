@@ -16,6 +16,8 @@ import {
 import { db } from "@/lib/firebase";
 
 interface BalitaForm {
+  nik: string;
+  
   nama: string;
 
   jk: string;
@@ -34,6 +36,7 @@ export default function TambahBalitaPage() {
   // FORM
   const [form, setForm] =
     useState<BalitaForm>({
+      nik: "",
       nama: "",
       jk: "",
       umur: "",
@@ -93,6 +96,29 @@ export default function TambahBalitaPage() {
           {/* FORM */}
           <div className="grid md:grid-cols-2 gap-5 mt-8">
 
+          {/* NIK */}
+<div>
+
+  <label className="text-sm font-semibold text-gray-700">
+    NIK
+  </label>
+
+  <input
+    type="text"
+    value={form.nik}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        nik: e.target.value,
+      })
+    }
+    placeholder="Masukkan NIK"
+    maxLength={16}
+    className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  />
+
+</div>
+
             {/* NAMA */}
             <div>
 
@@ -111,7 +137,7 @@ export default function TambahBalitaPage() {
                   })
                 }
                 placeholder="Nama balita"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -132,7 +158,7 @@ export default function TambahBalitaPage() {
                       e.target.value,
                   })
                 }
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               >
 
                 <option value="">
@@ -168,8 +194,8 @@ export default function TambahBalitaPage() {
                       e.target.value,
                   })
                 }
-                placeholder="2 Tahun"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+                placeholder="Umur"
+                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -192,7 +218,7 @@ export default function TambahBalitaPage() {
                   })
                 }
                 placeholder="Nama ibu"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -215,7 +241,7 @@ export default function TambahBalitaPage() {
                 }
                 rows={4}
                 placeholder="Alamat lengkap"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
