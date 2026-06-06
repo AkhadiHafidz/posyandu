@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Link from "next/link";
 
 import Sidebar from "@/components/Sidebar";
-
 import Header from "@/components/header";
 
 import {
@@ -15,8 +13,8 @@ import {
   Trash2,
   Eye,
   Search,
-  Clock3,
   MapPin,
+  Users,
 } from "lucide-react";
 
 import {
@@ -30,21 +28,13 @@ import { db } from "@/lib/firebase";
 
 interface Jadwal {
   id: string;
-
-  kegiatan: string;
-
-  tanggal: string;
-
-  waktu: string;
-
-  lokasi: string;
-
-  keterangan: string;
+  namaPosyandu: string;
+  alamat: string;
+  tanggalKegiatan: string;
+  jumlahKader: string;
 }
 
 export default function JadwalPage() {
-
-  // STATE
   const [dataJadwal, setDataJadwal] =
     useState<Jadwal[]>([]);
 
@@ -57,79 +47,60 @@ export default function JadwalPage() {
   const [loading, setLoading] =
     useState(true);
 
-  // GET DATA
   const getData = async () => {
-
     try {
-
       const querySnapshot =
         await getDocs(
           collection(
             db,
-            "jadwal"
+            "jadwal_posyandu"
           )
         );
 
       const result: Jadwal[] = [];
 
-      querySnapshot.forEach((doc) => {
-
-        const data = doc.data();
+      querySnapshot.forEach((document) => {
+        const data =
+          document.data();
 
         result.push({
-          id: doc.id,
+          id: document.id,
 
-          kegiatan: String(
-            data.kegiatan || ""
-          ),
+          namaPosyandu:
+            data.namaPosyandu ||
+            "",
 
-          tanggal: String(
-            data.tanggal || ""
-          ),
+          alamat:
+            data.alamat || "",
 
-          waktu: String(
-            data.waktu || ""
-          ),
+          tanggalKegiatan:
+            data.tanggalKegiatan ||
+            "",
 
-          lokasi: String(
-            data.lokasi || ""
-          ),
-
-          keterangan:
-            String(
-              data.keterangan ||
-                ""
-            ),
+          jumlahKader:
+            data.jumlahKader ||
+            "",
         });
       });
 
       setDataJadwal(result);
-
       setFilteredData(result);
-
     } catch (error) {
-
       console.log(error);
-
     } finally {
-
       setLoading(false);
     }
   };
 
   useEffect(() => {
-
     getData();
-
   }, []);
 
-  // SEARCH
   useEffect(() => {
-
     const filtered =
       dataJadwal.filter(
         (item) =>
-          item.kegiatan
+          item.namaPosyandu
             .toLowerCase()
             .includes(
               search.toLowerCase()
@@ -137,85 +108,65 @@ export default function JadwalPage() {
       );
 
     setFilteredData(filtered);
-
   }, [search, dataJadwal]);
 
-  // DELETE
   const handleDelete = async (
     id: string
   ) => {
-
     const confirmDelete =
       confirm(
-        "Yakin ingin menghapus jadwal?"
+        "Yakin ingin menghapus data?"
       );
 
     if (!confirmDelete) return;
 
     try {
-
       await deleteDoc(
         doc(
           db,
-          "jadwal",
+          "jadwal_posyandu",
           id
         )
       );
 
       getData();
-
     } catch (error) {
-
       console.log(error);
     }
   };
 
   return (
     <div className="min-h-screen bg-[#F5FFF8] flex">
-
-      {/* SIDEBAR */}
       <Sidebar />
 
-      {/* CONTENT */}
       <main className="flex-1 p-6 md:p-8">
-
-        {/* HEADER */}
         <Header title="Jadwal Posyandu" />
 
-        {/* TOP */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-8">
-
-          {/* TITLE */}
           <div>
-
             <div className="flex items-center gap-3">
-
               <div className="w-14 h-14 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center">
-                <CalendarDays size={28} />
+                <CalendarDays
+                  size={28}
+                />
               </div>
 
               <div>
-
                 <h1 className="text-3xl font-black text-gray-800">
                   Jadwal Posyandu
                 </h1>
 
                 <p className="text-gray-500 mt-1">
-                  Kelola jadwal kegiatan posyandu
+                  Kelola data
+                  kegiatan posyandu
                 </p>
-
               </div>
-
             </div>
-
           </div>
 
-          {/* ACTION */}
           <div className="flex flex-col sm:flex-row gap-4">
 
-            {/* SEARCH */}
             <div className="flex items-center bg-white border border-green-100 rounded-2xl px-4 py-3 shadow-sm w-full sm:w-[280px]">
-
               <Search
                 size={20}
                 className="text-green-600"
@@ -223,47 +174,36 @@ export default function JadwalPage() {
 
               <input
                 type="text"
-                value={search || ""}
+                value={search}
                 onChange={(e) =>
                   setSearch(
                     e.target.value
                   )
                 }
-                placeholder="Cari kegiatan..."
-                className="ml-3 w-full outline-none text-sm text-gray-700 placeholder:text-gray-400"
+                placeholder="Cari Posyandu..."
+                className="ml-3 w-full outline-none text-sm text-gray-700"
               />
-
             </div>
 
-            {/* BUTTON */}
             <Link
               href="/jadwal/tambah"
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white px-5 py-3 rounded-2xl shadow-lg hover:scale-[1.02] transition"
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white px-5 py-3 rounded-2xl shadow-lg"
             >
-
               <Plus size={20} />
-
               Tambah Jadwal
-
             </Link>
-
           </div>
-
         </div>
 
-        {/* CARD LIST */}
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 mt-8">
 
           {!loading &&
             filteredData.map(
               (item) => (
-
                 <div
                   key={item.id}
                   className="bg-white rounded-[30px] p-6 shadow-sm hover:shadow-xl transition"
                 >
-
-                  {/* TOP */}
                   <div className="flex items-start justify-between">
 
                     <div className="w-14 h-14 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center">
@@ -272,37 +212,33 @@ export default function JadwalPage() {
                       />
                     </div>
 
-                    {/* ACTION */}
                     <div className="flex items-center gap-2">
 
-                      {/* DETAIL */}
                       <Link
                         href={`/jadwal/detail/${item.id}`}
-                        className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center hover:scale-105 transition"
+                        className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center"
                       >
                         <Eye
                           size={18}
                         />
                       </Link>
 
-                      {/* EDIT */}
                       <Link
                         href={`/jadwal/edit/${item.id}`}
-                        className="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center hover:scale-105 transition"
+                        className="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center"
                       >
                         <Pencil
                           size={18}
                         />
                       </Link>
 
-                      {/* DELETE */}
                       <button
                         onClick={() =>
                           handleDelete(
                             item.id
                           )
                         }
-                        className="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center hover:scale-105 transition"
+                        className="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center"
                       >
                         <Trash2
                           size={18}
@@ -310,107 +246,82 @@ export default function JadwalPage() {
                       </button>
 
                     </div>
-
                   </div>
 
-                  {/* CONTENT */}
                   <div className="mt-6">
 
-                    <h2 className="text-2xl font-black text-gray-800 leading-snug">
-                      {item.kegiatan ||
-                        "-"}
+                    <h2 className="text-2xl font-black text-gray-800">
+                      {
+                        item.namaPosyandu
+                      }
                     </h2>
 
-                    {/* TANGGAL */}
                     <div className="flex items-center gap-3 mt-5 text-gray-600">
-
                       <CalendarDays
                         size={18}
                       />
 
                       <span>
-                        {item.tanggal ||
-                          "-"}
+                        {
+                          item.tanggalKegiatan
+                        }
                       </span>
-
                     </div>
 
-                    {/* WAKTU */}
                     <div className="flex items-center gap-3 mt-3 text-gray-600">
-
-                      <Clock3
-                        size={18}
-                      />
-
-                      <span>
-                        {item.waktu ||
-                          "-"}
-                      </span>
-
-                    </div>
-
-                    {/* LOKASI */}
-                    <div className="flex items-center gap-3 mt-3 text-gray-600">
-
                       <MapPin
                         size={18}
                       />
 
                       <span>
-                        {item.lokasi ||
-                          "-"}
+                        {item.alamat}
                       </span>
-
                     </div>
 
-                    {/* KETERANGAN */}
-                    <div className="mt-5">
+                    <div className="flex items-center gap-3 mt-3 text-gray-600">
+                      <Users
+                        size={18}
+                      />
 
-                      <p className="text-sm text-gray-500 leading-relaxed">
-                        {item.keterangan ||
-                          "-"}
-                      </p>
-
+                      <span>
+                        Jumlah
+                        Kader :
+                        {" "}
+                        {
+                          item.jumlahKader
+                        }
+                      </span>
                     </div>
 
                   </div>
-
                 </div>
               )
             )}
 
         </div>
 
-        {/* EMPTY */}
         {!loading &&
           filteredData.length ===
             0 && (
-
             <div className="bg-white rounded-[30px] py-20 text-center shadow-sm mt-8">
-
               <h2 className="text-3xl font-black text-gray-700">
-                Jadwal Tidak Ada
+                Data Tidak Ada
               </h2>
 
               <p className="text-gray-500 mt-3">
-                Belum ada jadwal kegiatan posyandu
+                Belum ada data
+                jadwal posyandu
               </p>
-
             </div>
           )}
 
-        {/* LOADING */}
         {loading && (
-
           <div className="bg-white rounded-[30px] py-20 text-center shadow-sm mt-8">
-
             <h2 className="text-2xl font-semibold text-gray-600">
               Loading...
             </h2>
-
           </div>
         )}
-
       </main>
     </div>
   );

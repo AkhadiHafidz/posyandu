@@ -186,46 +186,9 @@ export default function Sidebar() {
       {/* BOTTOM */}
       <div>
 
-        {/* USER INFO */}
-        <div className="bg-white/10 rounded-2xl p-4 mb-4 backdrop-blur-xl border border-white/10">
+      
 
-          <div className="flex items-center gap-3">
-
-            {/* AVATAR */}
-            <div className="w-12 h-12 rounded-full bg-white text-green-700 flex items-center justify-center font-bold text-lg shadow-md">
-              {isAdmin ? "A" : "U"}
-            </div>
-
-            {/* INFO */}
-            <div>
-
-              <h2 className="font-bold">
-                {isAdmin ? "Admin" : "User"}
-              </h2>
-
-              <p className="text-sm text-green-100">
-                {isAdmin
-                  ? "Administrator"
-                  : "Pengguna Posyandu"}
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* LOGOUT */}
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center justify-center gap-3 bg-white text-green-700 font-semibold py-3 rounded-2xl hover:scale-[1.02] hover:bg-green-50 transition-all duration-300 shadow-lg"
-        >
-
-          <LogOut size={18} />
-
-          Logout
-
-        </button>
+        
 
       </div>
     </aside>

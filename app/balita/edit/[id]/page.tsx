@@ -220,7 +220,7 @@ nik:e.target.value
 }
 placeholder="Masukkan NIK"
 maxLength={16}
-className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
 />
 
 </div>
@@ -245,7 +245,7 @@ className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
                   })
                 }
                 placeholder="Nama balita"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -268,7 +268,7 @@ className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
                       e.target.value,
                   })
                 }
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               >
 
                 <option value="">
@@ -307,7 +307,7 @@ className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
                   })
                 }
                 placeholder="2 Tahun"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -332,7 +332,7 @@ className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
                   })
                 }
                 placeholder="Nama ibu"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -357,7 +357,7 @@ className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
                 }
                 rows={4}
                 placeholder="Alamat lengkap"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3"
+                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
