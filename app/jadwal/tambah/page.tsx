@@ -86,14 +86,6 @@ export default function TambahProfilPosyanduPage() {
 
         <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
 
-          <h1 className="text-3xl font-black text-gray-800">
-            Data Posyandu
-          </h1>
-
-          <p className="text-gray-500 mt-2">
-            Tambahkan identitas posyandu
-          </p>
-
           <div className="grid gap-5 mt-8">
 
             <div>

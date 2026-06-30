@@ -139,23 +139,8 @@ export default function PemeriksaanPage() {
         <Header title="Pemeriksaan" />
 
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-8">
-          <div>
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center">
-                <ClipboardList size={28} />
-              </div>
-
-              <div>
-                <h1 className="text-3xl font-black text-gray-800">
-                  Data Pemeriksaan
-                </h1>
-
-                <p className="text-gray-500 mt-1">
-                  Kelola data pemeriksaan kesehatan
-                </p>
-              </div>
-            </div>
-          </div>
+          
+          
 
           <div className="flex flex-col sm:flex-row gap-4">
 

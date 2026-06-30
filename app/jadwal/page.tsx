@@ -143,26 +143,8 @@ export default function JadwalPage() {
         <Header title="Jadwal Posyandu" />
 
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-8">
-          <div>
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center">
-                <CalendarDays
-                  size={28}
-                />
-              </div>
-
-              <div>
-                <h1 className="text-3xl font-black text-gray-800">
-                  Jadwal Posyandu
-                </h1>
-
-                <p className="text-gray-500 mt-1">
-                  Kelola data
-                  kegiatan posyandu
-                </p>
-              </div>
-            </div>
-          </div>
+          
+          
 
           <div className="flex flex-col sm:flex-row gap-4">
 

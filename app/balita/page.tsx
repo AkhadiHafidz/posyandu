@@ -180,17 +180,9 @@ export default function BalitaPage() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-8">
 
           {/* TITLE */}
-          <div>
+      
 
-            <h1 className="text-3xl font-black text-gray-800">
-              Data Balita
-            </h1>
-
-            <p className="text-gray-500 mt-2">
-              Kelola data balita posyandu
-            </p>
-
-          </div>
+       
 
           {/* ACTION */}
           <div className="flex flex-col sm:flex-row gap-4">

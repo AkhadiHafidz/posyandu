@@ -39,6 +39,30 @@ export default function TambahPemeriksaanPage() {
     const [usiaKehamilan, setUsiaKehamilan] =
   useState("");
 
+  const [tekananDarah, setTekananDarah] =
+useState("");
+
+const [lila, setLila] =
+useState("");
+
+const [tfu, setTfu] =
+useState("");
+
+const [djj, setDjj] =
+useState("");
+
+const [letakJanin, setLetakJanin] =
+useState("");
+
+const [tabletFe, setTabletFe] =
+useState("");
+
+const [imunisasiTT, setImunisasiTT] =
+useState("");
+
+const [keluhan, setKeluhan] =
+useState("");
+
   const [beratBadan, setBeratBadan] =
     useState("");
 
@@ -146,10 +170,55 @@ export default function TambahPemeriksaanPage() {
             : "",
 
           beratBadan,
-          tinggiBadan,
-          tanggal,
-          status,
-          keterangan,
+
+tinggiBadan:
+jenis === "Balita"
+? tinggiBadan
+: "",
+
+tekananDarah:
+jenis === "Ibu Hamil"
+? tekananDarah
+: "",
+
+lila:
+jenis === "Ibu Hamil"
+? lila
+: "",
+
+tfu:
+jenis === "Ibu Hamil"
+? tfu
+: "",
+
+djj:
+jenis === "Ibu Hamil"
+? djj
+: "",
+
+letakJanin:
+jenis === "Ibu Hamil"
+? letakJanin
+: "",
+
+tabletFe:
+jenis === "Ibu Hamil"
+? tabletFe
+: "",
+
+imunisasiTT:
+jenis === "Ibu Hamil"
+? imunisasiTT
+: "",
+
+keluhan:
+jenis === "Ibu Hamil"
+? keluhan
+: "",
+
+tanggal,
+status,
+keterangan,
 
           createdAt:
             new Date(),
@@ -180,13 +249,7 @@ export default function TambahPemeriksaanPage() {
 
         <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
 
-          <h1 className="text-3xl font-black text-gray-800">
-            Tambah Data Pemeriksaan
-          </h1>
-
-          <p className="text-gray-500 mt-2">
-            Tambahkan data pemeriksaan
-          </p>
+         
 
           <div className="grid md:grid-cols-2 gap-5 mt-8">
 
@@ -319,43 +382,202 @@ export default function TambahPemeriksaanPage() {
                     </div>
             )}
 
-            {/* BERAT */}
-            <div>
-              <label className="text-sm font-semibold text-gray-700">
-                Berat Badan (Kg)
-              </label>
+            {jenis === "Balita" ? (
+  <>
+    {/* BERAT BADAN */}
+    <div>
+      <label className="text-sm font-semibold text-gray-700">
+        Berat Badan (Kg)
+      </label>
 
-              <input
-                type="number"
-                value={beratBadan}
-                onChange={(e) =>
-                  setBeratBadan(
-                    e.target.value
-                  )
-                }
-                placeholder="contoh: 12"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
-              />
-            </div>
+      <input
+        type="number"
+        value={beratBadan}
+        onChange={(e) =>
+          setBeratBadan(e.target.value)
+        }
+        placeholder="Contoh: 12"
+        className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+      />
+    </div>
 
-            {/* TINGGI */}
-            <div>
-              <label className="text-sm font-semibold text-gray-700">
-                Tinggi Badan (Cm)
-              </label>
+    {/* TINGGI BADAN */}
+    <div>
+      <label className="text-sm font-semibold text-gray-700">
+        Tinggi Badan (Cm)
+      </label>
 
-              <input
-                type="number"
-                value={tinggiBadan}
-                onChange={(e) =>
-                  setTinggiBadan(
-                    e.target.value
-                  )
-                }
-                    placeholder="contoh: 85"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
-              />
-            </div>
+      <input
+        type="number"
+        value={tinggiBadan}
+        onChange={(e) =>
+          setTinggiBadan(e.target.value)
+        }
+        placeholder="Contoh: 85"
+        className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+      />
+    </div>
+  </>
+) : (
+  <>
+    {/* BERAT BADAN */}
+    <div>
+      <label className="text-sm font-semibold text-gray-700">
+        Berat Badan (Kg)
+      </label>
+
+      <input
+        type="number"
+        value={beratBadan}
+        onChange={(e) =>
+          setBeratBadan(e.target.value)
+        }
+        placeholder="Contoh: 60"
+        className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+      />
+    </div>
+
+    
+    <div>
+  <label className="text-sm font-semibold text-gray-700">
+    Tekanan Darah
+  </label>
+
+  <input
+    type="text"
+    value={tekananDarah}
+    onChange={(e) =>
+      setTekananDarah(e.target.value)
+    }
+    placeholder="120/80"
+    className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  />
+</div>
+<div>
+  <label className="text-sm font-semibold text-gray-700">
+    LILA (cm)
+  </label>
+
+  <input
+    type="number"
+    value={lila}
+    onChange={(e) =>
+      setLila(e.target.value)
+    }
+      placeholder="Masukkan LILA"
+  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  />
+</div>
+<div>
+  <label className="text-sm font-semibold text-gray-700">
+    TFU (cm)
+  </label>
+
+  <input
+    type="number"
+    value={tfu}
+    onChange={(e) =>
+      setTfu(e.target.value)
+    }
+    placeholder="Masukkan TFU"
+  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  />
+</div>
+<div>
+  <label className="text-sm font-semibold text-gray-700">
+    DJJ (x/menit)
+  </label>
+
+  <input
+    type="text"
+    value={djj}
+    onChange={(e) =>
+      setDjj(e.target.value)
+    }
+    placeholder="Masukkan DJJ"
+  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  />
+</div>
+<div>
+  <label className="text-sm font-semibold text-gray-700">
+    Letak Janin
+  </label>
+
+  <select
+  value={letakJanin}
+  onChange={(e) =>
+    setLetakJanin(e.target.value)
+  }
+  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+>
+  <option value="" disabled>
+    Pilih Letak Janin
+  </option>
+  <option value="Kepala">Kepala</option>
+  <option value="Sungsang">Sungsang</option>
+  <option value="Lintang">Lintang</option>
+</select>
+
+</div>
+<div>
+  <label className="text-sm font-semibold text-gray-700">
+    Tablet Fe
+  </label>
+
+ <select
+  value={tabletFe}
+  onChange={(e) =>
+    setTabletFe(e.target.value)
+  }
+  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+>
+  <option value="" disabled>
+    Pilih Tablet Fe
+  </option>
+  <option value="Ya">Ya</option>
+  <option value="Tidak">Tidak</option>
+</select>
+
+
+</div>
+<div>
+  <label className="text-sm font-semibold text-gray-700">
+    Imunisasi TT
+  </label>
+
+<select
+  value={imunisasiTT}
+  onChange={(e) =>
+    setImunisasiTT(e.target.value)
+  }
+  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+>
+  <option value="" disabled>
+    Pilih Imunisasi TT
+  </option>
+  <option value="Sudah">Sudah</option>
+  <option value="Belum">Belum</option>
+</select>
+
+</div>
+<div className="md:col-span-2">
+  <label className="text-sm font-semibold text-gray-700">
+    Keluhan
+  </label>
+
+  <textarea
+    rows={3}
+    value={keluhan}
+    onChange={(e) =>
+      setKeluhan(e.target.value)
+    }
+     placeholder="Masukkan keluhan ibu hamil"
+  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  />
+</div>
+  </>
+)}
+            
 
             {/* TANGGAL */}
             <div>

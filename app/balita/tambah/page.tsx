@@ -81,17 +81,7 @@ export default function TambahBalitaPage() {
 
         <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
 
-          <div>
-
-            <h1 className="text-3xl font-black text-gray-800">
-              Tambah Data Balita
-            </h1>
-
-            <p className="text-gray-500 mt-2">
-              Tambahkan data balita baru
-            </p>
-
-          </div>
+          
 
           {/* FORM */}
           <div className="grid md:grid-cols-2 gap-5 mt-8">

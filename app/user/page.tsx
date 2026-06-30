@@ -204,42 +204,7 @@ export default function DashboardPage() {
         {/* HEADER */}
         <Header title="Dashboard" />
 
-        {/* HERO */}
-        <div className="mt-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-[35px] p-8 md:p-10 text-white shadow-xl relative overflow-hidden">
-
-          {/* SHAPE */}
-          <div className="absolute top-[-60px] right-[-60px] w-[220px] h-[220px] bg-white/10 rounded-full"></div>
-
-          <div className="absolute bottom-[-70px] left-[-70px] w-[180px] h-[180px] bg-white/10 rounded-full"></div>
-
-          {/* CONTENT */}
-          <div className="relative z-10">
-
-            <div className="flex items-center gap-3">
-
-              <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center">
-
-                <Activity size={30} />
-
-              </div>
-
-              <div>
-
-                <h1 className="text-4xl font-black">
-                  Dashboard Posyandu
-                </h1>
-
-                <p className="text-green-100 mt-2">
-                  Monitoring data kesehatan posyandu secara realtime
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
+      
 
         {/* STATISTIC */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-8">

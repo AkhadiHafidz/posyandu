@@ -231,29 +231,9 @@ export default function LaporanPage() {
         <Header title="Laporan" />
 
         {/* TOP */}
-        <div className="mt-8">
+        
 
-          <div className="flex items-center gap-4">
-
-            <div className="w-16 h-16 rounded-3xl bg-green-100 text-green-600 flex items-center justify-center shadow-sm">
-              <FileSpreadsheet size={34} />
-            </div>
-
-            <div>
-
-              <h1 className="text-4xl font-black text-gray-800">
-                Laporan Posyandu
-              </h1>
-
-              <p className="text-gray-500 mt-2">
-                Download laporan data posyandu dalam format Excel
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
+        
 
         {/* STATISTIC */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">

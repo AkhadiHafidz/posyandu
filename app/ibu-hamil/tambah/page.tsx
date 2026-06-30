@@ -73,16 +73,7 @@ export default function TambahIbuHamilPage() {
 
         <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
 
-          {/* TITLE */}
-          <div>
-            <h1 className="text-3xl font-black text-gray-800">
-              Tambah Data Ibu Hamil
-            </h1>
-
-            <p className="text-gray-500 mt-2">
-              Tambahkan data ibu hamil baru
-            </p>
-          </div>
+         
 
           {/* FORM */}
           <div className="grid md:grid-cols-2 gap-5 mt-8">
