@@ -112,13 +112,7 @@ export default function DetailPenggunaPage() {
 
         <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
 
-          <h1 className="text-3xl font-black text-gray-800">
-            Detail Data Pengguna
-          </h1>
 
-          <p className="text-gray-500 mt-2">
-            Informasi lengkap pengguna
-          </p>
 
           {loading ? (
 
@@ -159,6 +153,16 @@ export default function DetailPenggunaPage() {
       {data.role || "-"}
     </h1>
   </div>
+
+        <div>
+          <p className="text-sm text-gray-500">
+            No HP
+          </p>
+
+          <h1 className="text-xl font-semibold text-gray-800">
+            {data.noHp || "-"}
+          </h1>
+        </div>
 
 </div>
 

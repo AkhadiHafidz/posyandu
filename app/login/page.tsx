@@ -77,16 +77,16 @@ export default function LoginPage() {
           );
 
         // SIMPAN ADMIN
+       // Hapus data user lama
+localStorage.removeItem("uid");
+localStorage.removeItem("user");
+
+// Simpan data admin
         localStorage.setItem(
           "admin",
           JSON.stringify({
-            uid:
-              userCredential.user.uid,
-
-            email:
-              userCredential.user
-                .email,
-
+    uid: userCredential.user.uid,
+    email: userCredential.user.email,
             role: "admin",
           })
         );
@@ -133,19 +133,30 @@ export default function LoginPage() {
         return;
       }
 
+      
       // AMBIL DATA USER
-      const userData =
-        querySnapshot.docs[0].data();
+        const userDoc = querySnapshot.docs[0];
 
-      // SIMPAN LOCAL STORAGE
+        const userData = userDoc.data();
+
+        // SIMPAN UID
+     // Hapus data admin lama
+     await auth.signOut().catch(() => {});
+localStorage.removeItem("admin");
+
+// Simpan uid user
+localStorage.setItem(
+  "uid",
+  userDoc.id
+);
+
+// Simpan data user
       localStorage.setItem(
         "user",
         JSON.stringify({
+    uid: userDoc.id,
           ...userData,
-
-          role:
-            userData.role ||
-            "user",
+    role: userData.role || "user",
         })
       );
 
@@ -381,6 +392,7 @@ export default function LoginPage() {
 
                   <input
                     type="text"
+                     autoComplete="username"
                     value={
                       username || ""
                     }
@@ -425,6 +437,7 @@ export default function LoginPage() {
 
                   <input
                     type="password"
+                    autoComplete="current-password"
                     value={
                       password || ""
                     }

@@ -16,7 +16,6 @@ import {
 
 import {
   signOut,
-  onAuthStateChanged,
 } from "firebase/auth";
 
 import {
@@ -48,99 +47,68 @@ export default function Header({
 
   useEffect(() => {
 
-    const unsubscribe =
-      onAuthStateChanged(
-        auth,
-        (firebaseUser) => {
+  // ===================
+  // ADMIN
+  // ===================
+  const admin = localStorage.getItem("admin");
 
-          // ADMIN
-          if (
-            firebaseUser?.email ===
-            "admin@gmail.com"
-          ) {
+  if (admin) {
 
-            setNamaUser(
-              "Admin"
-            );
+    setNamaUser("Admin");
+    setRoleUser("Admin");
+    setAvatar("A");
 
-            setRoleUser(
-              "Admin"
-            );
+    return;
 
-            setAvatar(
-              "A"
-            );
+  }
 
-            return;
-          }
+  // ===================
+  // USER
+  // ===================
+  const user = localStorage.getItem("user");
 
-          // KADER
-          const user =
-            localStorage.getItem(
-              "user"
-            );
+  if (user) {
 
-          if (user) {
+    const userData = JSON.parse(user);
 
-            const userData =
-              JSON.parse(
-                user
-              );
+    const nama = userData.nama || "Kader";
 
-            const nama =
-              userData.nama ||
-              "Kader";
+    setNamaUser(nama);
 
-            setNamaUser(
-              nama
-            );
+    setRoleUser(userData.role || "Kader");
 
-            setRoleUser(
-              userData.role ||
-              "Kader"
-            );
+    setAvatar(
+      nama.charAt(0).toUpperCase()
+    );
 
-            setAvatar(
-              nama
-                .charAt(0)
-                .toUpperCase()
-            );
-          }
-        }
-      );
+  }
 
-    return () =>
-      unsubscribe();
+}, []);
 
-  }, []);
+  const handleLogout = async () => {
 
-  const handleLogout =
-    async () => {
+  try {
 
-      try {
+    await signOut(auth).catch(() => {});
 
-        await signOut(auth);
+    localStorage.removeItem("admin");
+    localStorage.removeItem("user");
+    localStorage.removeItem("uid");
 
-        localStorage.removeItem(
-          "user"
-        );
+    router.push("/");
 
-        router.push("/");
+  } catch (error) {
 
-      } catch (error) {
+    console.log(error);
 
-        console.log(error);
+    alert("Gagal logout");
 
-        alert(
-          "Gagal logout"
-        );
+  }
 
-      }
-
-    };
+};
 
   return (
-    <header className="w-full bg-white rounded-3xl shadow-sm border border-green-100 px-6 py-5 flex items-center justify-between">
+    <header className="w-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-3xl shadow-sm border border-green-100 px-6 py-5 flex items-center justify-between">
 
       {/* LEFT */}
       <div className="flex items-center gap-4">
@@ -151,11 +119,11 @@ export default function Header({
 
         <div>
 
-          <h1 className="text-3xl font-black text-gray-800">
+          <h1 className="text-3xl font-black text-white drop-shadow-sm">
             {title}
           </h1>
 
-          <p className="text-gray-500 mt-1">
+          <p className="text-white-500 mt-2">
             Selamat datang di Sistem Posyandu
           </p>
 
@@ -209,7 +177,7 @@ export default function Header({
 
                 <User size={18} />
 
-                Profil Saya
+                Profile Saya
 
               </Link>
 

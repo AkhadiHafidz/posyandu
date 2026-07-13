@@ -127,7 +127,10 @@ export default function EditBalitaPage() {
 
   // UPDATE
   const handleUpdate = async () => {
-
+    if (!/^\d{16}$/.test(form.nik)) {
+  alert("NIK harus terdiri dari 16 digit angka.");
+  return;
+}
     try {
 
       await updateDoc(
@@ -187,18 +190,6 @@ export default function EditBalitaPage() {
 
         <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
 
-          {/* TITLE */}
-          <div>
-
-            <h1 className="text-3xl font-black text-gray-800">
-              Edit Data Balita
-            </h1>
-
-            <p className="text-gray-500 mt-2">
-              Update data balita
-            </p>
-
-          </div>
 
           {/* FORM */}
           <div className="grid md:grid-cols-2 gap-5 mt-8">
@@ -212,15 +203,15 @@ NIK
 <input
 type="text"
 value={form.nik}
-onChange={(e)=>
+  onChange={(e) =>
 setForm({
 ...form,
-nik:e.target.value
+      nik: e.target.value.replace(/\D/g, ""),
 })
 }
 placeholder="Masukkan NIK"
 maxLength={16}
-className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
 />
 
 </div>
@@ -245,7 +236,7 @@ className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-8
                   })
                 }
                 placeholder="Nama balita"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -268,7 +259,7 @@ className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-8
                       e.target.value,
                   })
                 }
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               >
 
                 <option value="">
@@ -307,7 +298,7 @@ className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-8
                   })
                 }
                 placeholder="2 Tahun"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -332,7 +323,7 @@ className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-8
                   })
                 }
                 placeholder="Nama ibu"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -357,7 +348,7 @@ className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-8
                 }
                 rows={4}
                 placeholder="Alamat lengkap"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>

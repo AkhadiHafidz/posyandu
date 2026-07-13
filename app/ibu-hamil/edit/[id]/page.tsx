@@ -20,6 +20,7 @@ export default function EditIbuHamilPage() {
 
   const id = params.id as string;
 
+  const [nik, setNik] = useState("");
   const [nama, setNama] = useState("");
   const [umur, setUmur] = useState("");
   const [usiaKehamilan, setUsiaKehamilan] =
@@ -46,6 +47,7 @@ export default function EditIbuHamilPage() {
         if (docSnap.exists()) {
           const data = docSnap.data();
 
+          setNik(data.nik || "");
           setNama(data.nama || "");
           setUmur(data.umur || "");
           setUsiaKehamilan(
@@ -70,6 +72,11 @@ export default function EditIbuHamilPage() {
   ) => {
     e.preventDefault();
 
+    if (!/^\d{16}$/.test(nik)) {
+  alert("NIK harus terdiri dari 16 digit angka.");
+  return;
+}
+
     try {
       setLoading(true);
 
@@ -80,6 +87,7 @@ export default function EditIbuHamilPage() {
           id
         ),
         {
+          nik,
           nama,
           umur,
           usiaKehamilan,
@@ -112,20 +120,29 @@ export default function EditIbuHamilPage() {
 
         <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
 
-          <div>
-            <h1 className="text-3xl font-black text-gray-800">
-              Edit Data Ibu Hamil
-            </h1>
-
-            <p className="text-gray-500 mt-2">
-              Perbarui data ibu hamil
-            </p>
-          </div>
-
           <form
             onSubmit={handleSubmit}
             className="grid md:grid-cols-2 gap-5 mt-8"
           >
+
+          {/* NIK */}
+        <div>
+          <label className="text-sm font-semibold text-gray-700">
+            NIK
+          </label>
+
+          <input
+            type="text"
+            value={nik}
+            onChange={(e) =>
+              setNik(e.target.value)
+            }
+            placeholder="Masukkan NIK"
+            maxLength={16}
+            className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+          />
+        </div>
+
             {/* Nama */}
             <div>
               <label className="text-sm font-semibold text-gray-700">
@@ -141,7 +158,7 @@ export default function EditIbuHamilPage() {
                   )
                 }
                 placeholder="Nama Ibu"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
@@ -160,7 +177,7 @@ export default function EditIbuHamilPage() {
                   )
                 }
                 placeholder="Umur"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800   placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800   placeholder:text-gray-400"
               />
             </div>
 
@@ -179,7 +196,7 @@ export default function EditIbuHamilPage() {
                   )
                 }
                 placeholder="Usia Kehamilan"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
@@ -198,7 +215,7 @@ export default function EditIbuHamilPage() {
                   )
                 }
                 placeholder="08xxxxxxxxxx"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
@@ -217,7 +234,7 @@ export default function EditIbuHamilPage() {
                   )
                 }
                 placeholder="Alamat Lengkap"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
 

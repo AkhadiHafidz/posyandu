@@ -10,6 +10,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 interface IbuHamil {
+  nik: string;
   nama: string;
   umur: string;
   usiaKehamilan: string;
@@ -70,16 +71,18 @@ export default function DetailIbuHamilPage() {
         <Header title="Detail Ibu Hamil" />
 
         <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
-
-          <h1 className="text-3xl font-black text-gray-800">
-            Detail Data Ibu Hamil
-          </h1>
-
-          <p className="text-gray-500 mt-2">
-            Informasi lengkap ibu hamil
-          </p>
-
           <div className="mt-8 space-y-6">
+
+            {/* NIK */}
+            <div>
+              <p className="text-sm text-gray-500">
+                NIK
+              </p>
+
+              <p className="text-xl font-semibold text-gray-800 mt-1">
+                {data?.nik || "-"}
+              </p>
+            </div>
 
             <div>
               <p className="text-sm text-gray-500">

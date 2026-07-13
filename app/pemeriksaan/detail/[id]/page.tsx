@@ -13,12 +13,29 @@ interface Pemeriksaan {
   jenis: string;
   nama: string;
   nik?: string;
+
+  // Balita
+  umur?: string;
+  tinggiBadan?: string;
+  lingkarLengan?: string;
+  vitaminA?: string;
+  asiEksklusif?: string;
+
+  // Ibu Hamil
   usiaKehamilan?: string;
+  tekananDarah?: string;
+  tfu?: string;
+  djj?: string;
+  letakJanin?: string;
+  tabletFe?: string;
+  imunisasiTT?: string;
+  keluhan?: string;
+
+  // Umum
   beratBadan: string;
-  tinggiBadan: string;
   tanggal: string;
   status: string;
-  keterangan: string;
+  keterangan?: string;
 }
 
 export default function DetailPemeriksaanPage() {
@@ -55,8 +72,21 @@ export default function DetailPemeriksaanPage() {
       }
     };
 
+
     getData();
   }, [params.id]);
+
+    const formatTanggal = (tanggal?: string) => {
+
+      if (!tanggal) return "-";
+
+      const [tahun, bulan, hari] =
+        tanggal.split("-");
+
+      return `${hari}-${bulan}-${tahun}`;
+
+    };
+
 
   if (loading) {
     return (
@@ -75,13 +105,6 @@ export default function DetailPemeriksaanPage() {
 
         <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
 
-          <h1 className="text-3xl font-black text-gray-800">
-            Detail Data Pemeriksaan
-          </h1>
-
-          <p className="text-gray-500 mt-2">
-            Informasi lengkap pemeriksaan
-          </p>
 
           <div className="mt-8 space-y-6">
 
@@ -108,7 +131,7 @@ export default function DetailPemeriksaanPage() {
             </div>
 
             {/* NIK Balita */}
-            {data?.jenis === "Balita" && (
+            {data?.nik && (
               <div>
                 <p className="text-sm text-gray-500">
                   NIK
@@ -119,6 +142,18 @@ export default function DetailPemeriksaanPage() {
                 </p>
               </div>
             )}
+
+            {data?.jenis === "Balita" && (
+  <div>
+    <p className="text-sm text-gray-500">
+      Umur
+    </p>
+
+    <p className="text-xl font-semibold text-gray-800 mt-1">
+      {data?.umur || "-"} Bulan
+    </p>
+  </div>
+)}
 
             {/* Usia Kehamilan */}
             {data?.jenis === "Ibu Hamil" && (
@@ -144,7 +179,8 @@ export default function DetailPemeriksaanPage() {
               </p>
             </div>
 
-            {/* Tinggi */}
+            {data?.jenis === "Balita" ? (
+              <>
             <div>
               <p className="text-sm text-gray-500">
                 Tinggi Badan
@@ -154,6 +190,119 @@ export default function DetailPemeriksaanPage() {
                 {data?.tinggiBadan || "-"} Cm
               </p>
             </div>
+  <div>
+  <p className="text-sm text-gray-500">
+    Lingkar Lengan
+  </p>
+
+  <p className="text-xl font-semibold text-gray-800 mt-1">
+    {data?.lingkarLengan || "-"} cm
+  </p>
+</div>
+
+<div>
+  <p className="text-sm text-gray-500">
+    Vitamin A
+  </p>
+
+  <p className="text-xl font-semibold text-gray-800 mt-1">
+    {data?.vitaminA || "-"}
+  </p>
+</div>
+
+<div>
+  <p className="text-sm text-gray-500">
+    ASI Eksklusif
+  </p>
+
+  <p className="text-xl font-semibold text-gray-800 mt-1">
+    {data?.asiEksklusif || "-"}
+  </p>
+</div>
+</>
+) : (
+  <>
+    <div>
+      <p className="text-sm text-gray-500">
+        Tekanan Darah
+      </p>
+
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.tekananDarah || "-"}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-gray-500">
+        Lingkar Lengan
+      </p>
+
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.lingkarLengan || "-"} cm
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-gray-500">
+        TFU
+      </p>
+
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.tfu || "-"} cm
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-gray-500">
+        DJJ
+      </p>
+
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.djj || "-"}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-gray-500">
+        Letak Janin
+      </p>
+
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.letakJanin || "-"}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-gray-500">
+        Tablet Fe
+      </p>
+
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.tabletFe || "-"}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-gray-500">
+        Imunisasi TT
+      </p>
+
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.imunisasiTT || "-"}
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm text-gray-500">
+        Keluhan
+      </p>
+
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.keluhan || "-"}
+      </p>
+    </div>
+  </>
+)}  
 
             {/* Tanggal */}
             <div>
@@ -162,7 +311,7 @@ export default function DetailPemeriksaanPage() {
               </p>
 
               <p className="text-xl font-semibold text-gray-800 mt-1">
-                {data?.tanggal || "-"}
+                {formatTanggal(data?.tanggal)}
               </p>
             </div>
 

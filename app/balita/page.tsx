@@ -165,13 +165,13 @@ export default function BalitaPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5FFF8] flex">
+    <div className="min-h-screen bg-[#F5FFF8] flex flex-col lg:flex-row">
 
       {/* SIDEBAR */}
       <Sidebar />
 
       {/* CONTENT */}
-      <main className="flex-1 p-6 md:p-8">
+     <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
 
         {/* HEADER */}
         <Header title="Data Balita" />
@@ -179,10 +179,6 @@ export default function BalitaPage() {
         {/* TOP */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-8">
 
-          {/* TITLE */}
-      
-
-       
 
           {/* ACTION */}
           <div className="flex flex-col sm:flex-row gap-4">
@@ -226,9 +222,9 @@ export default function BalitaPage() {
         </div>
 
         {/* TABLE */}
-        <div className="mt-8 bg-white rounded-[30px] shadow-sm overflow-hidden overflow-x-auto">
+        <div className="mt-8 bg-white rounded-[30px] shadow-sm overflow-x-auto">
 
-          <table className="w-full min-w-[900px]">
+          <table className="min-w-[900px] w-full">
 
             {/* HEAD */}
             <thead className="bg-green-50 border-b">
@@ -281,7 +277,7 @@ export default function BalitaPage() {
                         <div className="flex items-center gap-4">
 
                           {/* AVATAR */}
-                          <div className="w-12 h-12 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold text-lg">
+                          <div className="w-10 h-10 md:w-12 md:h-12">
                             {item.nama
                               ?.charAt(0)
                               ?.toUpperCase() ||
@@ -291,7 +287,7 @@ export default function BalitaPage() {
                           {/* INFO */}
                           <div>
 
-                            <h2 className="font-bold text-gray-800">
+                            <h2 className="font-semibold text-sm md:text-base text-gray-800">
                               {item.nama ||
                                 "-"}
                             </h2>
@@ -322,7 +318,7 @@ export default function BalitaPage() {
                       </td>
 
                       {/* ALAMAT */}
-                      <td className="py-5 px-6 text-gray-600 max-w-[250px] truncate">
+                      <td className="py-5 px-6 text-gray-600 max-w-[150px] md:max-w-[250px] truncate">
                         {item.alamat ||
                           "-"}
                       </td>

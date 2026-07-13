@@ -47,6 +47,11 @@ export default function TambahBalitaPage() {
   // SUBMIT
   const handleSubmit = async () => {
 
+        if (!/^\d{16}$/.test(form.nik)) {
+          alert("NIK harus terdiri dari 16 digit angka.");
+          return;
+        }
+
     try {
 
       await addDoc(
@@ -99,12 +104,12 @@ export default function TambahBalitaPage() {
     onChange={(e) =>
       setForm({
         ...form,
-        nik: e.target.value,
+              nik: e.target.  value.replace(/\D/g, ""),
       })
     }
     placeholder="Masukkan NIK"
     maxLength={16}
-    className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+          className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
   />
 
 </div>
@@ -127,7 +132,7 @@ export default function TambahBalitaPage() {
                   })
                 }
                 placeholder="Nama balita"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -148,7 +153,7 @@ export default function TambahBalitaPage() {
                       e.target.value,
                   })
                 }
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               >
 
                 <option value="">
@@ -185,7 +190,7 @@ export default function TambahBalitaPage() {
                   })
                 }
                 placeholder="Umur"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -208,7 +213,7 @@ export default function TambahBalitaPage() {
                   })
                 }
                 placeholder="Nama ibu"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -231,7 +236,7 @@ export default function TambahBalitaPage() {
                 }
                 rows={4}
                 placeholder="Alamat lengkap"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>

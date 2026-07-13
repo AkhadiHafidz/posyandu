@@ -21,8 +21,9 @@ import { db } from "@/lib/firebase";
 
 interface PenggunaForm {
   nama: string;
-  email: string;
-  role: string;
+  username: string;
+  password: string;
+  konfirmasiPassword: string;
   noHp: string;
   alamat: string;
 }
@@ -41,8 +42,9 @@ export default function EditPenggunaPage() {
   const [form, setForm] =
     useState<PenggunaForm>({
       nama: "",
-      email: "",
-      role: "",
+      username: "",
+      password: "",
+      konfirmasiPassword: "",
       noHp: "",
       alamat: "",
     });
@@ -76,13 +78,17 @@ export default function EditPenggunaPage() {
                 docSnap.data()
                   .nama || "",
 
-              email:
+              username:
                 docSnap.data()
-                  .email || "",
+                  .username || "",
 
-              role:
+              password:
                 docSnap.data()
-                  .role || "",
+                  .password || "",
+
+              konfirmasiPassword:
+                docSnap.data()
+                  .konfirmasiPassword || "",
 
               noHp:
                 docSnap.data()
@@ -120,7 +126,10 @@ export default function EditPenggunaPage() {
         setLoading(
           true
         );
-
+        if (form.password !== form.konfirmasiPassword) {
+          alert("Konfirmasi password tidak sama.");
+          return;
+        }
         await updateDoc(
           doc(
             db,
@@ -128,7 +137,11 @@ export default function EditPenggunaPage() {
             params.id as string
           ),
           {
-            ...form,
+            nama: form.nama,
+            username: form.username,
+            password: form.password,
+            noHp: form.noHp,
+            alamat: form.alamat,
           }
         );
 
@@ -173,18 +186,7 @@ export default function EditPenggunaPage() {
 
         <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
 
-          {/* TITLE */}
-          <div>
-
-            <h1 className="text-3xl font-black text-gray-800">
-              Edit Data Pengguna
-            </h1>
-
-            <p className="text-gray-500 mt-2">
-              Ubah data pengguna
-            </p>
-
-          </div>
+      
 
           {/* FORM */}
           <div className="grid md:grid-cols-2 gap-5 mt-8">
@@ -207,47 +209,69 @@ export default function EditPenggunaPage() {
                   })
                 }
                 placeholder="Nama pengguna"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
 
-          
+          <div>
 
-          
+            <label className="text-sm font-semibold text-gray-700">
+            Username
+            </label>
 
-            {/* ROLE */}
+            <input
+            type="text"
+            value={form.username}
+            onChange={(e)=>
+            setForm({
+            ...form,
+            username:e.target.value
+            })
+            }
+            className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+            />
+
+            </div>
+
+            <div>
+
+          <label className="text-sm font-semibold text-gray-700">
+          Password
+          </label>
+
+          <input
+          type="password"
+          value={form.password}
+          onChange={(e)=>
+          setForm({
+          ...form,
+          password:e.target.value
+          })
+          }
+          className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+          />
+
+          </div>
+
+
             <div>
 
               <label className="text-sm font-semibold text-gray-700">
-                Role
+          Konfirmasi Password
               </label>
 
-              <select
-                value={form.role}
+          <input
+          type="password"
+          value={form.konfirmasiPassword}
                 onChange={(e)=>
                   setForm({
                     ...form,
-                    role:
-                      e.target.value,
+          konfirmasiPassword:e.target.value
                   })
                 }
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
-              >
-
-                <option value="">
-                  Pilih Role
-                </option>
-
-                <option value="Admin">
-                  Admin
-                </option>
-
-                <option value="Petugas">
-                  Petugas
-                </option>
-
-              </select>
+          className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+          />
 
             </div>
 
@@ -269,7 +293,7 @@ export default function EditPenggunaPage() {
                   })
                 }
                 placeholder="08xxxxxxxxxx"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>

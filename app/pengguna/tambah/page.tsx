@@ -11,14 +11,14 @@ import {
   addDoc,
 } from "firebase/firestore";
 
-import { db } from "@/lib/firebase";
+import { db, auth } from "@/lib/firebase";
 
 interface PenggunaForm {
   nama: string;
-  email: string;
-  role: string;
+  username: string;
+  password: string;
+  konfirmasiPassword: string;
   noHp: string;
-  alamat: string;
 }
 
 export default function TambahPenggunaPage() {
@@ -28,55 +28,68 @@ export default function TambahPenggunaPage() {
   const [form, setForm] =
     useState<PenggunaForm>({
       nama: "",
-      email: "",
-      role: "",
+      username: "",
+      password: "",
+      konfirmasiPassword: "",
       noHp: "",
-      alamat: "",
     });
 
   const [loading, setLoading] =
     useState(false);
 
-  const handleSubmit =
-    async () => {
+        const handleSubmit = async () => {
+
+          if (
+            !form.nama ||
+            !form.username ||
+            !form.password ||
+            !form.konfirmasiPassword
+          ) {
+            alert("Semua data wajib diisi.");
+            return;
+          }
+
+          if (form.password !== form.konfirmasiPassword) {
+            alert("Konfirmasi password tidak sama.");
+            return;
+          }
 
       try {
 
         setLoading(true);
 
         await addDoc(
-          collection(
-            db,
-            "pengguna"
-          ),
+              collection(db, "users"),
           {
-            ...form,
-            createdAt:
-              new Date(),
+                nama: form.nama,
+                username: form.username.toLowerCase(),
+                password: form.password,
+                noHp: form.noHp,
+                
+
+                // otomatis user
+                role: "user",
+
+                createdAt: new Date(),
           }
         );
 
-        alert(
-          "Pengguna berhasil ditambahkan"
-        );
+            alert("Pengguna berhasil ditambahkan.");
 
-        router.push(
-          "/pengguna"
-        );
+            router.push("/pengguna");
 
       } catch (error) {
 
         console.log(error);
 
-        alert(
-          "Gagal menambahkan pengguna"
-        );
+            alert("Gagal menambahkan pengguna.");
 
       } finally {
 
         setLoading(false);
 
       }
+
     };
 
   return (
@@ -113,66 +126,73 @@ export default function TambahPenggunaPage() {
                   })
                 }
                 placeholder="Masukkan nama"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
 
-            {/* EMAIL */}
             <div>
 
               <label className="text-sm font-semibold text-gray-700">
-                Email
+              Username
               </label>
 
               <input
-                type="email"
-                value={form.email}
+              type="text"
+              value={form.username}
+              onChange={(e)=>
+              setForm({
+              ...form,
+              username:e.target.value
+              })
+              }
+              placeholder="Masukkan username"
+              className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+              />
+
+              </div>
+
+                {/*password*/}
+                <div>
+
+                <label className="text-sm font-semibold text-gray-700">
+                Password
+                </label>
+
+                <input
+                type="password"
+                value={form.password}
                 onChange={(e)=>
                   setForm({
                     ...form,
-                    email:
-                      e.target.value,
+                password:e.target.value
                   })
                 }
-                placeholder="Masukkan email"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                placeholder="Masukkan password"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
               />
 
             </div>
 
-            {/* ROLE */}
+                {/*konfirmasi password*/}
             <div>
 
               <label className="text-sm font-semibold text-gray-700">
-                Role
+                Konfirmasi Password
               </label>
 
-              <select
-                value={form.role}
+                <input
+                type="password"
+                value={form.konfirmasiPassword}
                 onChange={(e)=>
                   setForm({
                     ...form,
-                    role:
-                      e.target.value,
+                konfirmasiPassword:e.target.value
                   })
                 }
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
-              >
-
-                <option value="">
-                  Pilih Role
-                </option>
-
-                <option value="Admin">
-                  Admin
-                </option>
-
-                <option value="Kader">
-                  Kader
-                </option>
-
-              </select>
+                placeholder="Konfirmasi password"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+                />
 
             </div>
 
@@ -194,33 +214,12 @@ export default function TambahPenggunaPage() {
                   })
                 }
                 placeholder="08xxxxxxxxxx"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
 
-            {/* ALAMAT */}
-            <div className="md:col-span-2">
-
-              <label className="text-sm font-semibold text-gray-700">
-                Alamat
-              </label>
-
-              <textarea
-                rows={4}
-                value={form.alamat}
-                onChange={(e)=>
-                  setForm({
-                    ...form,
-                    alamat:
-                      e.target.value,
-                  })
-                }
-                placeholder="Alamat lengkap"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
-              />
-
-            </div>
+           
 
           </div>
 

@@ -7,12 +7,21 @@ import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
 
 import Header from "@/components/header";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 import {
   Baby,
   HeartPulse,
   ClipboardList,
-  CalendarDays,
   ArrowRight,
   Activity,
   Users,
@@ -21,9 +30,11 @@ import {
 import {
   collection,
   getDocs,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 
-import { db } from "@/lib/firebase";
+import { db, auth } from "@/lib/firebase";
 
 interface Jadwal {
   id: string;
@@ -50,9 +61,25 @@ export default function DashboardPage() {
   const [totalPengguna, setTotalPengguna] =
     useState(0);
 
+  const [roleUser, setRoleUser] =
+    useState("");
+
   // JADWAL
-  const [jadwal, setJadwal] =
-    useState<Jadwal[]>([]);
+  const [chartData, setChartData] = useState([
+  { bulan: "Jan",balita: 0, ibuHamil: 0 },
+  { bulan: "Feb", balita: 0, ibuHamil: 0 },
+  { bulan: "Mar", balita: 0, ibuHamil: 0 },
+  { bulan: "Apr", balita: 0, ibuHamil: 0 },
+  { bulan: "Mei", balita: 0, ibuHamil: 0 },
+  { bulan: "Jun", balita: 0, ibuHamil: 0 },
+  { bulan: "Jul", balita: 0, ibuHamil: 0 },
+  { bulan: "Agu", balita: 0, ibuHamil: 0 },
+  { bulan: "Sep", balita: 0, ibuHamil: 0 },
+  { bulan: "Okt", balita: 0, ibuHamil: 0 },
+  { bulan: "Nov", balita: 0, ibuHamil: 0 },
+  { bulan: "Des", balita: 0, ibuHamil: 0 },
+]);
+
 
   const [loading, setLoading] =
     useState(true);
@@ -130,76 +157,101 @@ export default function DashboardPage() {
         // ======================
         // JADWAL
         // ======================
+const bulan = [
+  { bulan: "Jan", balita: 0, ibuHamil: 0 },
+  { bulan: "Feb", balita: 0, ibuHamil: 0 },
+  { bulan: "Mar", balita: 0, ibuHamil: 0 },
+  { bulan: "Apr", balita: 0, ibuHamil: 0 },
+  { bulan: "Mei", balita: 0, ibuHamil: 0 },
+  { bulan: "Jun", balita: 0, ibuHamil: 0 },
+  { bulan: "Jul", balita: 0, ibuHamil: 0 },
+  { bulan: "Agu", balita: 0, ibuHamil: 0 },
+  { bulan: "Sep", balita: 0, ibuHamil: 0 },
+  { bulan: "Okt", balita: 0, ibuHamil: 0 },
+  { bulan: "Nov", balita: 0, ibuHamil: 0 },
+  { bulan: "Des", balita: 0, ibuHamil: 0 },
+];
 
-        const jadwalSnapshot =
-          await getDocs(
-            collection(
-              db,
-              "jadwal"
-            )
-          );
+pemeriksaanSnapshot.forEach((doc) => {
 
-        const jadwalData: Jadwal[] =
-          [];
+  const data = doc.data();
 
-        jadwalSnapshot.forEach(
-          (doc) => {
+  if (!data.tanggal) return;
 
-            const data =
-              doc.data();
+  const parts = data.tanggal.split("-");
 
-            jadwalData.push({
-              id: doc.id,
+  const month = Number(parts[1]) - 1;
 
-              kegiatan:
-                String(
-                  data.kegiatan ||
-                    ""
-                ),
+  if (month >= 0 && month <= 11) {
 
-              tanggal:
-                String(
-                  data.tanggal ||
-                    ""
-                ),
+  if (data.jenis === "Balita") {
 
-              waktu:
-                String(
-                  data.waktu ||
-                    ""
-                ),
-            });
-          }
-        );
+    bulan[month].balita++;
 
-        setJadwal(
-          jadwalData.slice(0, 4)
-        );
+  } else if (data.jenis === "Ibu Hamil") {
 
-      } catch (error) {
+    bulan[month].ibuHamil++;
 
-        console.log(error);
+  }
 
-      } finally {
+}
 
-        setLoading(false);
-      }
-    };
+});
+
+setChartData([...bulan]);
+console.log("Bulan =", bulan);
+} catch (error) {
+  console.log(error);
+} finally {
+  setLoading(false);
+}
+};
 
   useEffect(() => {
 
-    getDashboardData();
+  const loadData = async () => {
 
-  }, []);
+    await getDashboardData();
+
+    // ADMIN (Firebase Auth)
+    if (auth.currentUser?.email === "admin@gmail.com") {
+      setRoleUser("admin");
+      return;
+    }
+
+    // USER / KADER (Firestore)
+    const uid = localStorage.getItem("uid");
+
+    if (!uid) return;
+
+    const docRef = doc(db, "users", uid);
+
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+
+      const data = docSnap.data();
+
+      setRoleUser(data.role?.toLowerCase());
+
+    }
+
+  };
+
+  loadData();
+
+}, []);
+
+
 
   return (
-    <div className="min-h-screen bg-[#F5FFF8] flex">
+    <div className="min-h-screen bg-[#F5FFF8] flex flex-col lg:flex-row">
 
       {/* SIDEBAR */}
       <Sidebar />
 
       {/* CONTENT */}
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8">
 
         {/* HEADER */}
         <Header title="Dashboard" />
@@ -309,6 +361,7 @@ export default function DashboardPage() {
           </Link>
 
           {/* USERS */}
+          {roleUser === "admin" && (
           <Link
             href="/pengguna"
             className="bg-white rounded-[30px] p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition"
@@ -340,116 +393,69 @@ export default function DashboardPage() {
             </p>
 
           </Link>
+          )}
 
         </div>
 
         {/* CONTENT GRID */}
-        <div className="grid xl:grid-cols-3 gap-6 mt-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-8">
 
-          {/* JADWAL */}
-          <div className="xl:col-span-2 bg-white rounded-[30px] p-8 shadow-sm">
+          {/* GRAFIK */}
+<div className="xl:col-span-2 bg-white rounded-[30px] p-8 shadow-sm">
 
-            {/* TITLE */}
-            <div className="flex items-center justify-between">
+  <ResponsiveContainer width="70%" height="70%">
 
-              <div className="flex items-center gap-3">
+    <BarChart data={chartData}>
 
-                <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center">
+      <CartesianGrid strokeDasharray="3 3" />
 
-                  <CalendarDays size={24} />
+      <XAxis dataKey="bulan" />
 
-                </div>
+      <YAxis allowDecimals={false} />
 
-                <div>
+      <Tooltip
+  cursor={{ fill: "#f3f4f6" }}
+  contentStyle={{
+    backgroundColor: "#ffffff",
+    border: "1px solid #22c55e",
+    borderRadius: "12px",
+    boxShadow: "0 10px 20px rgba(0,0,0,0.15)",
+  }}
+  labelStyle={{
+    color: "#111827",
+    fontWeight: "bold",
+    fontSize: 16,
+  }}
+  itemStyle={{
+    fontSize: 15,
+    fontWeight: 600,
+  }}
+/>
 
-                  <h2 className="text-2xl font-black text-gray-800">
-                    Jadwal Kegiatan
-                  </h2>
+      <Legend />
 
-                  <p className="text-gray-500 text-sm mt-1">
-                    Jadwal posyandu terbaru
-                  </p>
+      <Bar
+    dataKey="balita"
+    name="Balita"
+    fill="#ef4444"
+    radius={[6,6,0,0]}
+  />
 
-                </div>
+  <Bar
+    dataKey="ibuHamil"
+    name="Ibu Hamil"
+    fill="#3b82f6"
+    radius={[6,6,0,0]}
+  />
 
-              </div>
+    </BarChart>
 
-              <Link
-                href="/jadwal"
-                className="text-green-600 font-semibold hover:underline"
-              >
-                Lihat Semua
-              </Link>
+  </ResponsiveContainer>
 
-            </div>
-
-            {/* LIST */}
-            <div className="mt-8 space-y-5">
-
-              {jadwal.length > 0 ? (
-                jadwal.map(
-                  (item) => (
-
-                    <div
-                      key={item.id}
-                      className="border border-green-100 rounded-3xl p-5 hover:bg-green-50 transition"
-                    >
-
-                      <div className="flex items-center justify-between gap-4">
-
-                        <div>
-
-                          <h3 className="text-lg font-bold text-gray-800">
-                            {
-                              item.kegiatan
-                            }
-                          </h3>
-
-                          <p className="text-gray-500 mt-2">
-                            {
-                              item.tanggal
-                            }{" "}
-                            •{" "}
-                            {
-                              item.waktu
-                            }
-                          </p>
-
-                        </div>
-
-                        <div className="w-12 h-12 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center">
-
-                          <CalendarDays
-                            size={22}
-                          />
-
-                        </div>
-
-                      </div>
-
-                    </div>
-                  )
-                )
-              ) : (
-                <div className="text-center py-14">
-
-                  <h2 className="text-2xl font-bold text-gray-700">
-                    Jadwal Belum Ada
-                  </h2>
-
-                  <p className="text-gray-500 mt-2">
-                    Tambahkan jadwal kegiatan posyandu
-                  </p>
-
-                </div>
-              )}
-
-            </div>
-
-          </div>
+</div>
 
           {/* QUICK ACTION */}
-          <div className="bg-white rounded-[30px] p-8 shadow-sm">
+          <div className="xl:col-span-1 bg-white rounded-[30px] p-8 shadow-sm h-fit sticky top-8">
 
             <h2 className="text-2xl font-black text-gray-800">
               Quick Action
@@ -580,7 +586,7 @@ export default function DashboardPage() {
                   <div>
 
                     <h3 className="font-bold text-gray-800">
-                      Export Laporan
+                       Laporan
                     </h3>
 
                     <p className="text-sm text-gray-500">

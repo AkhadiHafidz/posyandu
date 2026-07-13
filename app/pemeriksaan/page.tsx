@@ -111,6 +111,14 @@ export default function PemeriksaanPage() {
     setFilteredData(filtered);
   }, [search, dataPemeriksaan]);
 
+    const formatTanggal = (tanggal: string) => {
+    if (!tanggal) return "-";
+
+    const [tahun, bulan, hari] = tanggal.split("-");
+
+  return `${hari}-${bulan}-${tahun}`;
+};
+
   const handleDelete = async (
     id: string
   ) => {
@@ -192,14 +200,6 @@ export default function PemeriksaanPage() {
                 </th>
 
                 <th className="text-left py-5 px-6 font-bold text-gray-800">
-                  Berat
-                </th>
-
-                <th className="text-left py-5 px-6 font-bold text-gray-800">
-                  Tinggi
-                </th>
-
-                <th className="text-left py-5 px-6 font-bold text-gray-800">
                   Status
                 </th>
 
@@ -246,15 +246,7 @@ export default function PemeriksaanPage() {
                       </td>
 
                       <td className="py-5 px-6 text-gray-700 font-medium">
-                        {item.tanggal}
-                      </td>
-
-                      <td className="py-5 px-6 text-gray-700 font-medium">
-                        {item.beratBadan} Kg
-                      </td>
-
-                      <td className="py-5 px-6 text-gray-700 font-medium">
-                        {item.tinggiBadan} Cm
+                         {formatTanggal(item.tanggal)}
                       </td>
 
                       <td className="py-5 px-6 text-gray-700 font-medium">

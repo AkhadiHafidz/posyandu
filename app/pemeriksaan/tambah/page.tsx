@@ -18,6 +18,7 @@ interface Pasien {
   id: string;
   nama: string;
   nik?: string;
+  umur?: string;
   usiaKehamilan?: string;
 }
 
@@ -42,8 +43,7 @@ export default function TambahPemeriksaanPage() {
   const [tekananDarah, setTekananDarah] =
 useState("");
 
-const [lila, setLila] =
-useState("");
+
 
 const [tfu, setTfu] =
 useState("");
@@ -68,6 +68,13 @@ useState("");
 
   const [tinggiBadan, setTinggiBadan] =
     useState("");
+
+  const [umur, setUmur] = useState("");
+  
+
+const [vitaminA, setVitaminA] = useState("");
+const [lingkarLengan, setLingkarLengan] = useState("");
+const [asiEksklusif, setAsiEksklusif] = useState("");
 
   const [tanggal, setTanggal] =
     useState("");
@@ -95,10 +102,12 @@ useState("");
         snapshot.forEach((doc) => {
           const data = doc.data();
 
+             console.log(data); 
           result.push({
             id: doc.id,
             nama: data.nama || "",
             nik: data.nik || "",
+            umur: data.umur || "",
           });
         });
       } else {
@@ -116,6 +125,7 @@ useState("");
           result.push({
             id: doc.id,
             nama: data.nama || "",
+            nik: data.nik || "",
             usiaKehamilan:
               data.usiaKehamilan || "",
           });
@@ -125,6 +135,7 @@ useState("");
       setPasien(result);
       setSelectedPasien(null);
       setSearch("");
+      setUmur("");
       setUsiaKehamilan("");
     };
 
@@ -164,6 +175,13 @@ useState("");
           nik:
             selectedPasien.nik || "",
 
+          
+
+          umur:
+          jenis === "Balita"
+          ? umur
+          : "",
+
         usiaKehamilan:
         jenis === "Ibu Hamil"
             ? usiaKehamilan
@@ -176,14 +194,24 @@ jenis === "Balita"
 ? tinggiBadan
 : "",
 
+vitaminA:
+jenis === "Balita"
+? vitaminA
+: "",
+
+asiEksklusif:
+jenis === "Balita"
+? asiEksklusif
+: "",
+
 tekananDarah:
 jenis === "Ibu Hamil"
 ? tekananDarah
 : "",
 
-lila:
-jenis === "Ibu Hamil"
-? lila
+lingkarLengan:
+jenis === "Balita" || jenis === "Ibu Hamil"
+? lingkarLengan
 : "",
 
 tfu:
@@ -266,7 +294,7 @@ keterangan,
                     e.target.value
                   )
                 }
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               >
                 <option value="Balita">
                   Balita
@@ -287,18 +315,23 @@ keterangan,
               <input
                 type="text"
                 value={search}
-                onChange={(e) =>
-                  setSearch(
-                    e.target.value
-                  )
-                }
+               onChange={(e) => {
+              setSearch(e.target.value);
+              setSelectedPasien(null);
+
+              if (jenis === "Balita") {
+              setUmur("");
+              } else {
+                setUsiaKehamilan("");
+              }
+            }}
                 placeholder="Cari nama..."
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
 
               {search &&
                 !selectedPasien && (
-                  <div className="mt-2 border border-green-100 rounded-2xl overflow-hidden max-h-60 overflow-y-auto">
+                  <div className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400">
 
                     {filteredData.map(
                       (item) => (
@@ -306,17 +339,23 @@ keterangan,
                           key={item.id}
                           type="button"
                         onClick={() => {
+
                          setSelectedPasien(item);
 
                          setSearch(item.nama);
 
+                        if (jenis === "Balita") {
+                          setUmur(item.umur || "");
+                           setUsiaKehamilan("");
+                        }
+
                           if (jenis === "Ibu Hamil") {
-                            setUsiaKehamilan(
-                              item.usiaKehamilan || ""
-                                );
+                          setUsiaKehamilan(item.usiaKehamilan || "");
+                          setUmur("");
                                 }
+
                             }}  
-                          className="w-full text-left px-4 py-3 border-b hover:bg-green-50"
+                          className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
                         >
                           <div className="font-bold text-gray-800">
                             {item.nama}
@@ -341,12 +380,10 @@ keterangan,
                   selectedPasien?.nama ||
                   ""
                 }
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 bg-gray-50 text-gray-800 font-semibold"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
-
-            {/* NIK ATAU USIA KEHAMILAN */}
-            {jenis === "Balita" ? (
+{/* NIK */}
               <div>
                 <label className="text-sm font-semibold text-gray-700">
                   NIK
@@ -355,32 +392,36 @@ keterangan,
                 <input
                   type="text"
                   readOnly
-                  value={
-                    selectedPasien?.nik ||
-                    ""
-                  }
-                  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 bg-gray-50 text-gray-800 font-semibold"
+    value={selectedPasien?.nik || ""}
+    className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
                 />
               </div>
-            ) : (
+
+{/* Usia */}
                                 <div>
                     <label className="text-sm font-semibold text-gray-700">
-                        Usia Kehamilan (Bulan)
+    {jenis === "Balita"
+      ? "Usia Balita (Bulan)"
+      : "Usia Kehamilan (Bulan)"}
                     </label>
 
                     <input
                         type="number"
-                        value={usiaKehamilan}
-                        onChange={(e) =>
-                        setUsiaKehamilan(
-                            e.target.value
-                        )
+  value={
+    jenis === "Balita"
+      ? umur
+      : usiaKehamilan
+  }
+  onChange={(e) => {
+    if (jenis === "Balita") {
+      setUmur(e.target.value);
+    } else {
+      setUsiaKehamilan(e.target.value);
                         }
-                        placeholder="Masukkan usia kehamilan"
-                        className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+  }}
+  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
                     />
                     </div>
-            )}
 
             {jenis === "Balita" ? (
   <>
@@ -397,7 +438,7 @@ keterangan,
           setBeratBadan(e.target.value)
         }
         placeholder="Contoh: 12"
-        className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+        className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
       />
     </div>
 
@@ -414,9 +455,61 @@ keterangan,
           setTinggiBadan(e.target.value)
         }
         placeholder="Contoh: 85"
-        className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+        className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
       />
     </div>
+    <div>
+  <label className="text-sm font-semibold text-gray-700">
+    Lingkar Lengan (cm)
+  </label>
+
+  <input
+    type="number"
+    value={lingkarLengan}
+    onChange={(e) =>
+      setLingkarLengan(e.target.value)
+    }
+    placeholder="Contoh : 14"
+    className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  />
+</div>
+
+<div>
+  <label className="text-sm font-semibold text-gray-700">
+    Vitamin A
+  </label>
+
+  <select
+    value={vitaminA}
+    onChange={(e) =>
+      setVitaminA(e.target.value)
+    }
+    className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+  >
+    <option value="">Pilih Vitamin A</option>
+    <option value="Biru">Biru</option>
+    <option value="Merah">Merah</option>
+  </select>
+</div>
+
+<div>
+  <label className="text-sm font-semibold text-gray-700">
+    ASI Eksklusif
+  </label>
+
+  <select
+    value={asiEksklusif}
+    onChange={(e) =>
+      setAsiEksklusif(e.target.value)
+    }
+    className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+  >
+    <option value="">Pilih</option>
+    <option value="Ya">Ya</option>
+    <option value="Tidak">Tidak</option>
+  </select>
+</div>
+
   </>
 ) : (
   <>
@@ -433,7 +526,7 @@ keterangan,
           setBeratBadan(e.target.value)
         }
         placeholder="Contoh: 60"
-        className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+        className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
       />
     </div>
 
@@ -450,22 +543,22 @@ keterangan,
       setTekananDarah(e.target.value)
     }
     placeholder="120/80"
-    className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+    className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
   />
 </div>
 <div>
   <label className="text-sm font-semibold text-gray-700">
-    LILA (cm)
+  Lingkar Lengan (cm)
   </label>
 
   <input
     type="number"
-    value={lila}
+  value={lingkarLengan}
     onChange={(e) =>
-      setLila(e.target.value)
+    setLingkarLengan(e.target.value)
     }
-      placeholder="Masukkan LILA"
-  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  placeholder="Masukkan Lingkar Lengan"
+  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
   />
 </div>
 <div>
@@ -480,7 +573,7 @@ keterangan,
       setTfu(e.target.value)
     }
     placeholder="Masukkan TFU"
-  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
   />
 </div>
 <div>
@@ -495,7 +588,7 @@ keterangan,
       setDjj(e.target.value)
     }
     placeholder="Masukkan DJJ"
-  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
   />
 </div>
 <div>
@@ -508,7 +601,7 @@ keterangan,
   onChange={(e) =>
     setLetakJanin(e.target.value)
   }
-  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
 >
   <option value="" disabled>
     Pilih Letak Janin
@@ -529,7 +622,7 @@ keterangan,
   onChange={(e) =>
     setTabletFe(e.target.value)
   }
-  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
 >
   <option value="" disabled>
     Pilih Tablet Fe
@@ -550,7 +643,7 @@ keterangan,
   onChange={(e) =>
     setImunisasiTT(e.target.value)
   }
-  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
 >
   <option value="" disabled>
     Pilih Imunisasi TT
@@ -572,7 +665,7 @@ keterangan,
       setKeluhan(e.target.value)
     }
      placeholder="Masukkan keluhan ibu hamil"
-  className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
   />
 </div>
   </>
@@ -593,7 +686,7 @@ keterangan,
                     e.target.value
                   )
                 }
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
@@ -610,7 +703,7 @@ keterangan,
                     e.target.value
                   )
                 }
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               >
                 <option value="">
                   Pilih Status
@@ -645,7 +738,7 @@ keterangan,
                   )
                 }
                 placeholder="Masukkan keterangan tambahan (opsional)"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
 

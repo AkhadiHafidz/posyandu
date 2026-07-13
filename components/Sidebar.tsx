@@ -12,9 +12,9 @@ import {
   Baby,
   ClipboardList,
   FileSpreadsheet,
-  LogOut,
-  CalendarDays,
   HeartPulse,
+  Menu,
+  X,
 } from "lucide-react";
 
 import { auth } from "@/lib/firebase";
@@ -96,11 +96,6 @@ export default function Sidebar() {
       href: "/laporan",
       icon: FileSpreadsheet,
     },
-    {
-      title: "Jadwal",
-      href: "/jadwal",
-      icon: CalendarDays,
-    },
   ];
 
   // ADMIN MENU
@@ -122,15 +117,15 @@ export default function Sidebar() {
         {/* LOGO */}
         <div>
 
-          <h1 className="text-3xl font-black tracking-tight">
-            Posyandu
-          </h1>
+  <h1 className="text-3xl font-black tracking-tight">
+    Posyandu
+  </h1>
 
           <p className="text-green-100 text-sm mt-2 leading-relaxed">
-            Sistem Informasi Posyandu Digital
-          </p>
+    Sistem Informasi Posyandu Digital
+  </p>
 
-        </div>
+</div>
 
         {/* DIVIDER */}
         <div className="w-full h-[1px] bg-white/20 my-8"></div>
@@ -146,8 +141,8 @@ export default function Sidebar() {
 
             return (
               <Link
-                key={index}
-                href={menu.href}
+              key={index}
+              href={menu.href}
                 className={`flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 group
                   
                   ${

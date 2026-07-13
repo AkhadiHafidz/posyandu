@@ -14,6 +14,7 @@ import {
 import { db } from "@/lib/firebase";
 
 interface IbuHamilForm {
+  nik: string;
   nama: string;
   umur: string;
   usiaKehamilan: string;
@@ -26,6 +27,7 @@ export default function TambahIbuHamilPage() {
 
   const [form, setForm] =
     useState<IbuHamilForm>({
+      nik: "",
       nama: "",
       umur: "",
       usiaKehamilan: "",
@@ -40,6 +42,10 @@ export default function TambahIbuHamilPage() {
     try {
       setLoading(true);
 
+        if (!/^\d{16}$/.test(form.nik)) {
+  alert("NIK harus terdiri dari 16 digit angka.");
+  return;
+}
       await addDoc(
         collection(db, "ibu_hamil"),
         {
@@ -78,6 +84,27 @@ export default function TambahIbuHamilPage() {
           {/* FORM */}
           <div className="grid md:grid-cols-2 gap-5 mt-8">
 
+            {/* NIK */}
+          <div>
+            <label className="text-sm font-semibold text-gray-700">
+              NIK
+            </label>
+
+            <input
+              type="text"
+              value={form.nik}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  nik: e.target.value,
+                })
+              }
+              placeholder="Masukkan NIK"
+              maxLength={16}
+              className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+            />
+          </div>
+
             {/* NAMA */}
             <div>
               <label className="text-sm font-semibold text-gray-700">
@@ -94,7 +121,7 @@ export default function TambahIbuHamilPage() {
                   })
                 }
                 placeholder="Masukkan nama ibu"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
@@ -114,7 +141,7 @@ export default function TambahIbuHamilPage() {
                   })
                 }
                 placeholder="Masukkan umur"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
@@ -135,7 +162,7 @@ export default function TambahIbuHamilPage() {
                   })
                 }
                 placeholder="Contoh: 6"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
@@ -155,7 +182,7 @@ export default function TambahIbuHamilPage() {
                   })
                 }
                 placeholder="08xxxxxxxxxx"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
@@ -176,7 +203,7 @@ export default function TambahIbuHamilPage() {
                   })
                 }
                 placeholder="Alamat lengkap"
-                className="w-full mt-2 border border-green-100 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
