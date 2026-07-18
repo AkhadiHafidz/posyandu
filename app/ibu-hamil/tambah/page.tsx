@@ -74,19 +74,19 @@ export default function TambahIbuHamilPage() {
     <div className="min-h-screen bg-[#F5FFF8] flex">
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 px-4 py-3 overflow-hidden">
         <Header title="Tambah Data Ibu Hamil" />
 
-        <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
+        <div className="mt-4 bg-white rounded-2xl p-5 shadow-sm max-w-3xl">
 
          
 
           {/* FORM */}
-          <div className="grid md:grid-cols-2 gap-5 mt-8">
+          <div className="grid md:grid-cols-2 gap-3 mt-4">
 
             {/* NIK */}
           <div>
-            <label className="text-sm font-semibold text-gray-700">
+            <label className="text-xs font-semibold text-gray-700">
               NIK
             </label>
 
@@ -96,18 +96,18 @@ export default function TambahIbuHamilPage() {
               onChange={(e) =>
                 setForm({
                   ...form,
-                  nik: e.target.value,
+                 nik: e.target.value.replace(/\D/g, ""),
                 })
               }
               placeholder="Masukkan NIK"
               maxLength={16}
-              className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+              className="w-full mt-2 border border-pink-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
             />
           </div>
 
             {/* NAMA */}
             <div>
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Nama Ibu
               </label>
 
@@ -121,13 +121,13 @@ export default function TambahIbuHamilPage() {
                   })
                 }
                 placeholder="Masukkan nama ibu"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+className="w-full mt-2 border border-pink-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
             {/* UMUR */}
             <div>
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Umur
               </label>
 
@@ -141,13 +141,13 @@ export default function TambahIbuHamilPage() {
                   })
                 }
                 placeholder="Masukkan umur"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-pink-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
             {/* USIA KEHAMILAN */}
             <div>
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Usia Kehamilan (Bulan)
               </label>
 
@@ -162,13 +162,13 @@ export default function TambahIbuHamilPage() {
                   })
                 }
                 placeholder="Contoh: 6"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+               className="w-full mt-2 border border-pink-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
             {/* NO HP */}
             <div>
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 No HP
               </label>
 
@@ -178,22 +178,22 @@ export default function TambahIbuHamilPage() {
                 onChange={(e) =>
                   setForm({
                     ...form,
-                    noHp: e.target.value,
+                     noHp: e.target.value.replace(/\D/g, ""),
                   })
                 }
                 placeholder="08xxxxxxxxxx"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+               className="w-full mt-2 border border-pink-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
             {/* ALAMAT */}
             <div className="md:col-span-2">
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Alamat
               </label>
 
               <textarea
-                rows={4}
+                rows={2}
                 value={form.alamat}
                 onChange={(e) =>
                   setForm({
@@ -203,7 +203,7 @@ export default function TambahIbuHamilPage() {
                   })
                 }
                 placeholder="Alamat lengkap"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+               className="w-full mt-2 border border-pink-200 rounded-xl px-3 py-2.5 text-sm text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
@@ -213,7 +213,7 @@ export default function TambahIbuHamilPage() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="mt-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-2xl"
+className="mt-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-2xl"
           >
             {loading
               ? "Menyimpan..."

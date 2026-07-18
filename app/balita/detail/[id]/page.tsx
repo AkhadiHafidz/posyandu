@@ -73,75 +73,75 @@ export default function DetailBalitaPage() {
     <div className="min-h-screen bg-[#F5FFF8] flex">
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6"> 
         <Header title="Detail Balita" />
 
-        <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
+        <div className="mt-6 bg-white rounded-2xl p-6 shadow-sm max-w-3xl">
           {data && (
-            <div className="mt-8 space-y-6">
+           <div className="grid md:grid-cols-2 gap-5 mt-6">
 
               {/* NIK */}
               <div>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-500">
                   NIK
                 </p>
 
-                <h1 className="text-xl font-semibold text-gray-800 mt-1">
+                <h1 className="text-base font-semibold text-gray-800 mt-1">
                   {data.nik || "-"}
                 </h1>
               </div>
 
               {/* Nama Balita */}
               <div>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-500">
                   Nama Balita
                 </p>
 
-                <h1 className="text-2xl font-black text-gray-800 mt-1">
+                <h1 className="text-lg font-black text-gray-800 mt-1">
                   {data.nama || "-"}
                 </h1>
               </div>
 
               {/* Jenis Kelamin */}
               <div>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-500">
                   Jenis Kelamin
                 </p>
 
-                <h1 className="text-xl font-semibold text-gray-800 mt-1">
+                <h1 className="text-base font-semibold text-gray-800 mt-1">
                   {data.jk || "-"}
                 </h1>
               </div>
 
               {/* Umur */}
               <div>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-500">
                   Umur
                 </p>
 
-                <h1 className="text-xl font-semibold text-gray-800 mt-1">
+                <h1 className="text-base  font-semibold text-gray-800 mt-1">
                   {data.umur || "-"}
                 </h1>
               </div>
 
               {/* Nama Ibu */}
               <div>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-500">
                   Nama Ibu
                 </p>
 
-                <h1 className="text-xl font-semibold text-gray-800 mt-1">
+                <h1 className="text-base font-semibold text-gray-800 mt-1">
                   {data.ibu || "-"}
                 </h1>
               </div>
 
               {/* Alamat */}
               <div>
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-500">
                   Alamat
                 </p>
 
-                <h1 className="text-lg font-semibold text-gray-800 mt-1 leading-relaxed">
+                <h1 className="text-base font-semibold text-gray-800 mt-1 leading-relaxed">
                   {data.alamat || "-"}
                 </h1>
               </div>
@@ -154,7 +154,7 @@ export default function DetailBalitaPage() {
                 onClick={() =>
                   router.push("/balita")
                 }
-                className="mt-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-2xl"
+                className="mt-6 w-36 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold py-2 rounded-xl shadow-md hover:shadow-lg transition"
               >
                 Kembali
               </button>

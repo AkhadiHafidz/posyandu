@@ -251,7 +251,7 @@ console.log("Bulan =", bulan);
       <Sidebar />
 
       {/* CONTENT */}
-      <main className="flex-1 p-4 sm:p-6 lg:p-8">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6">
 
         {/* HEADER */}
         <Header title="Dashboard" />
@@ -259,36 +259,36 @@ console.log("Bulan =", bulan);
       
 
         {/* STATISTIC */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
 
           {/* BALITA */}
           <Link
             href="/balita"
-            className="bg-white rounded-[30px] p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition"
+            className="bg-white rounded-[20px] p-4 min-h-[100px] shadow-sm hover:shadow-lg hover:-translate-y-1 transition"
           >
 
             <div className="flex items-center justify-between">
 
-              <div className="w-14 h-14 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-green-100 text-green-600 flex items-center justify-center">
 
-                <Baby size={28} />
+                <Baby size={20} />
 
               </div>
 
               <ArrowRight
                 className="text-gray-400"
-                size={22}
+                size={16}
               />
 
             </div>
 
-            <h1 className="text-4xl font-black text-gray-800 mt-6">
+            <h1 className="text-3xl font-black text-gray-800 mt-6">
               {loading
                 ? "..."
                 : totalBalita}
             </h1>
 
-            <p className="text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 mt-1">
               Data Balita
             </p>
 
@@ -297,31 +297,31 @@ console.log("Bulan =", bulan);
           {/* IBU HAMIL */}
           <Link
             href="/ibu-hamil"
-            className="bg-white rounded-[30px] p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition"
+            className="bg-white rounded-[20px] p-4 min-h-[100px] shadow-sm hover:shadow-lg hover:-translate-y-1 transition"
           >
 
             <div className="flex items-center justify-between">
 
-              <div className="w-14 h-14 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center">
 
-                <HeartPulse size={28} />
+                <HeartPulse size={20} />
 
               </div>
 
               <ArrowRight
                 className="text-gray-400"
-                size={22}
+                size={16}
               />
 
             </div>
 
-            <h1 className="text-4xl font-black text-gray-800 mt-6">
+            <h1 className="text-3xl font-black text-gray-800 mt-6">
               {loading
                 ? "..."
                 : totalIbuHamil}
             </h1>
 
-            <p className="text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 mt-1">
               Ibu Hamil
             </p>
 
@@ -330,31 +330,31 @@ console.log("Bulan =", bulan);
           {/* PEMERIKSAAN */}
           <Link
             href="/pemeriksaan"
-            className="bg-white rounded-[30px] p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition"
+            className="bg-white rounded-[20px] p-4 min-h-[100px] shadow-sm hover:shadow-lg hover:-translate-y-1 transition"
           >
 
             <div className="flex items-center justify-between">
 
-              <div className="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
 
-                <ClipboardList size={28} />
+                <ClipboardList size={20} />
 
               </div>
 
               <ArrowRight
                 className="text-gray-400"
-                size={22}
+                size={16}
               />
 
             </div>
 
-            <h1 className="text-4xl font-black text-gray-800 mt-6">
+            <h1 className="text-3xl font-black text-gray-800 mt-6">
               {loading
                 ? "..."
                 : totalPemeriksaan}
             </h1>
 
-            <p className="text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 mt-1">
               Pemeriksaan
             </p>
 
@@ -364,31 +364,31 @@ console.log("Bulan =", bulan);
           {roleUser === "admin" && (
           <Link
             href="/pengguna"
-            className="bg-white rounded-[30px] p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition"
+            className="bg-white rounded-[20px] p-4 min-h-[100px] shadow-sm hover:shadow-lg hover:-translate-y-1 transition"
           >
 
             <div className="flex items-center justify-between">
 
-              <div className="w-14 h-14 rounded-2xl bg-violet-100 text-violet-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center">
 
-                <Users size={28} />
+                <Users size={20} />
 
               </div>
 
               <ArrowRight
                 className="text-gray-400"
-                size={22}
+                size={18}
               />
 
             </div>
 
-            <h1 className="text-4xl font-black text-gray-800 mt-6">
+            <h1 className="text-3xl font-black text-gray-800 mt-6">
               {loading
                 ? "..."
                 : totalPengguna}
             </h1>
 
-            <p className="text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 mt-1">
               Pengguna
             </p>
 
@@ -398,12 +398,12 @@ console.log("Bulan =", bulan);
         </div>
 
         {/* CONTENT GRID */}
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-5 mt-5">
 
           {/* GRAFIK */}
-<div className="xl:col-span-2 bg-white rounded-[30px] p-8 shadow-sm">
+<div className="xl:col-span-2 bg-white rounded-[20px] p-4 shadow-sm">
 
-  <ResponsiveContainer width="70%" height="70%">
+  <ResponsiveContainer width="95%" height={250}>
 
     <BarChart data={chartData}>
 
@@ -411,7 +411,10 @@ console.log("Bulan =", bulan);
 
       <XAxis dataKey="bulan" />
 
-      <YAxis allowDecimals={false} />
+    <YAxis
+  allowDecimals={false}
+  domain={[0, "dataMax + 5"]}
+/>
 
       <Tooltip
   cursor={{ fill: "#f3f4f6" }}
@@ -455,39 +458,39 @@ console.log("Bulan =", bulan);
 </div>
 
           {/* QUICK ACTION */}
-          <div className="xl:col-span-1 bg-white rounded-[30px] p-8 shadow-sm h-fit sticky top-8">
+<div className="xl:col-span-1 bg-white rounded-[20px] p-5 shadow-sm h-fit">
 
-            <h2 className="text-2xl font-black text-gray-800">
+            <h2 className="text-sm font-black text-gray-800">
               Quick Action
             </h2>
 
-            <p className="text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 mt-1">
               Akses cepat menu utama
             </p>
 
             {/* MENU */}
-            <div className="mt-8 space-y-4">
+            <div className="mt-3 space-y-2">
 
               <Link
                 href="/balita/tambah"
-                className="flex items-center justify-between bg-green-50 hover:bg-green-100 transition rounded-2xl p-5"
+                className="flex items-center justify-between bg-green-50 hover:bg-green-100 transition rounded-2xl p-1"
               >
 
                 <div className="flex items-center gap-4">
 
-                  <div className="w-12 h-12 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center">
 
-                    <Baby size={24} />
+                    <Baby size={20} />
 
                   </div>
 
                   <div>
 
-                    <h3 className="font-bold text-gray-800">
+                    <h3 className="text-[15px] font-bold text-gray-800">
                       Tambah Balita
                     </h3>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-xs text-gray-500">
                       Input data balita baru
                     </p>
 
@@ -497,31 +500,31 @@ console.log("Bulan =", bulan);
 
                 <ArrowRight
                   className="text-gray-400"
-                  size={20}
+                  size={18}
                 />
 
               </Link>
 
               <Link
                 href="/ibu-hamil/tambah"
-                className="flex items-center justify-between bg-pink-50 hover:bg-pink-100 transition rounded-2xl p-5"
+                className="flex items-center justify-between bg-pink-50 hover:bg-pink-100 transition rounded-2xl p-1"
               >
 
                 <div className="flex items-center gap-4">
 
-                  <div className="w-12 h-12 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center">
 
-                    <HeartPulse size={24} />
+                    <HeartPulse size={20} />
 
                   </div>
 
                   <div>
 
-                    <h3 className="font-bold text-gray-800">
+                    <h3 className="text-[15px] font-bold text-gray-800">
                       Tambah Ibu Hamil
                     </h3>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-xs text-gray-500">
                       Input data ibu hamil
                     </p>
 
@@ -531,31 +534,31 @@ console.log("Bulan =", bulan);
 
                 <ArrowRight
                   className="text-gray-400"
-                  size={20}
+                  size={18}
                 />
 
               </Link>
 
               <Link
                 href="/pemeriksaan/tambah"
-                className="flex items-center justify-between bg-blue-50 hover:bg-blue-100 transition rounded-2xl p-5"
+                className="flex items-center justify-between bg-blue-50 hover:bg-blue-100 transition rounded-2xl p-1"
               >
 
                 <div className="flex items-center gap-4">
 
-                  <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
 
-                    <ClipboardList size={24} />
+                    <ClipboardList size={20} />
 
                   </div>
 
                   <div>
 
-                    <h3 className="font-bold text-gray-800">
+                    <h3 className="text-[15px] font-bold text-gray-800">
                       Pemeriksaan
                     </h3>
 
-                    <p className="text-sm text-gray-500">
+                    <p className="text-xs text-gray-500">
                       Tambah pemeriksaan
                     </p>
 
@@ -565,31 +568,31 @@ console.log("Bulan =", bulan);
 
                 <ArrowRight
                   className="text-gray-400"
-                  size={20}
+                  size={18}
                 />
 
               </Link>
 
               <Link
                 href="/laporan"
-                className="flex items-center justify-between bg-emerald-50 hover:bg-emerald-100 transition rounded-2xl p-5"
+                className="flex items-center justify-between bg-emerald-50 hover:bg-emerald-100 transition rounded-2xl p-1"
               >
 
                 <div className="flex items-center gap-4">
 
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
 
-                    <Activity size={24} />
+                    <Activity size={20} />
 
                   </div>
 
                   <div>
 
-                    <h3 className="font-bold text-gray-800">
+                    <h3 className="text-[15px] font-bold text-gray-800">
                        Laporan
                     </h3>
 
-                    <p className="text-sm text-gray-500">
+                    <p className=" text-xs text-gray-500">
                       Download laporan excel
                     </p>
 
@@ -599,7 +602,7 @@ console.log("Bulan =", bulan);
 
                 <ArrowRight
                   className="text-gray-400"
-                  size={20}
+                  size={18}
                 />
 
               </Link>

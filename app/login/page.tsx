@@ -210,7 +210,7 @@ localStorage.setItem(
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-green-200 via-green-100 to-emerald-200 flex items-center justify-center px-6">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-green-200 via-green-100 to-emerald-200 flex items-center justify-center px-4">
 
       {/* BLUR */}
       <div className="absolute top-[-120px] right-[-120px] w-[400px] h-[400px] bg-green-300/40 rounded-full blur-3xl"></div>
@@ -222,10 +222,10 @@ localStorage.setItem(
         onClick={() =>
           router.push("/")
         }
-        className="absolute top-6 left-6 flex items-center gap-2 bg-white/80 backdrop-blur-xl px-5 py-3 rounded-2xl shadow-lg hover:scale-105 transition text-gray-700 font-medium"
+className="absolute top-5 left-5 flex items-center gap-2 bg-white/80 backdrop-blur-xl px-4 py-2 rounded-xl shadow-lg hover:scale-105 transition text-gray-700 text-sm font-medium"
       >
 
-        <ArrowLeft size={18} />
+        <ArrowLeft size={16} />
 
         Kembali
 
@@ -244,7 +244,7 @@ localStorage.setItem(
         transition={{
           duration: 0.8,
         }}
-        className="w-full max-w-5xl bg-white rounded-[35px] overflow-hidden shadow-2xl grid md:grid-cols-2"
+      className="w-full max-w-[850px] bg-white rounded-[24px] overflow-hidden shadow-xl grid md:grid-cols-2"
       >
 
         {/* LEFT */}
@@ -256,7 +256,7 @@ localStorage.setItem(
           <div className="absolute bottom-[-100px] left-[-100px] w-[250px] h-[250px] bg-green-300/20 rounded-full"></div>
 
           {/* CONTENT */}
-          <div className="relative z-10 px-10 text-center">
+          <div className="relative z-10 px-8 text-center">
 
             <motion.h1
               initial={{
@@ -270,7 +270,7 @@ localStorage.setItem(
               transition={{
                 delay: 0.2,
               }}
-              className="text-5xl font-black text-white"
+              className="text-4xl font-black text-white"
             >
               Welcome
             </motion.h1>
@@ -310,8 +310,8 @@ localStorage.setItem(
               <Image
                 src="/healt.png"
                 alt="Healthcare"
-                width={300}
-                height={300}
+                width={220}
+                height={220}
                 priority
                 className="drop-shadow-2xl"
               />
@@ -343,7 +343,7 @@ localStorage.setItem(
               className="text-center"
             >
 
-              <h1 className="text-4xl font-black">
+              <h1 className="text-3xl font-black">
                 <span className="text-green-600">
                   Posyandu
                 </span>{" "}
@@ -361,7 +361,7 @@ localStorage.setItem(
             {/* FORM */}
             <form
               onSubmit={handleLogin}
-              className="mt-10 space-y-5"
+              className="mt-8 space-y-4"
             >
 
               {/* USERNAME */}
@@ -383,7 +383,7 @@ localStorage.setItem(
                   Username / Email
                 </label>
 
-                <div className="mt-2 flex items-center bg-white border border-green-100 rounded-2xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-green-400">
+                <div className="mt-2 flex items-center bg-white border border-green-100 rounded-xl px-3 py-2.5 shadow-sm focus-within:ring-2 focus-within:ring-green-400">
 
                   <Mail
                     size={20}
@@ -428,7 +428,7 @@ localStorage.setItem(
                   Password
                 </label>
 
-                <div className="mt-2 flex items-center bg-white border border-green-100 rounded-2xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-green-400">
+                <div className="mt-2 flex items-center bg-white border border-green-100 rounded-xl px-3 py-2.5 shadow-sm focus-within:ring-2 focus-within:ring-green-400">
 
                   <LockKeyhole
                     size={20}

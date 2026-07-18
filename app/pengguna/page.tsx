@@ -171,13 +171,13 @@ export default function PenggunaPage() {
       <Sidebar />
 
       {/* CONTENT */}
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-hidden">
 
         {/* HEADER */}
         <Header title="Pengguna" />
 
         {/* TOP */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-8">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mt-6">
 
           {/* TITLE */}
          
@@ -186,10 +186,10 @@ export default function PenggunaPage() {
           <div className="flex flex-col sm:flex-row gap-4">
 
             {/* SEARCH */}
-            <div className="flex items-center bg-white border border-green-100 rounded-2xl px-4 py-3 shadow-sm w-full sm:w-[280px]">
+            <div className="flex items-center bg-white border border-green-100 rounded-xl px-3 py-2.5 shadow-sm w-full sm:w-[250px]">
 
               <Search
-                size={20}
+                size={18}
                 className="text-green-600"
               />
 
@@ -202,7 +202,7 @@ export default function PenggunaPage() {
                   )
                 }
                 placeholder="Cari pengguna..."
-                className="ml-3 w-full outline-none text-sm text-gray-700 placeholder:text-gray-400"
+                className="ml-2 w-full outline-none text-xs text-gray-700 placeholder:text-gray-400"
               />
 
             </div>
@@ -210,8 +210,7 @@ export default function PenggunaPage() {
             {/* BUTTON */}
             <Link
               href="/pengguna/tambah"
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-violet-500 to-purple-600 text-white px-5 py-3 rounded-2xl shadow-lg hover:scale-[1.02] transition"
-            >
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition">
 
               <Plus size={20} />
 
@@ -224,32 +223,32 @@ export default function PenggunaPage() {
         </div>
 
         {/* TABLE */}
-        <div className="mt-8 bg-white rounded-[30px] shadow-sm overflow-hidden overflow-x-auto">
+        <div className="mt-6 bg-white rounded-2xl shadow-sm overflow-x-auto">
 
-          <table className="w-full min-w-[900px]">
+          <table className="min-w-[900px] w-full">
 
             {/* HEAD */}
             <thead className="bg-violet-50 border-b">
 
               <tr>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-700">
                   Nama
                 </th>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-700">
                   Username
                 </th>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-700">
                   Role
                 </th>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-700">
                   Status
                 </th>
 
-                <th className="text-center py-5 px-6 font-bold text-gray-700">
+                <th className="text-center py-4 px-5 text-sm font-semibold text-gray-700">
                   Action
                 </th>
 
@@ -275,7 +274,7 @@ export default function PenggunaPage() {
                         <div className="flex items-center gap-4">
 
                           {/* AVATAR */}
-                          <div className="w-12 h-12 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center font-bold text-lg">
+                          <div className="w-10 h-10 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center font-bold text-lg">
                             {item.nama
                               ?.charAt(0)
                               ?.toUpperCase() ||
@@ -285,12 +284,12 @@ export default function PenggunaPage() {
                           {/* INFO */}
                           <div>
 
-                            <h2 className="font-bold text-gray-800">
+                            <h2 className="font-semibold text-sm text-gray-800">
                               {item.nama ||
                                 "-"}
                             </h2>
 
-                            <p className="text-sm text-gray-500">
+                            <p className="text-xs text-gray-500">
                               Pengguna Sistem
                             </p>
 
@@ -310,7 +309,7 @@ export default function PenggunaPage() {
                       <td className="py-5 px-6">
 
                         <div
-                          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold
+                          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold
                             
                             ${
                               item.role ===
@@ -324,11 +323,11 @@ export default function PenggunaPage() {
                           {item.role ===
                           "admin" ? (
                             <ShieldCheck
-                              size={16}
+                              size={14}
                             />
                           ) : (
                             <UserCircle2
-                              size={16}
+                              size={14}
                             />
                           )}
 
@@ -342,7 +341,7 @@ export default function PenggunaPage() {
                       {/* STATUS */}
                       <td className="py-5 px-6">
 
-                        <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold">
+                        <span className="bg-green-100 text-green-700 px-3 py-1  text-xs rounded-full text-sm font-semibold">
                           Active
                         </span>
 
@@ -356,10 +355,10 @@ export default function PenggunaPage() {
                           {/* DETAIL */}
                           <Link
                             href={`/pengguna/detail/${item.id}`}
-                            className="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center hover:scale-105 transition"
+                            className="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center hover:scale-105 transition"
                           >
                             <Eye
-                              size={18}
+                              size={16}
                             />
                           </Link>
 
@@ -380,10 +379,10 @@ export default function PenggunaPage() {
                                 item.id
                               )
                             }
-                            className="w-11 h-11 rounded-xl bg-red-100 text-red-600 flex items-center justify-center hover:scale-105 transition"
+                            className="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center hover:scale-105 transition"
                           >
                             <Trash2
-                              size={18}
+                              size={16}
                             />
                           </button>
 
@@ -404,13 +403,13 @@ export default function PenggunaPage() {
             filteredData.length ===
               0 && (
 
-              <div className="py-20 text-center">
+              <div className="py-12 text-center">
 
-                <h2 className="text-3xl font-black text-gray-700">
+                <h2 className="text-xl font-black text-gray-700">
                   Pengguna Tidak Ada
                 </h2>
 
-                <p className="text-gray-500 mt-3">
+                <p className="text-sm gray-500 mt-3">
                   Belum ada data pengguna
                 </p>
 
@@ -422,7 +421,7 @@ export default function PenggunaPage() {
 
             <div className="py-20 text-center">
 
-              <h2 className="text-2xl font-semibold text-gray-600">
+              <h2 className="text-lg font-semibold text-gray-600">
                 Loading...
               </h2>
 

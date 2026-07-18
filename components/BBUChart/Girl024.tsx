@@ -2,638 +2,225 @@
 
 import { useState } from "react";
 import { bbuGirl } from "@/data/kms/bbuGirl";
-import { ChartProps, ChartData } from "./types";
-import { formatTanggal } from "./utils";
+import { ChartProps } from "./types";
+import { formatTanggal, createScales, buildPath, Padding } from "./utils";
 
-const WIDTH = 1800;
-const HEIGHT = 850;
-
-const LEFT = 70;
-const RIGHT = 30;
-const TOP = 30;
-const BOTTOM = 60;
-
-const GRAPH_WIDTH = WIDTH - LEFT - RIGHT;
-const GRAPH_HEIGHT = HEIGHT - TOP - BOTTOM;
-
+const WIDTH = 600;
+const HEIGHT = 420;
+const PADDING: Padding = { top: 30, right: 32, bottom: 50, left: 45 };
+const MIN_UMUR = 0;
 const MAX_UMUR = 24;
+const MIN_BERAT = 1;
 const MAX_BERAT = 18;
 
-const who = bbuGirl.filter(
-  (item) => item.umur <= 24
-);
+const { scaleX, scaleY } = createScales(WIDTH, HEIGHT, PADDING, MIN_UMUR, MAX_UMUR, MIN_BERAT, MAX_BERAT);
+const refData = bbuGirl.filter((d) => d.umur >= MIN_UMUR && d.umur <= MAX_UMUR);
 
-const getX = (umur: number) =>
-  LEFT + (umur / MAX_UMUR) * GRAPH_WIDTH;
+type RefKey = "minus3" | "minus2" | "median" | "plus2" | "plus3";
+const referenceLines: { key: RefKey; label: string; color: string }[] = [
+  { key: "minus3", label: "-3", color: "#1a1a1a" },
+  { key: "minus2", label: "-2", color: "#e53935" },
+  { key: "median", label: "0", color: "#2e7d32" },
+  { key: "plus2", label: "2", color: "#e53935" },
+  { key: "plus3", label: "3", color: "#1a1a1a" },
+];
 
-const getY = (berat: number) =>
-  HEIGHT -
-  BOTTOM -
-  (berat / MAX_BERAT) *
-    GRAPH_HEIGHT;
+export default function Girl024({ data }: ChartProps) {
+  const [hover, setHover] = useState<{
+    x: number;
+    y: number;
+    tanggal: string;
+    berat: number;
+    umur: number;
+  } | null>(null);
 
-export default function Girl024({
-  data,
-}: ChartProps) {
+  const anakData = [...data]
+    .filter(
+      (d) =>
+        d.umur != null &&
+        d.berat != null &&
+        !isNaN(Number(d.umur)) &&
+        !isNaN(Number(d.berat))
+    )
+    .filter((d) => d.umur >= MIN_UMUR && d.umur <= MAX_UMUR)
+    .sort((a, b) => a.umur - b.umur);
 
-  const riwayat = data.filter(
-    (item) => item.umur <= 24
-  );
+  const anakPath = buildPath(anakData, (d) => d.umur, (d) => d.berat, scaleX, scaleY);
 
-  const [hoverPoint, setHoverPoint] =
-    useState<ChartData | null>(null);
-
-  const getStatusGizi = (
-    umur: number,
-    berat: number
-  ) => {
-    const row = who.find(
-      (item) => item.umur === umur
-    );
-
-    if (!row) return "Tidak diketahui";
-
-    if (berat < row.minus3)
-      return "Gizi Buruk";
-
-    if (berat < row.minus2)
-      return "Risiko Gizi Kurang";
-
-    if (berat <= row.plus2)
-      return "Normal";
-
-    if (berat <= row.plus3)
-      return "Risiko Gizi Lebih";
-
-    return "Gizi Lebih";
-  };
-
-  const getStatusColor = (
-    status: string
-  ) => {
-    switch (status) {
-      case "Normal":
-        return "#16A34A";
-
-      case "Risiko Gizi Kurang":
-      case "Risiko Gizi Lebih":
-        return "#FACC15";
-
-      case "Gizi Buruk":
-        return "#DC2626";
-
-      case "Gizi Lebih":
-        return "#2563EB";
-
-      default:
-        return "#6B7280";
-    }
-  };
-
-  const tooltipX =
-    hoverPoint &&
-    hoverPoint.umur > 20
-      ? getX(hoverPoint.umur) - 240
-      : hoverPoint
-      ? getX(hoverPoint.umur) + 10
-      : 0;
-
-  const createLine = (
-    key:
-      | "minus3"
-      | "minus2"
-      | "minus1"
-      | "median"
-      | "plus1"
-      | "plus2"
-      | "plus3",
-    color: string,
-    width = 2
-  ) => (
-    <polyline
-      fill="none"
-      stroke={color}
-      strokeWidth={width}
-      points={who
-        .map(
-          (item) =>
-            `${getX(item.umur)},${getY(item[key])}`
-        )
-        .join(" ")}
-    />
-  );
-
-  if (riwayat.length === 0) {
-    return (
-      <div className="mt-10 p-6 bg-white rounded-3xl shadow-sm">
-        Belum ada riwayat pemeriksaan umur 0–24 bulan.
-      </div>
-    );
-  }
+  const xTicks = Array.from({ length: MAX_UMUR + 1 }, (_, i) => i);
+  const yTicks = Array.from({ length: MAX_BERAT - MIN_BERAT + 1 }, (_, i) => MIN_BERAT + i);
 
   return (
-    <div className="mt-10 bg-white rounded-[30px] border border-pink-100 shadow-sm p-6">
-
-      <h2 className="text-2xl font-bold text-gray-800">
-        Grafik Berat Badan Menurut Umur (BB/U)
+    <div className="w-full max-w-md bg-white rounded-lg border border-gray-200 p-4">
+      <h2 className="text-center font-extrabold text-lg text-gray-900 mb-1">
+        Grafik Berat Badan Menurut Umur
       </h2>
-
-      <p className="text-gray-600">
-        Anak Perempuan • 0–24 Bulan
+      <p className="text-center text-xs text-gray-500 mb-3">
+        Anak Perempuan 0 - 24 Bulan
       </p>
 
-      <div className="overflow-x-auto">
+      <div className="relative">
+        <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="w-full h-auto">
+          {/* Grid horizontal + label sumbu Y */}
+          {yTicks.map((v) => (
+            <g key={`y-${v}`}>
+              <line
+                x1={PADDING.left}
+                x2={WIDTH - PADDING.right}
+                y1={scaleY(v)}
+                y2={scaleY(v)}
+                stroke="#e0e0e0"
+                strokeWidth={1}
+              />
+              <text
+                x={PADDING.left - 8}
+                y={scaleY(v)}
+                textAnchor="end"
+                dominantBaseline="middle"
+                fontSize={9}
+                fill="#555"
+              >
+                {v}
+              </text>
+            </g>
+          ))}
 
-        <svg
-          width={WIDTH}
-          height={HEIGHT}
-          className="min-w-[1800px]"
-        >
-            {/* ================= GRID VERTIKAL ================= */}
+          {/* Grid vertikal + label sumbu X */}
+          {xTicks.map((v) => (
+            <g key={`x-${v}`}>
+              <line
+                x1={scaleX(v)}
+                x2={scaleX(v)}
+                y1={PADDING.top}
+                y2={HEIGHT - PADDING.bottom}
+                stroke="#e0e0e0"
+                strokeWidth={1}
+              />
+              {v % 2 === 0 && (
+                <text
+                  x={scaleX(v)}
+                  y={HEIGHT - PADDING.bottom + 14}
+                  textAnchor="middle"
+                  fontSize={9}
+                  fill="#555"
+                >
+                  {v}
+                </text>
+              )}
+            </g>
+          ))}
 
-{Array.from({ length: MAX_UMUR + 1 }).map((_, i) => {
+          {/* Judul sumbu */}
+          <text
+            x={WIDTH / 2}
+            y={HEIGHT - 6}
+            textAnchor="middle"
+            fontSize={10}
+            fontWeight={600}
+            fill="#333"
+          >
+            Umur (bulan penuh)
+          </text>
+          <text
+            transform="rotate(-90)"
+            x={-(HEIGHT / 2)}
+            y={12}
+            textAnchor="middle"
+            fontSize={10}
+            fontWeight={600}
+            fill="#333"
+          >
+            Berat Badan (Kg)
+          </text>
 
-  const x =
-    LEFT +
-    (i * GRAPH_WIDTH) /
-      MAX_UMUR;
+          {/* Kurva referensi WHO */}
+          {referenceLines.map((ref) => (
+            <g key={ref.key}>
+              <path
+                d={buildPath(refData, (d) => d.umur, (d) => d[ref.key], scaleX, scaleY)}
+                fill="none"
+                stroke={ref.color}
+                strokeWidth={2}
+              />
+              <text
+                x={scaleX(MAX_UMUR) + 5}
+                y={scaleY(refData[refData.length - 1][ref.key])}
+                fontSize={9}
+                fontWeight={700}
+                fill={ref.color}
+                dominantBaseline="middle"
+              >
+                {ref.label}
+              </text>
+            </g>
+          ))}
 
-  return (
+          {/* Garis pertumbuhan anak (data aktual) */}
+          {anakData.length > 0 && (
+            <path d={anakPath} fill="none" stroke="#d81b60" strokeWidth={2.5} />
+          )}
+          {anakData.map((d, i) => {
+            const x = scaleX(d.umur);
+            const y = scaleY(d.berat);
+            return (
+              <circle
+                key={i}
+                cx={x}
+                cy={y}
+                r={4}
+                fill="#d81b60"
+                stroke="#fff"
+                strokeWidth={1.2}
+                style={{ cursor: "pointer" }}
+                onMouseEnter={() =>
+                  setHover({ x, y, tanggal: d.tanggal, berat: d.berat, umur: d.umur })
+                }
+                onMouseLeave={() => setHover(null)}
+              />
+            );
+          })}
+        </svg>
 
-    <g key={`v-${i}`}>
+        {/* Tooltip custom */}
+        {hover && (
+          <div
+            className="absolute bg-gray-900 text-white text-[11px] rounded-md px-2.5 py-1.5 shadow-lg pointer-events-none whitespace-nowrap"
+            style={{
+              left: `${(hover.x / WIDTH) * 100}%`,
+              top: `${(hover.y / HEIGHT) * 100}%`,
+              transform: "translate(-50%, -120%)",
+            }}
+          >
+            <div className="font-semibold">{formatTanggal(hover.tanggal)}</div>
+            <div>Umur: {hover.umur} bulan</div>
+            <div>Berat: {hover.berat} kg</div>
+          </div>
+        )}
+      </div>
 
-      <line
-        x1={x}
-        y1={TOP}
-        x2={x}
-        y2={HEIGHT - BOTTOM}
-        stroke="#D1D5DB"
-        strokeWidth={1}
-      />
-
-      <text
-        x={x}
-        y={HEIGHT - 30}
-        textAnchor="middle"
-        fontSize="11"
-        fill="#374151"
-      >
-        {i}
-      </text>
-
-    </g>
-
+      {/* Legenda garis */}
+      <div className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[11px] text-gray-700">
+        <div className="flex items-center gap-1">
+          <span className="inline-block w-3 h-0.5" style={{ backgroundColor: "#1a1a1a" }} />
+          <span>+3 SD : Risiko lebih</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="inline-block w-3 h-0.5" style={{ backgroundColor: "#e53935" }} />
+          <span>+2 SD : Batas atas normal</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="inline-block w-3 h-0.5" style={{ backgroundColor: "#2e7d32" }} />
+          <span>0 SD : Median</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="inline-block w-3 h-0.5" style={{ backgroundColor: "#e53935" }} />
+          <span>-2 SD : Batas bawah normal</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="inline-block w-3 h-0.5" style={{ backgroundColor: "#1a1a1a" }} />
+          <span>-3 SD : Sangat kurang</span>
+        </div>
+      </div>
+    </div>
   );
-
-})}
-
-{/* ================= GRID HORIZONTAL ================= */}
-
-{Array.from({
-  length: MAX_BERAT + 1,
-}).map((_, i) => {
-
-  const y = getY(i);
-
-  return (
-
-    <g key={`h-${i}`}>
-
-      <line
-        x1={LEFT}
-        y1={y}
-        x2={WIDTH - RIGHT}
-        y2={y}
-        stroke="#E5E7EB"
-        strokeWidth={1}
-      />
-
-      <text
-        x={LEFT - 12}
-        y={y + 4}
-        textAnchor="end"
-        fontSize="12"
-        fontWeight="600"
-        fill="#374151"
-      >
-        {i}
-      </text>
-
-    </g>
-
-  );
-
-})}
-
-{/* ================= SUMBU X ================= */}
-
-<line
-  x1={LEFT}
-  y1={HEIGHT - BOTTOM}
-  x2={WIDTH - RIGHT}
-  y2={HEIGHT - BOTTOM}
-  stroke="#000"
-  strokeWidth={2}
-/>
-
-{/* ================= SUMBU Y ================= */}
-
-<line
-  x1={LEFT}
-  y1={TOP}
-  x2={LEFT}
-  y2={HEIGHT - BOTTOM}
-  stroke="#000"
-  strokeWidth={2}
-/>
-
-{/* ================= JUDUL SUMBU X ================= */}
-
-<text
-  x={WIDTH / 2}
-  y={HEIGHT - 5}
-  textAnchor="middle"
-  fontSize="15"
-  fontWeight="bold"
->
-  Umur (Bulan)
-</text>
-
-{/* ================= JUDUL SUMBU Y ================= */}
-
-<text
-  transform={`translate(20 ${
-    HEIGHT / 2
-  }) rotate(-90)`}
-  textAnchor="middle"
-  fontSize="15"
-  fontWeight="bold"
->
-  Berat Badan (Kg)
-</text>
-{/* ================= AREA WARNA KMS ================= */}
-
-{/* -3 SD s/d -2 SD */}
-<polygon
-  fill="#FDE047"
-  opacity={0.45}
-  points={
-    who
-      .map((d) => `${getX(d.umur)},${getY(d.minus3)}`)
-      .join(" ") +
-    " " +
-    who
-      .slice()
-      .reverse()
-      .map((d) => `${getX(d.umur)},${getY(d.minus2)}`)
-      .join(" ")
-  }
-/>
-
-{/* -2 SD s/d -1 SD */}
-<polygon
-  fill="#A3E635"
-  opacity={0.7}
-  points={
-    who
-      .map((d) => `${getX(d.umur)},${getY(d.minus2)}`)
-      .join(" ") +
-    " " +
-    who
-      .slice()
-      .reverse()
-      .map((d) => `${getX(d.umur)},${getY(d.minus1)}`)
-      .join(" ")
-  }
-/>
-
-{/* -1 SD s/d Median */}
-<polygon
-  fill="#22C55E"
-  opacity={0.7}
-  points={
-    who
-      .map((d) => `${getX(d.umur)},${getY(d.minus1)}`)
-      .join(" ") +
-    " " +
-    who
-      .slice()
-      .reverse()
-      .map((d) => `${getX(d.umur)},${getY(d.median)}`)
-      .join(" ")
-  }
-/>
-
-{/* Median s/d +1 SD */}
-<polygon
-  fill="#16A34A"
-  opacity={0.7}
-  points={
-    who
-      .map((d) => `${getX(d.umur)},${getY(d.median)}`)
-      .join(" ") +
-    " " +
-    who
-      .slice()
-      .reverse()
-      .map((d) => `${getX(d.umur)},${getY(d.plus1)}`)
-      .join(" ")
-  }
-/>
-
-{/* +1 SD s/d +2 SD */}
-<polygon
-  fill="#A3E635"
-  opacity={0.7}
-  points={
-    who
-      .map((d) => `${getX(d.umur)},${getY(d.plus1)}`)
-      .join(" ") +
-    " " +
-    who
-      .slice()
-      .reverse()
-      .map((d) => `${getX(d.umur)},${getY(d.plus2)}`)
-      .join(" ")
-  }
-/>
-
-{/* +2 SD s/d +3 SD */}
-<polygon
-  fill="#FDE047"
-  opacity={0.7}
-  points={
-    who
-      .map((d) => `${getX(d.umur)},${getY(d.plus2)}`)
-      .join(" ") +
-    " " +
-    who
-      .slice()
-      .reverse()
-      .map((d) => `${getX(d.umur)},${getY(d.plus3)}`)
-      .join(" ")
-  }
-/>
-
-{/* ================= GARIS WHO ================= */}
-
-{createLine("minus3", "#FACC15")}
-{createLine("minus2", "#84CC16")}
-{createLine("minus1", "#16A34A")}
-{createLine("median", "#166534", 4)}
-{createLine("plus1", "#16A34A")}
-{createLine("plus2", "#84CC16")}
-{createLine("plus3", "#FACC15")}
-
-{/* ================= LABEL SD ================= */}
-
-<text
-  x={WIDTH - 15}
-  y={getY(who[0].plus3)}
-  fontSize="12"
-  fill="#374151"
->
-  +3 SD
-</text>
-
-<text
-  x={WIDTH - 15}
-  y={getY(who[0].plus2)}
-  fontSize="12"
-  fill="#374151"
->
-  +2 SD
-</text>
-
-<text
-  x={WIDTH - 15}
-  y={getY(who[0].plus1)}
-  fontSize="12"
-  fill="#374151"
->
-  +1 SD
-</text>
-
-<text
-  x={WIDTH - 15}
-  y={getY(who[0].median)}
-  fontSize="12"
-  fontWeight="bold"
-  fill="#166534"
->
-  Median
-</text>
-
-<text
-  x={WIDTH - 15}
-  y={getY(who[0].minus1)}
-  fontSize="12"
-  fill="#374151"
->
-  -1 SD
-</text>
-
-<text
-  x={WIDTH - 15}
-  y={getY(who[0].minus2)}
-  fontSize="12"
-  fill="#374151"
->
-  -2 SD
-</text>
-
-<text
-  x={WIDTH - 15}
-  y={getY(who[0].minus3)}
-  fontSize="12"
-  fill="#374151"
->
-  -3 SD
-</text>
-{/* ================= GARIS RIWAYAT ================= */}
-
-<polyline
-  fill="none"
-  stroke="#000"
-  strokeWidth={3}
-  points={riwayat
-    .map(
-      (item) =>
-        `${getX(item.umur)},${getY(item.berat)}`
-    )
-    .join(" ")}
-/>
-
-{/* ================= TITIK PEMERIKSAAN ================= */}
-
-{riwayat.map((item, index) => (
-
-  <g key={index}>
-
-    <circle
-      cx={getX(item.umur)}
-      cy={getY(item.berat)}
-      r={5}
-      fill="#000"
-      style={{ cursor: "pointer" }}
-      onMouseEnter={() =>
-        setHoverPoint(item)
-      }
-      onMouseLeave={() =>
-        setHoverPoint(null)
-      }
-    />
-
-  </g>
-
-))}
-
-{/* ================= TOOLTIP ================= */}
-
-{hoverPoint && (
-
-<g>
-
-<rect
-  x={tooltipX}
-  y={getY(hoverPoint.berat)-105}
-  width={220}
-  height={120}
-  rx={10}
-  fill="#FFF"
-  stroke="#16A34A"
-  strokeWidth={2}
-/>
-
-<text
-  x={tooltipX+20}
-  y={getY(hoverPoint.berat)-82}
-  fontSize="13"
-  fontWeight="bold"
-  fill="#166534"
->
-  Pemeriksaan Balita
-</text>
-
-<text
-  x={tooltipX+20}
-  y={getY(hoverPoint.berat)-60}
-  fontSize="12"
->
-  Umur : {hoverPoint.umur} Bulan
-</text>
-
-<text
-  x={tooltipX+20}
-  y={getY(hoverPoint.berat)-40}
-  fontSize="12"
->
-  Berat : {hoverPoint.berat} Kg
-</text>
-
-<text
-  x={tooltipX+20}
-  y={getY(hoverPoint.berat)-20}
-  fontSize="12"
-  fontWeight="bold"
-  fill={
-    getStatusColor(
-      getStatusGizi(
-        hoverPoint.umur,
-        hoverPoint.berat
-      )
-    )
-  }
->
-  Status :
-  {" "}
-  {getStatusGizi(
-    hoverPoint.umur,
-    hoverPoint.berat
-  )}
-</text>
-
-<text
-  x={tooltipX+20}
-  y={getY(hoverPoint.berat)}
-  fontSize="12"
->
-  {formatTanggal(
-    hoverPoint.tanggal
-  )}
-</text>
-
-</g>
-
-)}
-
-</svg>
-
-{/* ================= LEGEND ================= */}
-
-<div className="flex flex-wrap gap-8 mt-6 text-gray-800">
-
-  <div className="flex items-center gap-2">
-    <div
-      style={{
-        width:18,
-        height:18,
-        background:"#16A34A",
-        borderRadius:4,
-      }}
-    />
-    <span className="font-medium">
-      Normal
-    </span>
-  </div>
-
-  <div className="flex items-center gap-2">
-    <div
-      style={{
-        width:18,
-        height:18,
-        background:"#FACC15",
-        borderRadius:4,
-      }}
-    />
-    <span className="font-medium">
-      Risiko
-    </span>
-  </div>
-
-  <div className="flex items-center gap-2">
-    <div
-      style={{
-        width:18,
-        height:18,
-        background:"#EF4444",
-        borderRadius:4,
-      }}
-    />
-    <span className="font-medium">
-      Gizi Buruk
-    </span>
-  </div>
-
-  <div className="flex items-center gap-2">
-    <div
-      style={{
-        width:16,
-        height:16,
-        background:"#000",
-        borderRadius:"50%",
-      }}
-    />
-    <span className="font-medium">
-      Pemeriksaan Balita
-    </span>
-  </div>
-
-</div>
-
-</div>
-
-</div>
-
-);
 }

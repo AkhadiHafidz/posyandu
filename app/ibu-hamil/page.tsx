@@ -174,13 +174,13 @@ export default function IbuHamilPage() {
       <Sidebar />
 
       {/* CONTENT */}
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-x-hidden">
 
         {/* HEADER */}
         <Header title="Data Ibu Hamil" />
 
         {/* TOP */}
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-8">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mt-6">
 
           {/* TITLE */}
          
@@ -190,11 +190,11 @@ export default function IbuHamilPage() {
           <div className="flex flex-col sm:flex-row gap-4">
 
             {/* SEARCH */}
-            <div className="flex items-center bg-white border border-green-100 rounded-2xl px-4 py-3 shadow-sm w-full sm:w-[280px]">
+            <div className="flex items-center bg-white border border-green-100 rounded-xl px-3 py-2 shadow-sm w-full sm:w-[250px]">
 
               <Search
-                size={20}
-                className="text-green-600"
+                size={18}
+                className="text-green-500"
               />
 
               <input
@@ -206,7 +206,7 @@ export default function IbuHamilPage() {
                   )
                 }
                 placeholder="Cari nama ibu..."
-                className="ml-3 w-full outline-none text-sm text-gray-700 placeholder:text-gray-400"
+             className="ml-2 w-full outline-none text-xs text-gray-700 placeholder:text-gray-400"
               />
 
             </div>
@@ -214,10 +214,10 @@ export default function IbuHamilPage() {
             {/* BUTTON */}
             <Link
               href="/ibu-hamil/tambah"
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-5 py-3 rounded-2xl shadow-lg hover:scale-[1.02] transition"
+className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition"
             >
 
-              <Plus size={20} />
+              <Plus size={18} />
 
               Tambah Data
 
@@ -228,36 +228,36 @@ export default function IbuHamilPage() {
         </div>
 
         {/* TABLE */}
-        <div className="mt-8 bg-white rounded-[30px] shadow-sm overflow-hidden overflow-x-auto">
+        <div className="mt-6 bg-white rounded-2xl shadow-sm overflow-hidden overflow-x-auto">
 
-          <table className="w-full min-w-[1000px]">
+        <table className="min-w-[900px] w-full">
 
             {/* HEAD */}
-            <thead className="bg-pink-50 border-b">
+            <thead className="bg-green-50 border-b">
 
               <tr>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-700">
                   Nama
                 </th>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-700">
                   Umur
                 </th>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-700">
                   Usia Kehamilan
                 </th>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-700">
                   No HP
                 </th>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-700">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-700">
                   Alamat
                 </th>
 
-                <th className="text-center py-5 px-6 font-bold text-gray-700">
+                <th className="text-center py-4 px-5 text-sm font-semibold text-gray-700">
                   Action
                 </th>
 
@@ -274,16 +274,16 @@ export default function IbuHamilPage() {
 
                     <tr
                       key={item.id}
-                      className="border-b hover:bg-pink-50 transition"
+                      className="border-b hover:bg-green-50 transition"
                     >
 
                       {/* NAMA */}
-                      <td className="py-5 px-6">
+                      <td className="py-4 px-5 text-sm text-gray-600">
 
                         <div className="flex items-center gap-4">
 
                           {/* AVATAR */}
-                          <div className="w-12 h-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-lg">
+                          <div className="w-10 h-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-sm">
                             {item.nama
                               ?.charAt(0)
                               ?.toUpperCase() ||
@@ -293,12 +293,12 @@ export default function IbuHamilPage() {
                           {/* INFO */}
                           <div>
 
-                            <h2 className="font-bold text-gray-800">
+                            <h2 className="font-semibold text-sm text-gray-800">
                               {item.nama ||
                                 "-"}
                             </h2>
 
-                            <p className="text-sm text-gray-500">
+                            <p className="text-xs text-gray-500">
                               Ibu Hamil
                             </p>
 
@@ -309,13 +309,13 @@ export default function IbuHamilPage() {
                       </td>
 
                       {/* UMUR */}
-                      <td className="py-5 px-6 text-gray-600">
+                      <td className="py-4 px-5 text-sm text-gray-600">
                         {item.umur ||
                           "-"}
                       </td>
 
                       {/* USIA */}
-                      <td className="py-5 px-6 text-gray-600">
+                      <td className="py-4 px-5 text-sm text-gray-600">
                         {
                           item.usiaKehamilan
                         }{" "}
@@ -323,39 +323,39 @@ export default function IbuHamilPage() {
                       </td>
 
                       {/* HP */}
-                      <td className="py-5 px-6 text-gray-600">
+                      <td className="py-4 px-5 text-sm text-gray-600">
                         {item.noHp ||
                           "-"}
                       </td>
 
                       {/* ALAMAT */}
-                      <td className="py-5 px-6 text-gray-600 max-w-[250px] truncate">
+                      <td className="py-4 px-5 text-sm text-gray-600 max-w-[150px] md:max-w-[250px] truncate">
                         {item.alamat ||
                           "-"}
                       </td>
 
                       {/* ACTION */}
-                      <td className="py-5 px-6">
+                      <td className="py-4 px-5">
 
                         <div className="flex items-center justify-center gap-3">
 
                           {/* DETAIL */}
                           <Link
                             href={`/ibu-hamil/detail/${item.id}`}
-                            className="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center hover:scale-105 transition"
+                            className="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center hover:scale-105 transition"
                           >
                             <Eye
-                              size={18}
+                              size={16}
                             />
                           </Link>
 
                           {/* EDIT */}
                           <Link
                             href={`/ibu-hamil/edit/${item.id}`}
-                            className="w-11 h-11 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center hover:scale-105 transition"
+                            className="w-9 h-9 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center hover:scale-105 transition"
                           >
                             <Pencil
-                              size={18}
+                              size={16}
                             />
                           </Link>
 
@@ -366,10 +366,10 @@ export default function IbuHamilPage() {
                                 item.id
                               )
                             }
-                            className="w-11 h-11 rounded-xl bg-red-100 text-red-600 flex items-center justify-center hover:scale-105 transition"
+                            className="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center hover:scale-105 transition"
                           >
                             <Trash2
-                              size={18}
+                              size={16}
                             />
                           </button>
 
@@ -390,9 +390,9 @@ export default function IbuHamilPage() {
             filteredData.length ===
               0 && (
 
-              <div className="py-16 text-center">
+              <div className="py-12 text-center">
 
-                <h2 className="text-2xl font-bold text-gray-700">
+                <h2 className="text-sm text-gray-500">
                   Data Tidak Ada
                 </h2>
 
@@ -408,7 +408,7 @@ export default function IbuHamilPage() {
 
             <div className="py-16 text-center">
 
-              <h2 className="text-xl font-semibold text-gray-600">
+              <h2 className="text-lg font-semibold text-gray-600">
                 Loading...
               </h2>
 

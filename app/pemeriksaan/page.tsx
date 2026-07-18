@@ -143,18 +143,18 @@ export default function PemeriksaanPage() {
     <div className="min-h-screen bg-[#F5FFF8] flex">
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-hidden">
         <Header title="Pemeriksaan" />
 
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mt-8">
+        <div className="mt-6">
           
           
 
           <div className="flex flex-col sm:flex-row gap-4">
 
-            <div className="flex items-center bg-white border border-green-100 rounded-2xl px-4 py-3 shadow-sm w-full sm:w-[280px]">
+            <div className="flex items-center bg-white border border-green-100 rounded-xl px-3 py-2 shadow-sm w-full sm:w-[250px]">
               <Search
-                size={20}
+                size={18}
                 className="text-green-600"
               />
 
@@ -165,13 +165,13 @@ export default function PemeriksaanPage() {
                   setSearch(e.target.value)
                 }
                 placeholder="Cari nama..."
-                className="ml-3 w-full outline-none text-sm text-gray-700"
+                className="ml-2 w-full outline-none text-xs text-gray-700 placeholder:text-gray-400"
               />
             </div>
 
             <Link
               href="/pemeriksaan/tambah"
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-5 py-3 rounded-2xl shadow-lg"
+className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition"
             >
               <Plus size={20} />
               Tambah Data
@@ -180,30 +180,30 @@ export default function PemeriksaanPage() {
           </div>
         </div>
 
-        <div className="mt-8 bg-white rounded-[30px] shadow-sm overflow-hidden overflow-x-auto">
+        <div className="mt-6 bg-white rounded-2xl shadow-sm overflow-x-auto">
 
-          <table className="w-full min-w-[1000px] text-gray-800">
+          <table className="min-w-[900px] w-full text-gray-800">
 
-            <thead >
+            <thead className="bg-green-50 ">
               <tr>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-800">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-800">
                   Nama
                 </th>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-800">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-800">
                   Jenis
                 </th>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-800">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-800">
                   Tanggal
                 </th>
 
-                <th className="text-left py-5 px-6 font-bold text-gray-800">
+                <th className="text-left py-4 px-5 text-sm font-semibold text-gray-800">
                   Status
                 </th>
 
-                <th className="text-center py-5 px-6 font-bold text-gray-800">
+                <th className="text-center py-4 px-5 text-sm font-semibold text-gray-800">
                   Action
                 </th>
 
@@ -217,23 +217,23 @@ export default function PemeriksaanPage() {
                   (item) => (
                     <tr
                       key={item.id}
-                      className="hover:bg-green-50 transition"
+                      className=" hover:bg-green-50 transition"
                     >
                       <td className="py-5 px-6">
                         <div className="flex items-center gap-4">
 
-                          <div className="w-12 h-12 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">
+                          <div className="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">
                             {item.nama
                               ?.charAt(0)
                               ?.toUpperCase()}
                           </div>
 
                           <div>
-                            <h2 className="font-bold text-gray-900 text-lg">
+                            <h2 className="font-semibold text-sm text-gray-800">
                               {item.nama}
                             </h2>
 
-                            <p className="text-sm text-gray-600">
+                            <p className="text-xs text-gray-500">
                               {item.jenis}
                             </p>
                           </div>
@@ -241,17 +241,17 @@ export default function PemeriksaanPage() {
                         </div>
                       </td>
 
-                      <td className="py-5 px-6 text-gray-700 font-medium">
+                      <td className="py-4 px-5 text-sm text-gray-700">
                         {item.jenis}
                       </td>
 
-                      <td className="py-5 px-6 text-gray-700 font-medium">
+                      <td className="py-4 px-5 text-sm text-gray-700">
                          {formatTanggal(item.tanggal)}
                       </td>
 
-                      <td className="py-5 px-6 text-gray-700 font-medium">
+                      <td className="py-4 px-5 text-sm text-gray-700">
                         <span
-                          className={`px-4 py-2 rounded-full text-sm font-semibold
+                          className={`px-3 py-1 rounded-full text-xs font-semibold
                           ${
                             item.status ===
                             "Sehat"
@@ -271,16 +271,16 @@ export default function PemeriksaanPage() {
 
                           <Link
                             href={`/pemeriksaan/detail/${item.id}`}
-                            className="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center"
+                            className="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center"
                           >
-                            <Eye size={18} />
+                            <Eye size={16} />
                           </Link>
 
                           <Link
                             href={`/pemeriksaan/edit/${item.id}`}
-                            className="w-11 h-11 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center"
+                            className="w-9 h-9 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center"
                           >
-                            <Pencil size={18} />
+                            <Pencil size={16} />
                           </Link>
 
                           <button
@@ -289,9 +289,9 @@ export default function PemeriksaanPage() {
                                 item.id
                               )
                             }
-                            className="w-11 h-11 rounded-xl bg-red-100 text-red-600 flex items-center justify-center"
+                            className="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center"
                           >
-                            <Trash2 size={18} />
+                            <Trash2 size={16} />
                           </button>
 
                         </div>
@@ -302,6 +302,25 @@ export default function PemeriksaanPage() {
 
             </tbody>
           </table>
+
+{!loading && filteredData.length === 0 && (
+  <div className="py-12 text-center">
+    <h2 className="text-xl font-bold text-gray-700">
+      Data Pemeriksaan Tidak Ada
+    </h2>
+
+    <p className="text-sm text-gray-500 mt-2">
+      Belum ada data pemeriksaan.
+    </p>
+  </div>
+)}
+{loading && (
+  <div className="py-12 text-center">
+    <h2 className="text-lg font-semibold text-gray-600">
+      Loading...
+    </h2>
+  </div>
+)}
 
         </div>
       </main>

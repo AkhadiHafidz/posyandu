@@ -51,7 +51,7 @@ export default function Home() {
       </header>
 
       {/* HERO */}
-      <section className="relative max-w-7xl mx-auto min-h-[90vh] flex flex-col-reverse md:flex-row items-center justify-between px-6 py-20 gap-16">
+      <section className="relative max-w-6xl mx-auto min-h-screen flex flex-col-reverse md:flex-row items-center justify-between px-4 py-12 gap-10">
         
         {/* LEFT */}
         <motion.div
@@ -73,7 +73,7 @@ export default function Home() {
             Sistem Informasi Posyandu Modern
           </motion.div>
 
-          <h1 className="text-5xl md:text-7xl font-black leading-tight">
+          <h1 className="text-4xl md:text-6xl font-black leading-tight">
             Pelayanan
             <span className="text-green-600"> Posyandu </span>
             Digital
@@ -95,7 +95,7 @@ export default function Home() {
                 scale: 0.95,
               }}
               href="/login"
-              className="bg-green-600 text-white px-8 py-4 rounded-2xl shadow-xl hover:bg-green-700 transition font-semibold"
+              className="bg-green-600 text-white px-6 py-3 rounded-2xl shadow-xl hover:bg-green-700 transition font-semibold"
             >
               Masuk Dashboard
             </motion.a>
@@ -139,8 +139,8 @@ export default function Home() {
             <Image
               src="/healt.png"
               alt="Healthcare"
-              width={600}
-              height={600}
+              width={480}
+              height={480}
               priority
               className="relative z-10 drop-shadow-2xl"
             />

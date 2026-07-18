@@ -225,17 +225,17 @@ export default function EditPemeriksaanPage() {
 
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-y-auto">
 
         <Header title="Edit Pemeriksaan" />
 
-      <div className="mt-8 bg-white rounded-[30px] shadow-sm p-8 max-w-4xl">
+      <div className="mt-4 bg-white rounded-2xl shadow-sm p-5 max-w-4xl">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-4 mt-5">
 
           {/* Jenis */}
             <div>
-            <label className="font-semibold text-gray-700">
+            <label className="text-xs font-semibold text-gray-700">
               Jenis Pemeriksaan
               </label>
 
@@ -243,13 +243,13 @@ export default function EditPemeriksaanPage() {
                 type="text"
                 value={jenis}
                 readOnly
-              className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+              className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
           {/* Nama */}
             <div>
-            <label className="font-semibold text-gray-700">
+           <label className="text-xs font-semibold text-gray-700">
                 Nama
               </label>
 
@@ -257,7 +257,7 @@ export default function EditPemeriksaanPage() {
                 type="text"
                 value={nama}
                 readOnly
-              className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+              className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
             />
           </div>
 
@@ -267,7 +267,7 @@ export default function EditPemeriksaanPage() {
             <>
 
               <div>
-                <label className="font-semibold text-gray-700">
+               <label className="text-xs font-semibold text-gray-700">
                   NIK
                 </label>
 
@@ -276,12 +276,12 @@ export default function EditPemeriksaanPage() {
                   value={nik}
                   readOnly
                   onChange={(e)=>setNik(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   Usia Balita (Bulan)
                 </label>
 
@@ -289,12 +289,12 @@ export default function EditPemeriksaanPage() {
                 type="number"
                 value={umur}
                 onChange={(e) => setUmur(e.target.value)}
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800"
               />
             </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+               <label className="text-xs font-semibold text-gray-700">
                   Berat Badan (Kg)
                 </label>
 
@@ -302,12 +302,12 @@ export default function EditPemeriksaanPage() {
                   type="number"
                   value={beratBadan}
                   onChange={(e)=>setBeratBadan(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   Tinggi Badan (Cm)
                 </label>
 
@@ -315,12 +315,12 @@ export default function EditPemeriksaanPage() {
                   type="number"
                   value={tinggiBadan}
                   onChange={(e)=>setTinggiBadan(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   Lingkar Lengan (Cm)
                 </label>
 
@@ -328,19 +328,19 @@ export default function EditPemeriksaanPage() {
                   type="number"
                   value={lingkarLengan}
                   onChange={(e)=>setLingkarLengan(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+               <label className="text-xs font-semibold text-gray-700">
                   Vitamin A
                 </label>
 
                 <select
                   value={vitaminA}
                   onChange={(e)=>setVitaminA(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 >
                   <option value="">Pilih</option>
                   <option value="Biru">Biru</option>
@@ -349,14 +349,14 @@ export default function EditPemeriksaanPage() {
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+               <label className="text-xs font-semibold text-gray-700">
                   ASI Eksklusif
                 </label>
 
                 <select
                   value={asiEksklusif}
                   onChange={(e)=>setAsiEksklusif(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 >
                   <option value="">Pilih</option>
                   <option value="Ya">Ya</option>
@@ -374,7 +374,7 @@ export default function EditPemeriksaanPage() {
             <>
 
               <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   NIK
                 </label>
 
@@ -383,12 +383,12 @@ export default function EditPemeriksaanPage() {
                   value={nik}
                   readOnly
                   onChange={(e) => setNik(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   Usia Kehamilan (Bulan)
                 </label>
 
@@ -396,12 +396,12 @@ export default function EditPemeriksaanPage() {
                   type="number"
                   value={usiaKehamilan}
                   onChange={(e) => setUsiaKehamilan(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 />
               </div>
 
             <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                 Berat Badan (Kg)
               </label>
 
@@ -409,12 +409,12 @@ export default function EditPemeriksaanPage() {
                 type="number"
                 value={beratBadan}
                   onChange={(e) => setBeratBadan(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
             <div>
-                <label className="font-semibold text-gray-700">
+               <label className="text-xs font-semibold text-gray-700">
                   Tekanan Darah
                 </label>
 
@@ -422,12 +422,12 @@ export default function EditPemeriksaanPage() {
                   type="text"
                   value={tekananDarah}
                   onChange={(e) => setTekananDarah(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   Lingkar Lengan (Cm)
               </label>
 
@@ -435,12 +435,12 @@ export default function EditPemeriksaanPage() {
                 type="number"
                   value={lingkarLengan}
                   onChange={(e) => setLingkarLengan(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
             <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   TFU (Cm)
                 </label>
 
@@ -448,12 +448,12 @@ export default function EditPemeriksaanPage() {
                   type="number"
                   value={tfu}
                   onChange={(e) => setTfu(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   DJJ
                 </label>
 
@@ -461,19 +461,19 @@ export default function EditPemeriksaanPage() {
                   type="text"
                   value={djj}
                   onChange={(e) => setDjj(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 />
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   Letak Janin
                 </label>
 
                 <select
                   value={letakJanin}
                   onChange={(e) => setLetakJanin(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 >
                   <option value="">Pilih</option>
                   <option value="Kepala">Kepala</option>
@@ -483,14 +483,14 @@ export default function EditPemeriksaanPage() {
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   Tablet Fe
                 </label>
 
                 <select
                   value={tabletFe}
                   onChange={(e) => setTabletFe(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 >
                   <option value="">Pilih</option>
                   <option value="Ya">Ya</option>
@@ -499,14 +499,14 @@ export default function EditPemeriksaanPage() {
               </div>
 
               <div>
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   Imunisasi TT
                 </label>
 
                 <select
                   value={imunisasiTT}
                   onChange={(e) => setImunisasiTT(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 >
                   <option value="">Pilih</option>
                   <option value="Sudah">Sudah</option>
@@ -515,7 +515,7 @@ export default function EditPemeriksaanPage() {
               </div>
 
               <div className="md:col-span-2">
-                <label className="font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                   Keluhan
                 </label>
 
@@ -523,7 +523,7 @@ export default function EditPemeriksaanPage() {
                   rows={3}
                   value={keluhan}
                   onChange={(e) => setKeluhan(e.target.value)}
-                  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
                 />
               </div>
 
@@ -533,7 +533,7 @@ export default function EditPemeriksaanPage() {
           {/* ================= UMUM ================= */}
 
           <div>
-            <label className="font-semibold text-gray-700">
+            <label className="text-xs font-semibold text-gray-700">
                 Tanggal Pemeriksaan
               </label>
 
@@ -541,19 +541,19 @@ export default function EditPemeriksaanPage() {
                 type="date"
                 value={tanggal}
               onChange={(e) => setTanggal(e.target.value)}
-              className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+              className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
             <div>
-            <label className="font-semibold text-gray-700">
+            <label className="text-xs font-semibold text-gray-700">
                 Status
               </label>
 
               <select
                 value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+              className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
               >
               <option value="">Pilih Status</option>
               <option value="Sehat">Sehat</option>
@@ -563,7 +563,7 @@ export default function EditPemeriksaanPage() {
             </div>
 
             <div className="md:col-span-2">
-            <label className="font-semibold text-gray-700">
+            <label className="text-xs font-semibold text-gray-700">
                 Keterangan
               </label>
 
@@ -571,7 +571,7 @@ export default function EditPemeriksaanPage() {
                 rows={4}
                 value={keterangan}
               onChange={(e) => setKeterangan(e.target.value)}
-              className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+              className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
             </div>
 
@@ -579,18 +579,18 @@ export default function EditPemeriksaanPage() {
 
         {/* BUTTON */}
 
-        <div className="flex justify-end gap-4 mt-8">
+       <div className="flex justify-end gap-3 mt-5">
 
           <button
             onClick={() => router.push("/pemeriksaan")}
-            className="px-6 py-3 rounded-2xl border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+            className="px-5 py-2 rounded-xl border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
           >
             Batal
           </button>
 
           <button
             onClick={handleUpdate}
-            className="px-8 py-3 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold hover:opacity-90 transition"
+            className="px-5 py-2 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold shadow-md hover:shadow-lg transition"
           >
             Simpan Perubahan
           </button>

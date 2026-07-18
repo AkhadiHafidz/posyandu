@@ -140,17 +140,18 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-8">
+
+       <main className="flex-1 p-3 sm:p-4 lg:p-5 overflow-hidden">
 
         <Header title="Ubah Password" />
 
         <div className="mt-6">
 
-          <div className="bg-white rounded-[28px] shadow-sm p-8 w-full max-w-md">
+          <div className="bg-white rounded-2xl shadow-sm p-4 w-full max-w-sm">
 
       {/* Password Lama */}
-<div className="mb-4">
-  <label className="block mb-2 font-semibold text-gray-700">
+<div className="mb-3">
+  <label className="block mb-1 text-xs font-semibold text-gray-700">
     Password Lama
   </label>
 
@@ -158,12 +159,12 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     className="
       flex
       items-center
-      h-14
+      h-11
       rounded-xl
       border
-      border-gray-300
-      px-4
-      focus-within:border-black
+      border-green-200
+      px-3
+      focus-within:border-green-500
       transition-all
       duration-200
     "
@@ -192,27 +193,27 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
       className="ml-3 text-gray-500 hover:text-green-600"
     >
       {showOldPassword ? (
-        <EyeOff size={20} />
+        <EyeOff size={16} />
       ) : (
-        <Eye size={20} />
+        <Eye size={16} />
       )}
     </button>
   </div>
 </div>
 
             <div className="mb-4">
-  <label className="block mb-2 font-semibold text-gray-700">
+  <label className="block mb-1 text-xs font-semibold text-gray-700">
     Password Baru
   </label>
 
   <div className="flex items-center h-14 rounded-xl border border-gray-300 px-4 focus-within:border-black transition-all duration-200">
 
-    <input
+    <input 
       type={showNewPassword ? "text" : "password"}
       value={passwordBaru}
       onChange={(e) => setPasswordBaru(e.target.value)}
       placeholder="Masukkan password baru"
-      className="flex-1 h-full bg-transparent border-none outline-none focus:ring-0 text-gray-800 placeholder:text-gray-400"
+      className="flex-1 h-full bg-transparent border-none outline-none focus:ring-0 text-sm text-gray-800 placeholder:text-gray-400"
     />
 
     <button
@@ -220,14 +221,14 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
       onClick={() => setShowNewPassword(!showNewPassword)}
       className="ml-3 text-gray-500 hover:text-green-600"
     >
-      {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+      {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
     </button>
 
   </div>
 </div>
 
-            <div className="mb-6">
-  <label className="block mb-2 font-semibold text-gray-700">
+            <div className="mb-4">
+  <label className="block mb-1 text-xs font-semibold text-gray-700">
     Konfirmasi Password
   </label>
 
@@ -246,7 +247,7 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
       className="ml-3 text-gray-500 hover:text-green-600"
     >
-      {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+      {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
     </button>
 
   </div>
@@ -254,14 +255,14 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
             {/* Button */}
 
-            <div className="flex gap-3">
+            <div className="flex gap-2 mt-4">
 
               <button
                 onClick={() => router.push("/profil")}
                 className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl py-3 flex items-center justify-center gap-2"
               >
 
-                <ArrowLeft size={18} />
+                <ArrowLeft size={16} />
 
                 Batal
 
@@ -273,7 +274,7 @@ const [showConfirmPassword, setShowConfirmPassword] = useState(false);
                 className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl py-3 flex items-center justify-center gap-2"
               >
 
-                <KeyRound size={18} />
+                <KeyRound size={16} />
 
                 Simpan
 

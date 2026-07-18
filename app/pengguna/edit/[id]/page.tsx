@@ -25,7 +25,6 @@ interface PenggunaForm {
   password: string;
   konfirmasiPassword: string;
   noHp: string;
-  alamat: string;
 }
 
 export default function EditPenggunaPage() {
@@ -46,7 +45,6 @@ export default function EditPenggunaPage() {
       password: "",
       konfirmasiPassword: "",
       noHp: "",
-      alamat: "",
     });
 
   // GET DATA
@@ -94,9 +92,6 @@ export default function EditPenggunaPage() {
                 docSnap.data()
                   .noHp || "",
 
-              alamat:
-                docSnap.data()
-                  .alamat || "",
             });
 
           }
@@ -141,7 +136,6 @@ export default function EditPenggunaPage() {
             username: form.username,
             password: form.password,
             noHp: form.noHp,
-            alamat: form.alamat,
           }
         );
 
@@ -180,21 +174,21 @@ export default function EditPenggunaPage() {
 
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-hidden">
 
         <Header title="Edit Pengguna" />
 
-        <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
+        <div className="mt-4 bg-white rounded-2xl p-5 shadow-sm max-w-3xl">
 
       
 
           {/* FORM */}
-          <div className="grid md:grid-cols-2 gap-5 mt-8">
+          <div className="grid md:grid-cols-2 gap-4 mt-5">
 
             {/* NAMA */}
             <div>
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Nama
               </label>
 
@@ -216,7 +210,7 @@ export default function EditPenggunaPage() {
 
           <div>
 
-            <label className="text-sm font-semibold text-gray-700">
+            <label className="text-xs font-semibold text-gray-700">
             Username
             </label>
 
@@ -229,14 +223,14 @@ export default function EditPenggunaPage() {
             username:e.target.value
             })
             }
-            className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+            className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
             />
 
             </div>
 
             <div>
 
-          <label className="text-sm font-semibold text-gray-700">
+          <label className="text-xs font-semibold text-gray-700">
           Password
           </label>
 
@@ -249,7 +243,7 @@ export default function EditPenggunaPage() {
           password:e.target.value
           })
           }
-          className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+         className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
           />
 
           </div>
@@ -257,7 +251,7 @@ export default function EditPenggunaPage() {
 
             <div>
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
           Konfirmasi Password
               </label>
 
@@ -270,7 +264,7 @@ export default function EditPenggunaPage() {
           konfirmasiPassword:e.target.value
                   })
                 }
-          className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+          className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
           />
 
             </div>
@@ -278,7 +272,7 @@ export default function EditPenggunaPage() {
             {/* HP */}
             <div>
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 No HP
               </label>
 
@@ -293,7 +287,7 @@ export default function EditPenggunaPage() {
                   })
                 }
                 placeholder="08xxxxxxxxxx"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -310,7 +304,7 @@ export default function EditPenggunaPage() {
             disabled={
               loading
             }
-            className="mt-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-2xl"
+className="mt-5 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow-md hover:shadow-lg transition"
           >
             {
               loading

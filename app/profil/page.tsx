@@ -122,33 +122,33 @@ export default function ProfilePage() {
 
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-4 lg:p-5 overflow-hidden">
 
         <Header title="Profile Saya" />
 
-        <div className="mt-1">
+        <div>
 
-          <div className="bg-white rounded-[30px] shadow-sm p-6 w-full max-w-md">
+          <div className="mt-3 bg-white rounded-2xl shadow-sm p-4 w-full max-w-sm">
 
             {/* FOTO */}
             <div className="flex flex-col items-center">
 
-              <div className="w-20 h-20 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center">
 
                 <UserCircle2
-                  size={50}
+                  size={35}
                   className="text-white"
                 />
 
               </div>
 
-              <h1 className="mt-4 text-xl font-black text-gray-800">
+              <h1 className="mt-2 text-base font-bold text-gray-800">
 
                 {loading ? "Loading..." : data.nama}
 
               </h1>
 
-              <p className="text-green-600 font-semibold">
+              <p className="text-xs text-green-600 font-medium">
 
                 {loading ? "" : data.role}
 
@@ -158,74 +158,58 @@ export default function ProfilePage() {
 
             {/* DATA */}
 
-            <div className="mt-8 space-y-4">
+            <div className="mt-4 space-y-2">
 
-              <div className="border border-green-100 rounded-xl p-4">
+              <div className="mt-4 space-y-2">
 
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-500">
                   Nama
                 </p>
 
                 <h2
-                style={{
-                    color: "#111827",
-                    fontWeight: "700",
-                    fontSize: "18px",
-                }}
+               className="mt-1 text-sm font-semibold text-gray-800"
                 >
                 {data.nama}
                 </h2>
 
               </div>
 
-              <div className="border border-green-100 rounded-xl p-4">
+              <div className="mt-4 space-y-2">
 
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-500">
                   Username
                 </p>
 
                 <h2
-                style={{
-                    color: "#111827",
-                    fontWeight: "700",
-                    fontSize: "18px",
-                }}
+               className="mt-1 text-sm font-semibold text-gray-800"
                 >
                 {data.username}
                 </h2>
 
               </div>
 
-              <div className="border border-green-100 rounded-xl p-4">
+              <div className="mt-4 space-y-2">
 
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-500">
                   Role
                 </p>
 
                     <h2
-                style={{
-                    color: "#111827",
-                    fontWeight: "700",
-                    fontSize: "18px",
-                }}
+              className="mt-1 text-sm font-semibold text-gray-800"
                 >
                 {data.role}
                 </h2>
 
               </div>
 
-              <div className="border border-green-100 rounded-xl p-4">
+              <div className="mt-4 space-y-2">
 
-                <p className="text-sm text-gray-500">
+                <p className="text-xs text-gray-500">
                   No HP
                 </p>
 
                 <h2
-                style={{
-                    color: "#111827",
-                    fontWeight: "700",
-                    fontSize: "18px",
-                }}
+               className="mt-1 text-sm font-semibold text-gray-800"
                 >
                 {data.noHp}
                 </h2>
@@ -241,10 +225,10 @@ export default function ProfilePage() {
                 
               <Link
                 href="/profil/edit"
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 flex items-center justify-center gap-2"
+               className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold rounded-xl py-2 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition"
               >
 
-                <Pencil size={18} />
+                <Pencil size={16} />
 
                 Edit Profile
 
@@ -255,7 +239,7 @@ export default function ProfilePage() {
                 className="flex-1 bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 flex items-center justify-center gap-2"
               >
 
-                <Pencil size={18} />
+                <KeyRound size={16} />
 
               Ubah Password
 

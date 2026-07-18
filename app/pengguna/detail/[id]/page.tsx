@@ -106,11 +106,11 @@ export default function DetailPenggunaPage() {
 
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-hidden">
 
         <Header title="Detail Pengguna" />
 
-        <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
+        <div className="mt-4 bg-white rounded-2xl p-5 shadow-sm max-w-3xl">
 
 
 
@@ -122,53 +122,53 @@ export default function DetailPenggunaPage() {
 
           ) : data ? (
 
-            <div className="mt-8 space-y-6">
+           <div className="grid md:grid-cols-2 gap-5 mt-3">
 
   <div>
-    <p className="text-sm text-gray-500">
+    <p className="text-xs text-gray-500">
       Nama
     </p>
 
-    <h1 className="text-2xl font-black text-gray-800">
+    <h2 className="mt-1 text-sm font-semibold text-gray-800">
       {data.nama || "-"}
-    </h1>
+    </h2>
   </div>
 
   <div>
-    <p className="text-sm text-gray-500">
+    <p className="text-xs text-gray-500">
       Username
     </p>
 
-    <h1 className="text-xl font-semibold text-gray-800">
+    <h2 className="mt-1 text-sm font-semibold text-gray-800">
       {data.username || "-"}
-    </h1>
+    </h2>
   </div>
 
   <div>
-    <p className="text-sm text-gray-500">
+    <p className="text-xs text-gray-500">
       Role
     </p>
 
-    <h1 className="text-xl font-semibold text-gray-800">
+    <h2 className="mt-1 text-sm font-semibold text-gray-800">
       {data.role || "-"}
-    </h1>
+    </h2>
   </div>
 
-        <div>
-          <p className="text-sm text-gray-500">
-            No HP
-          </p>
+  <div>
+    <p className="text-xs text-gray-500">
+      No HP
+    </p>
 
-          <h1 className="text-xl font-semibold text-gray-800">
-            {data.noHp || "-"}
-          </h1>
-        </div>
+    <h2 className="mt-1 text-sm font-semibold text-gray-800">
+      {data.noHp || "-"}
+    </h2>
+  </div>
 
 </div>
 
           ) : (
 
-            <div className="mt-8 text-red-500">
+            <div className="py-10 text-center text-red-500 font-medium">
               Data pengguna tidak ditemukan
             </div>
 
@@ -180,7 +180,7 @@ export default function DetailPenggunaPage() {
                 "/pengguna"
               )
             }
-            className="mt-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-2xl"
+           className="mt-5 w-32 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold py-2 rounded-xl shadow-md hover:shadow-lg transition"
           >
             Kembali
           </button>

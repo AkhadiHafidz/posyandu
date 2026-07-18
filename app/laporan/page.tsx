@@ -536,26 +536,22 @@ worksheet["!cols"] = Object.keys(data[0]).map((key) => ({
       <Sidebar />
 
       {/* CONTENT */}
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-y-auto">
 
         {/* HEADER */}
         <Header title="Laporan" />
 
         {/* TOP */}
-        <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm">
+        <div className="mt-4 bg-white rounded-2xl p-5 shadow-sm">
 
-<h2 className="text-3xl font-black text-gray-800">
+<h2 className="text-lg font-black text-gray-800">
 Buat Laporan Posyandu
 </h2>
 
-            <p className="text-gray-500 mt-2">
-Isi identitas laporan terlebih dahulu
-            </p>
-
-<div className="grid md:grid-cols-2 gap-5 mt-8">
+<div className="grid md:grid-cols-2 gap-3 mt-5">
 
 <div>
-<label className="block text-sm font-semibold text-gray-700 mb-2"
+<label className="block text-[11px] font-semibold text-gray-700 mb-2"
   >
   Nama Posyandu
 </label>
@@ -565,14 +561,14 @@ type="text"
 placeholder="Masukkan nama posyandu"
 value={namaPosyandu}
 onChange={(e)=>setNamaPosyandu(e.target.value)}
-className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+className="w-full mt-2 border border-green-200 rounded-xl px-3 py-1.5 text-sm text-gray-800 placeholder:text-gray-400"
 />
 
           </div>
 
 <div>
 
-<label  className="block text-sm font-semibold text-gray-700 mb-2"
+<label  className="block text-[11px] font-semibold text-gray-700 mb-2"
 >Lokasi RT/RW</label>
 
 <input
@@ -580,14 +576,14 @@ type="text"
 placeholder="Masukkan lokasi RT/RW"
 value={lokasiRTRW}
 onChange={(e)=>setLokasiRTRW(e.target.value)}
-className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+className="w-full mt-2 border border-green-200 rounded-xl px-3 py-1.5 text-sm text-gray-800 placeholder:text-gray-400"
 />
 
             </div>
 
 <div>
 
-<label  className="block text-sm font-semibold text-gray-700 mb-2"
+<label  className="block text-[11px] font-semibold text-gray-700 mb-2"
 >Puskesmas Kelurahan</label>
 
 <input
@@ -595,14 +591,14 @@ type="text"
 placeholder="Masukkan puskesmas kelurahan"
 value={puskesmasKelurahan}
 onChange={(e)=>setPuskesmasKelurahan(e.target.value)}
-className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+className="w-full mt-2 border border-green-200 rounded-xl px-3 py-1.5 text-sm text-gray-800 placeholder:text-gray-400"
 />
 
           </div>
 
 <div>
 
-<label  className="block text-sm font-semibold text-gray-700 mb-2"
+<label  className="block text-[11px] font-semibold text-gray-700 mb-2"
 >Kecamatan</label>
 
 <input
@@ -610,14 +606,14 @@ type="text"
 placeholder="Masukkan kecamatan"
 value={kecamatan}
 onChange={(e)=>setKecamatan(e.target.value)}
-className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+className="w-full mt-2 border border-green-200 rounded-xl px-3 py-1.5 text-sm text-gray-800 placeholder:text-gray-400"
 />
 
             </div>
 
 <div>
 
-<label  className="block text-sm font-semibold text-gray-700 mb-2"
+<label  className="block text-[11px] font-semibold text-gray-700 mb-2"
 >Kota / Kabupaten</label>
 
 <input
@@ -625,14 +621,14 @@ type="text"
 placeholder="Masukkan kota/kabupaten"
 value={kotaKabupaten}
 onChange={(e)=>setKotaKabupaten(e.target.value)}
-className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+className="w-full mt-2 border border-green-200 rounded-xl px-3 py-1.5 text-sm text-gray-800 placeholder:text-gray-400"
 />
 
 </div>
 
 <div>
 
-  <label className="block text-sm font-semibold text-gray-700 mb-2">
+  <label className="block text-[11px] font-semibold text-gray-700 mb-2">
     Jumlah Kader
   </label>
 
@@ -641,21 +637,21 @@ className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-8
     placeholder="Masukkan jumlah kader"
     value={jumlahKader}
     onChange={(e) => setJumlahKader(e.target.value)}
-    className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+    className="w-full mt-2 border border-green-200 rounded-xl px-3 py-1.5 text-sm text-gray-800 placeholder:text-gray-400"
   />
 
 </div>
 
 <div>
 
-<label className="block text-sm font-semibold text-gray-700 mb-2">
+<label className="block text-[11px] font-semibold text-gray-700 mb-2">
 Bulan Kegiatan
 </label>
 
 <select
 value={bulanKegiatan}
 onChange={(e)=>setBulanKegiatan(e.target.value)}
-className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+className="w-full mt-2 border border-green-200 rounded-xl px-3 py-1.5 text-sm text-gray-800"
 >
 
 <option value="">Pilih Bulan</option>
@@ -678,7 +674,7 @@ className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-8
 
 <div>
 
-<label className="block text-sm font-semibold text-gray-700 mb-2"
+<label className="block text-[11px] font-semibold text-gray-700 mb-2"
 >Tahun</label>
 
 <input
@@ -686,83 +682,44 @@ type="number"
 placeholder="Masukkan tahun"
 value={tahun}
 onChange={(e)=>setTahun(e.target.value)}
-className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+className="w-full mt-2 border border-green-200 rounded-xl px-3 py-1.5 text-sm text-gray-800 placeholder:text-gray-400"
 />
 
 </div>
 
 <div>
+  <label className="block text-[11px] font-semibold text-gray-700 mb-2">
+    Jenis Laporan
+  </label>
 
-<label  className="block text-sm font-semibold text-gray-700 mb-2">Jenis Laporan</label>
+  <select
+    value={jenisLaporan}
+    onChange={(e) => setJenisLaporan(e.target.value)}
+    className="w-full mt-2 border border-green-200 rounded-xl px-3 py-1.5 text-sm text-gray-800"
+  >
+    <option value="balita">
+      Pemeriksaan Balita
+    </option>
 
-<select
-value={jenisLaporan}
-onChange={(e)=>setJenisLaporan(e.target.value)}
-className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
->
+    <option value="ibu_hamil">
+      Pemeriksaan Ibu Hamil
+    </option>
+  </select>
+</div>
 
-<option value="balita">
-Pemeriksaan Balita
-</option>
-
-<option value="ibu_hamil">
-Pemeriksaan Ibu Hamil
-</option>
-
-</select>
-
+<div className="flex items-end">
+  <button
+    onClick={exportLaporan}
+    className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl px-4 py-2.5 text-sm font-semibold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
+  >
+    <FileSpreadsheet size={18} />
+    Download Excel
+  </button>
+</div>
           </div>
 
         </div>
 
-</div>    
-        {/* EXPORT */}
-        <div className="mt-10 bg-white rounded-[30px] p-8 shadow-sm">
-
-          <h2 className="text-3xl font-black text-gray-800">
-            Export Laporan
-          </h2>
-
-          <p className="text-gray-500 mt-2">
-            Download laporan data dalam format Excel
-          </p>
-
-          {/* BUTTON */}
-          <div className="grid md:grid-cols-3 gap-5 mt-8">
-
-            {/* PEMERIKSAAN */}
-            <button
-              onClick={
-                exportLaporan
-              }
-              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-3xl p-6 text-left shadow-lg hover:scale-[1.02] transition"
-            >
-
-              <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center">
-                <FileSpreadsheet size={28} />
-              </div>
-
-              <h2 className="text-2xl font-black mt-6">
-                Download Laporan
-              </h2>
-
-              <p className="text-blue-100 mt-2">
-                Download data 
-              </p>
-
-              <div className="flex items-center gap-2 mt-6">
-
-                <Download size={18} />
-
-                Download Excel
-
-              </div>
-
-            </button>
-
-          </div>
-
-        </div>
 
       </main>
     </div>

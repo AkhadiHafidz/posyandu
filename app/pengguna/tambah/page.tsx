@@ -97,21 +97,21 @@ export default function TambahPenggunaPage() {
 
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-hidden">
 
         <Header title="Tambah Pengguna" />
 
-        <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
+        <div className="mt-4 bg-white rounded-2xl p-5 shadow-sm max-w-3xl">
 
         
 
           {/* FORM */}
-          <div className="grid md:grid-cols-2 gap-5 mt-8">
+          <div className="grid md:grid-cols-2 gap-4 mt-5">
 
             {/* NAMA */}
             <div>
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Nama Lengkap
               </label>
 
@@ -126,14 +126,14 @@ export default function TambahPenggunaPage() {
                   })
                 }
                 placeholder="Masukkan nama"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+               className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
 
             <div>
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
               Username
               </label>
 
@@ -147,7 +147,7 @@ export default function TambahPenggunaPage() {
               })
               }
               placeholder="Masukkan username"
-              className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+              className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
               </div>
@@ -155,7 +155,7 @@ export default function TambahPenggunaPage() {
                 {/*password*/}
                 <div>
 
-                <label className="text-sm font-semibold text-gray-700">
+                <label className="text-xs font-semibold text-gray-700">
                 Password
                 </label>
 
@@ -169,7 +169,7 @@ export default function TambahPenggunaPage() {
                   })
                 }
                 placeholder="Masukkan password"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -177,7 +177,7 @@ export default function TambahPenggunaPage() {
                 {/*konfirmasi password*/}
             <div>
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Konfirmasi Password
               </label>
 
@@ -191,7 +191,7 @@ export default function TambahPenggunaPage() {
                   })
                 }
                 placeholder="Konfirmasi password"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800"
+                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
                 />
 
             </div>
@@ -199,7 +199,7 @@ export default function TambahPenggunaPage() {
             {/* NO HP */}
             <div>
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 No HP
               </label>
 
@@ -214,7 +214,7 @@ export default function TambahPenggunaPage() {
                   })
                 }
                 placeholder="08xxxxxxxxxx"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2.5 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -227,7 +227,7 @@ export default function TambahPenggunaPage() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className="mt-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-2xl"
+           className="mt-5 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow-md hover:shadow-lg transition"
           >
             {
               loading

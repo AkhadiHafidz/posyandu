@@ -153,24 +153,21 @@ if (docSnap.exists()) {
 
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-4 lg:p-5 overflow-hidden">
 
         <Header title="Edit Profil" />
 
-        <div className="mt-6">
+        <div className="mt-3">
 
-          <div className="bg-white rounded-[24px] shadow-sm p-6 w-full max-w-md">
+          <div className="bg-white rounded-2xl shadow-sm p-4 w-full max-w-sm">
 
             {/* Nama */}
 
-            <div className="mb-4">
+            <div className="mb-3">
 
               <label
-                style={{
-                  color: "#374151",
-                  fontWeight: 600,
-                }}
-              >
+               className="text-xs font-semibold text-gray-700">
+              
                 Nama
               </label>
 
@@ -183,20 +180,17 @@ if (docSnap.exists()) {
                     nama: e.target.value,
                   })
                 }
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-1 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
           </div>
 
             {/* Username */}
 
-            <div className="mb-4">
+            <div className="mb-3">
 
               <label
-                style={{
-                  color: "#374151",
-                  fontWeight: 600,
-                }}
+               className="text-xs font-semibold text-gray-700"
               >
                 Username
               </label>
@@ -210,20 +204,17 @@ if (docSnap.exists()) {
                     username: e.target.value,
                   })
                 }
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-1 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
 
             {/* Role */}
 
-            <div className="mb-4">
+            <div className="mb-3">
 
               <label
-                style={{
-                  color: "#374151",
-                  fontWeight: 600,
-                }}
+                 className="text-xs font-semibold text-gray-700"
               >
                 Role
               </label>
@@ -232,20 +223,17 @@ if (docSnap.exists()) {
                 type="text"
                 value={form.role}
                 readOnly
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-1 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
 
             {/* No HP */}
 
-            <div className="mb-4">
+            <div className="mb-3">
 
               <label
-                style={{
-                  color: "#374151",
-                  fontWeight: 600,
-                }}
+               className="text-xs font-semibold text-gray-700"
               >
                 No HP
               </label>
@@ -259,23 +247,23 @@ if (docSnap.exists()) {
                     noHp: e.target.value,
                   })
                 }
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-1 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
 
             {/* Button */}
 
-            <div className="flex gap-4">
+            <div className="flex gap-2 mt-4">
 
               <button
                 onClick={() =>
                   router.push("/profil")
                 }
-                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-md hover:shadow-lg transition"
               >
 
-                <ArrowLeft size={18} />
+                <ArrowLeft size={16} />
 
                 Batal
 
@@ -284,10 +272,10 @@ if (docSnap.exists()) {
               <button
                 onClick={handleSave}
                 disabled={loading}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-md hover:shadow-lg transition"
               >
 
-                <Save size={18} />
+                <Save size={16} />
 
                 Simpan
 

@@ -184,19 +184,19 @@ export default function EditBalitaPage() {
       <Sidebar />
 
       {/* CONTENT */}
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 px-4 py-3">
 
         <Header title="Edit Data Balita" />
 
-        <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
+        <div className="mt-4 bg-white rounded-2xl p-5 shadow-sm max-w-3xl">
 
 
           {/* FORM */}
-          <div className="grid md:grid-cols-2 gap-5 mt-8">
+          <div className="grid md:grid-cols-2 gap-3 mt-4">
             {/* NIK */}
 <div>
 
-<label className="text-sm font-semibold text-gray-700">
+<label className="text-xs font-semibold text-gray-700">
 NIK
 </label>
 
@@ -211,7 +211,7 @@ setForm({
 }
 placeholder="Masukkan NIK"
 maxLength={16}
-  className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
 />
 
 </div>
@@ -219,7 +219,7 @@ maxLength={16}
             {/* NAMA */}
             <div>
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Nama Balita
               </label>
 
@@ -236,7 +236,7 @@ maxLength={16}
                   })
                 }
                 placeholder="Nama balita"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -244,7 +244,7 @@ maxLength={16}
             {/* JK */}
             <div>
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Jenis Kelamin
               </label>
 
@@ -259,7 +259,7 @@ maxLength={16}
                       e.target.value,
                   })
                 }
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+              className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800"
               >
 
                 <option value="">
@@ -281,7 +281,7 @@ maxLength={16}
             {/* UMUR */}
             <div>
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Umur
               </label>
 
@@ -298,7 +298,7 @@ maxLength={16}
                   })
                 }
                 placeholder="2 Tahun"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -306,7 +306,7 @@ maxLength={16}
             {/* IBU */}
             <div>
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Nama Ibu
               </label>
 
@@ -323,7 +323,7 @@ maxLength={16}
                   })
                 }
                 placeholder="Nama ibu"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -331,7 +331,7 @@ maxLength={16}
             {/* ALAMAT */}
             <div className="md:col-span-2">
 
-              <label className="text-sm font-semibold text-gray-700">
+              <label className="text-xs font-semibold text-gray-700">
                 Alamat
               </label>
 
@@ -346,9 +346,9 @@ maxLength={16}
                       e.target.value,
                   })
                 }
-                rows={4}
+                rows={2}
                 placeholder="Alamat lengkap"
-                className="w-full mt-2 border border-green-200 rounded-2xl px-4 py-3 text-gray-800 placeholder:text-gray-400"
+                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
               />
 
             </div>
@@ -356,11 +356,11 @@ maxLength={16}
           </div>
 
           {/* BUTTON */}
-          <div className="flex justify-end mt-8">
+          <div className="flex justify-end mt-6">
 
             <button
               onClick={handleUpdate}
-              className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-2xl"
+              className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition"
             >
               Update Data
             </button>

@@ -76,56 +76,56 @@ export default function DetailIbuHamilPage() {
     <div className="min-h-screen bg-[#F5FFF8] flex">
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-8">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-hidden">
         <Header title="Detail Ibu Hamil" />
 
-        <div className="mt-6 bg-white rounded-[30px] p-6 shadow-sm max-w-[1500px] min-h-[820px]">
-          <div className="mt-8">
+        <div className="mt-3 bg-white rounded-2xl p-4 shadow-sm max-w-2xl">
+          <div className="mt-3">
 
   {/* ========================= */}
   {/* KOLOM KIRI */}
   {/* ========================= */}
 
- <div className="space-y-5">
+<div className="grid md:grid-cols-2 gap-5 mt-3">
 
     <div>
-      <p className="text-sm text-gray-500">NIK</p>
-      <p className="text-xl font-semibold text-gray-800 mt-1">
+      <p className="text-xs text-gray-500">NIK</p>
+      <p className="text-base font-semibold text-gray-800 mt-1">
         {data?.nik || "-"}
       </p>
     </div>
 
     <div>
-      <p className="text-sm text-gray-500">Nama Ibu</p>
-      <p className="text-2xl font-black text-gray-800 mt-1">
+      <p className="text-xs text-gray-500">Nama Ibu</p>
+      <p className="text-base font-black text-gray-800 mt-1">
         {data?.nama || "-"}
       </p>
     </div>
 
     <div>
-      <p className="text-sm text-gray-500">Umur</p>
-      <p className="text-xl font-semibold text-gray-800 mt-1">
+      <p className="text-xs text-gray-500">Umur</p>
+      <p className="text-base font-semibold text-gray-800 mt-1">
         {data?.umur || "-"} Tahun
       </p>
     </div>
 
     <div>
-      <p className="text-sm text-gray-500">Usia Kehamilan</p>
-      <p className="text-xl font-semibold text-gray-800 mt-1">
+      <p className="text-xs text-gray-500">Usia Kehamilan</p>
+      <p className="text-base font-semibold text-gray-800 mt-1">
         {data?.usiaKehamilan || "-"} Bulan
       </p>
     </div>
 
     <div>
-      <p className="text-sm text-gray-500">No HP</p>
-      <p className="text-xl font-semibold text-gray-800 mt-1">
+      <p className="text-xs text-gray-500">No HP</p>
+      <p className="text-base font-semibold text-gray-800 mt-1">
         {data?.noHp || "-"}
       </p>
     </div>
 
     <div>
-      <p className="text-sm text-gray-500">Alamat</p>
-      <p className="text-xl font-semibold text-gray-800 mt-1">
+      <p className="text-xs text-gray-500">Alamat</p>
+      <p className="text-base font-semibold text-gray-800 mt-1">
         {data?.alamat || "-"}
       </p>
     </div>
@@ -136,7 +136,7 @@ export default function DetailIbuHamilPage() {
             onClick={() =>
               router.push("/ibu-hamil")
             }
-            className="mt-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-2xl"
+            className="mt-5 w-36 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold py-2 rounded-xl shadow-md hover:shadow-lg transition"
           >
             Kembali
           </button>
