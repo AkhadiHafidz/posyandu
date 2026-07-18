@@ -9,7 +9,7 @@ export interface WHOData {
   plus3:number;
 }
 
-export const whoBoy: WHOData[] = [
+export const bbuBoy: WHOData[] = [
   {
     umur: 0,
     minus3: 2.1,

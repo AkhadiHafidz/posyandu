@@ -2,12 +2,8 @@
 
 import { useEffect, useState } from "react";
 import {
-  collection,
   doc,
   getDoc,
-  getDocs,
-  query,
-  where,
 } from "firebase/firestore";
 
 import { db } from "@/lib/firebase";
@@ -20,16 +16,10 @@ import {
 import Sidebar from "@/components/Sidebar";
 
 import Header from "@/components/header";
-import KMSChart from "@/components/KMSChart";
 
 
-const formatTanggal = (tanggal: string) => {
-  return new Date(tanggal).toLocaleDateString("id-ID", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-};
+
+
 
 export default function DetailBalitaPage() {
   const params = useParams();
@@ -41,36 +31,10 @@ export default function DetailBalitaPage() {
   const [loading, setLoading] =
     useState(true);
 
-    const [chartData, setChartData] = useState<any[]>([]);
+    
 
-    //GET RIWAYAT
-   const getRiwayat = async () => {
-  try {
-    const q = query(
-      collection(db, "pemeriksaan"),
-      where("pasienId", "==", id)
-    );
+    
 
-    const querySnapshot = await getDocs(q);
-
-    const hasil = querySnapshot.docs.map((item) => ({
-      id: item.id,
-      umur: Number(item.data().umur),
-      berat: Number(item.data().beratBadan),
-      tinggi: Number(item.data().tinggiBadan),
-      lingkarLengan: item.data().lingkarLengan || "-",
-      vitaminA: item.data().vitaminA || "-",
-      asiEksklusif: item.data().asiEksklusif || "-",
-      tanggal: item.data().tanggal,
-    }));
-
-    hasil.sort((a, b) => a.umur - b.umur);
-
-    setChartData(hasil);
-  } catch (error) {
-    console.log(error);
-  }
-};
   // GET DETAIL
   const getDetail = async () => {
     try {
@@ -95,7 +59,6 @@ export default function DetailBalitaPage() {
 
   useEffect(() => {
     getDetail();
-    getRiwayat();
   }, []);
 
   if (loading) {
@@ -183,112 +146,8 @@ export default function DetailBalitaPage() {
                 </h1>
               </div>
 
-              {/* Grafik KMS */}
-              <KMSChart
-              data={chartData}
-              jk={data.jk}
-            />
-              <div className="mt-10">
-
-  <h2 className="text-2xl font-bold text-gray-800 mb-5">
-    Riwayat Pemeriksaan
-  </h2>
-
-  <div className="overflow-x-auto">
-
-    <table className="min-w-full border border-gray-200 rounded-xl overflow-hidden">
-
-      <thead className="bg-green-600 text-white">
-
-        <tr>
-
-          <th className="px-4 py-3 text-left">
-            Tanggal
-          </th>
-
-          <th className="px-4 py-3 text-center">
-            Umur
-          </th>
-
-          <th className="px-4 py-3 text-center">
-            BB
-          </th>
-
-          <th className="px-4 py-3 text-center">
-            TB
-          </th>
-
-          <th className="px-4 py-3 text-center">
-            Lingkar Lengan
-          </th>
-
-          <th className="px-4 py-3 text-center">
-            Vitamin A
-          </th>
-
-          <th className="px-4 py-3 text-center">
-            ASI
-          </th>
-
-        </tr>
-
-      </thead>
-
-      <tbody>
-
-        {chartData.map((item, index) => (
-
-          <tr
-            key={item.id}
-            className={
-              index % 2 === 0
-                ? "bg-white"
-                : "bg-green-50"
-            }
-          >
-
-            <td className="px-4 py-3 text-center text-gray-800">
-              {formatTanggal(item.tanggal)}
-            </td>
-
-            <td className="px-4 py-3 text-center text-gray-800">
-              {item.umur} bln
-            </td>
-
-            <td className="px-4 py-3 text-center text-gray-800">
-              {item.berat} Kg
-            </td>
-
-            <td className="px-4 py-3 text-center text-gray-800">
-              {item.tinggi} Cm
-            </td>
-
-            <td className="px-4 py-3 text-center text-gray-800">
-              {item.lingkarLengan}
-            </td>
-
-            <td className="px-4 py-3 text-center text-gray-800">
-              {item.vitaminA}
-            </td>
-
-            <td className="px-4 py-3 text-center text-gray-800">
-              {item.asiEksklusif}
-            </td>
-
-         
-
-          </tr>
-
-        ))}
-
-      </tbody>
-
-    </table>
-
-  </div>
-
-</div>
-
+           
+            
 
               {/* Button Kembali */}
               <button

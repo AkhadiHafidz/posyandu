@@ -6,8 +6,12 @@ import { useParams, useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/header";
 
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "@/lib/firebase";
+
 
 interface IbuHamil {
   nik: string;
@@ -22,12 +26,15 @@ export default function DetailIbuHamilPage() {
   const params = useParams();
   const router = useRouter();
 
+  
   const [data, setData] =
     useState<IbuHamil | null>(null);
 
   const [loading, setLoading] =
     useState(true);
 
+
+    
   useEffect(() => {
     const getData = async () => {
       try {
@@ -53,6 +60,7 @@ export default function DetailIbuHamilPage() {
     };
 
     getData();
+  
   }, [params.id]);
 
   if (loading) {
@@ -62,6 +70,7 @@ export default function DetailIbuHamilPage() {
       </div>
     );
   }
+ 
 
   return (
     <div className="min-h-screen bg-[#F5FFF8] flex">
@@ -70,71 +79,58 @@ export default function DetailIbuHamilPage() {
       <main className="flex-1 p-6 md:p-8">
         <Header title="Detail Ibu Hamil" />
 
-        <div className="mt-8 bg-white rounded-[30px] p-8 shadow-sm max-w-4xl">
-          <div className="mt-8 space-y-6">
+        <div className="mt-6 bg-white rounded-[30px] p-6 shadow-sm max-w-[1500px] min-h-[820px]">
+          <div className="mt-8">
 
-            {/* NIK */}
-            <div>
-              <p className="text-sm text-gray-500">
-                NIK
-              </p>
+  {/* ========================= */}
+  {/* KOLOM KIRI */}
+  {/* ========================= */}
 
-              <p className="text-xl font-semibold text-gray-800 mt-1">
-                {data?.nik || "-"}
-              </p>
-            </div>
+ <div className="space-y-5">
 
-            <div>
-              <p className="text-sm text-gray-500">
-                Nama Ibu
-              </p>
+    <div>
+      <p className="text-sm text-gray-500">NIK</p>
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.nik || "-"}
+      </p>
+    </div>
 
-              <p className="text-2xl font-black text-gray-800 mt-1">
-                {data?.nama || "-"}
-              </p>
-            </div>
+    <div>
+      <p className="text-sm text-gray-500">Nama Ibu</p>
+      <p className="text-2xl font-black text-gray-800 mt-1">
+        {data?.nama || "-"}
+      </p>
+    </div>
 
-            <div>
-              <p className="text-sm text-gray-500">
-                Umur
-              </p>
+    <div>
+      <p className="text-sm text-gray-500">Umur</p>
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.umur || "-"} Tahun
+      </p>
+    </div>
 
-              <p className="text-xl font-semibold text-gray-800 mt-1">
-                {data?.umur || "-"} Tahun
-              </p>
-            </div>
+    <div>
+      <p className="text-sm text-gray-500">Usia Kehamilan</p>
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.usiaKehamilan || "-"} Bulan
+      </p>
+    </div>
 
-            <div>
-              <p className="text-sm text-gray-500">
-                Usia Kehamilan
-              </p>
+    <div>
+      <p className="text-sm text-gray-500">No HP</p>
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.noHp || "-"}
+      </p>
+    </div>
 
-              <p className="text-xl font-semibold text-gray-800 mt-1">
-                {data?.usiaKehamilan || "-"} Bulan
-              </p>
-            </div>
+    <div>
+      <p className="text-sm text-gray-500">Alamat</p>
+      <p className="text-xl font-semibold text-gray-800 mt-1">
+        {data?.alamat || "-"}
+      </p>
+    </div>
 
-            <div>
-              <p className="text-sm text-gray-500">
-                No HP
-              </p>
-
-              <p className="text-xl font-semibold text-gray-800 mt-1">
-                {data?.noHp || "-"}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-500">
-                Alamat
-              </p>
-
-              <p className="text-xl font-semibold text-gray-800 mt-1">
-                {data?.alamat || "-"}
-              </p>
-            </div>
-
-          </div>
+  </div>
 
           <button
             onClick={() =>
@@ -144,7 +140,7 @@ export default function DetailIbuHamilPage() {
           >
             Kembali
           </button>
-
+</div>
         </div>
       </main>
     </div>
