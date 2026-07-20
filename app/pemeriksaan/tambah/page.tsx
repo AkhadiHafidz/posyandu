@@ -43,7 +43,8 @@ export default function TambahPemeriksaanPage() {
   const [tekananDarah, setTekananDarah] =
 useState("");
 
-
+const [nadi, setNadi] =
+useState("");
 
 const [tfu, setTfu] =
 useState("");
@@ -207,6 +208,11 @@ jenis === "Balita"
 tekananDarah:
 jenis === "Ibu Hamil"
 ? tekananDarah
+: "",
+
+nadi:
+jenis === "Ibu Hamil"
+? nadi
 : "",
 
 lingkarLengan:
@@ -546,6 +552,21 @@ keterangan,
     className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
   />
 </div>
+
+<div>
+  <label className="text-xs font-semibold text-gray-700">
+    Nadi (x/menit)
+  </label>
+
+  <input
+    type="number"
+    value={nadi}
+    onChange={(e) => setNadi(e.target.value)}
+    placeholder="Contoh : 82"
+    className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
+  />
+</div>
+
 <div>
   <label className="text-xs font-semibold text-gray-700">
   Lingkar Lengan (cm)
@@ -643,7 +664,7 @@ keterangan,
   onChange={(e) =>
     setImunisasiTT(e.target.value)
   }
-  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-smtext-gray-800 placeholder:text-gray-400"
+  className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
 >
   <option value="" disabled>
     Pilih Imunisasi TT

@@ -74,7 +74,7 @@ export default function Home() {
           </motion.div>
 
           <h1 className="text-4xl md:text-6xl font-black leading-tight">
-            Pelayanan
+
             <span className="text-green-600"> Posyandu </span>
             Digital
           </h1>
@@ -223,10 +223,7 @@ export default function Home() {
       </section>
 
 
-      {/* FOOTER */}
-      <footer className="border-t border-white/20 bg-white/70 backdrop-blur-xl py-8 text-center text-gray-500">
-        © 2026 Posyandu SI — Sistem Informasi Posyandu Modern
-      </footer>
+      
     </div>
   );
 }

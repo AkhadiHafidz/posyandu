@@ -39,6 +39,7 @@ export default function EditPemeriksaanPage() {
   // Ibu Hamil
   const [usiaKehamilan, setUsiaKehamilan] = useState("");
   const [tekananDarah, setTekananDarah] = useState("");
+  const [nadi, setNadi] = useState("");
   const [tfu, setTfu] = useState("");
   const [djj, setDjj] = useState("");
   const [letakJanin, setLetakJanin] = useState("");
@@ -98,6 +99,11 @@ export default function EditPemeriksaanPage() {
 
           setTekananDarah(
             data.tekananDarah || ""
+          );
+
+
+          setNadi(
+            data.nadi || ""
           );
 
           setTfu(
@@ -184,6 +190,7 @@ export default function EditPemeriksaanPage() {
         asiEksklusif,
 
         tekananDarah,
+        nadi,
         tfu,
         djj,
         letakJanin,
@@ -425,6 +432,20 @@ export default function EditPemeriksaanPage() {
                   className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm  text-gray-800 placeholder:text-gray-400"
                 />
               </div>
+
+              <div>
+              <label className="text-xs font-semibold text-gray-700">
+                Nadi (x/menit)
+              </label>
+
+              <input
+                type="number"
+                value={nadi}
+                onChange={(e) => setNadi(e.target.value)}
+                placeholder="Contoh : 82"
+                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
+              />
+            </div>
 
               <div>
                 <label className="text-xs font-semibold text-gray-700">

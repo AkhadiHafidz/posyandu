@@ -108,22 +108,22 @@ export default function Header({
 };
 
   return (
-    <header className="w-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl shadow-sm border border-green-100 px-5 py-4 flex items-center justify-between">
+    <header className="w-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl shadow-sm border border-green-100 px-4 py-3 flex items-center justify-between">
 
       {/* LEFT */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
 
-        <button className="md:hidden w-10 h-10 rounded-xl bg-green-100 text-green-700 flex items-center justify-center">
-          <Menu size={20} />
+        <button className="md:hidden w-9 h-9 rounded-xl bg-green-100 text-green-700 flex items-center justify-center">
+          <Menu size={18} />
         </button>
 
         <div>
 
-          <h1 className="text-2xl font-black text-white drop-shadow-sm">
+          <h1 className="text-xl font-bold text-white">
             {title}
           </h1>
 
-          <p className="text-white/90 text-sm mt-1">
+          <p className="text-white/90 text-xs mt-0.5">
             Selamat datang di Sistem Posyandu
           </p>
 
@@ -132,7 +132,7 @@ export default function Header({
       </div>
 
       {/* RIGHT */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
 
         <div className="relative">
 
@@ -142,22 +142,22 @@ export default function Header({
                 !showProfile
               )
             }
-           className="flex items-center gap-2 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100 px-3 py-2 rounded-xl"
+className="flex items-center gap-2 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100 px-2.5 py-1.5 rounded-xl"
           >
 
             {/* AVATAR */}
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-base shadow-md">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
               {avatar}
             </div>
 
             {/* USER */}
             <div className="hidden sm:block text-left">
 
-              <h2 className="text-[15px] font-bold text-gray-800">
+              <h2 className="text-sm font-semibold text-gray-800">
                 {namaUser}
               </h2>
 
-              <p className="text-xs text-gray-500">
+              <p className="text-[11px] text-gray-500">
                 {roleUser}
               </p>
 
@@ -168,11 +168,11 @@ export default function Header({
           {/* DROPDOWN */}
           {showProfile && (
 
-            <div className="absolute right-0 top-16 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
+            <div className="absolute right-0 top-14 w-48 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
 
               <Link
                 href="/profil"
-                className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-gray-700 text-sm"
+                className="flex items-center gap-2 px-3 py-2.5 hover:bg-gray-50 text-gray-700 text-sm"
               >
 
                 <User size={16} />
@@ -185,7 +185,7 @@ export default function Header({
                 onClick={
                   handleLogout
                 }
-                className="flex items-center gap-3 px-5 py-4 hover:bg-red-50 text-red-600 w-full text-left"
+               className="flex items-center gap-2 px-3 py-2.5 hover:bg-red-50 text-red-600 w-full text-left text-sm"
               >
 
                 <LogOut size={16} />

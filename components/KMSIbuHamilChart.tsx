@@ -1,715 +1,192 @@
 "use client";
+
 import { useState } from "react";
-import { PregnancyChart } from "@/data/kms/whoPregnancy";
+import { beratHamil } from "@/data/kms/beratHamil";
+import { createScales, buildPath, Padding, formatTanggal } from "./BBUChart/utils";
 
-interface Pemeriksaan {
-  bulan:number;
-  berat:number|null;
-  fundus:number|null;
-  lingkarLengan:number|null;
-  tekananDarah:string;
-  tanggal:string;     
+export interface KenaikanBeratData {
+  minggu: number;
+  kenaikanBerat: number;
+  tanggal: string;
 }
 
-interface Props{
-  data:Pemeriksaan[];
+interface KMSIbuHamilChartProps {
+  data: KenaikanBeratData[];
 }
-export default function KMSIbuHamilChart({
-  data,
-}: Props) {
-const WIDTH = 780;
-const HEIGHT = 360;
 
-const LEFT = 90;
-const RIGHT = 90;
-const TOP = 40;
-const BOTTOM = 70;
+const WIDTH = 600;
+const HEIGHT = 420;
+const PADDING: Padding = { top: 30, right: 32, bottom: 50, left: 45 };
+const MIN_MINGGU = 0;
+const MAX_MINGGU = 40;
+const MIN_KG = -1;
+const MAX_KG = 20;
 
-const GRAPH_WIDTH = WIDTH - LEFT - RIGHT;
-const GRAPH_HEIGHT = HEIGHT - TOP - BOTTOM;
+const { scaleX, scaleY } = createScales(WIDTH, HEIGHT, PADDING, MIN_MINGGU, MAX_MINGGU, MIN_KG, MAX_KG);
 
-const getX = (bulan: number) =>
-  LEFT + ((bulan - 1) / 8) * GRAPH_WIDTH;
+const kategoriInfo: {
+  key: "kurus" | "normal" | "gemuk" | "obesitas";
+  label: string;
+  color: string;
+  imt: string;
+  rekomendasi: string;
+}[] = [
+  { key: "kurus", label: "Kurus", color: "#1a1a1a", imt: "< 18,5", rekomendasi: "12,5 - 18 kg" },
+  { key: "normal", label: "Normal", color: "#d81b60", imt: "18,5 - 24,9", rekomendasi: "11,5 - 16 kg" },
+  { key: "gemuk", label: "Gemuk", color: "#2e7d32", imt: "25 - 29,9", rekomendasi: "7 - 11,5 kg" },
+  { key: "obesitas", label: "Obesitas", color: "#1565c0", imt: "> 30", rekomendasi: "5 - 9 kg" },
+];
 
-const MAX_BERAT = 90;
+function buildBandPath(
+  key: "kurus" | "normal" | "gemuk" | "obesitas",
+  which: "min" | "max"
+) {
+  return buildPath(
+    beratHamil,
+    (d) => d.minggu,
+    (d) => d[key][which],
+    scaleX,
+    scaleY
+  );
+}
 
-const getYBerat = (berat: number) =>
-  HEIGHT -
-  BOTTOM -
-  (berat / MAX_BERAT) * GRAPH_HEIGHT;
+export default function KMSIbuHamilChart({ data }: KMSIbuHamilChartProps) {
+  const [hover, setHover] = useState<{
+    x: number;
+    y: number;
+    tanggal: string;
+    kenaikanBerat: number;
+    minggu: number;
+  } | null>(null);
 
-const getYTFU = (nilai: number) =>
-  HEIGHT -
-  BOTTOM -
-  (nilai / 40) * GRAPH_HEIGHT;
- 
-  const [hoverData, setHoverData] = useState<{
-  x: number;
-  y: number;
-  data: Pemeriksaan;
-} | null>(null);
-  const tooltipX =
-  hoverData && hoverData.x > WIDTH - 280
-    ? hoverData.x - 250
-    : hoverData
-    ? hoverData.x + 15
-    : 0;
-    const tooltipY =
-  hoverData && hoverData.y < 150
-    ? hoverData.y + 20
-    : hoverData
-    ? hoverData.y - 135
-    : 0;
-const createPath = (
-  data: { bulan:number; value:number }[],
-  getY:(v:number)=>number
-) => {
+  const ibuData = [...data]
+    .filter(
+      (d) =>
+        d.minggu != null &&
+        d.kenaikanBerat != null &&
+        !isNaN(Number(d.minggu)) &&
+        !isNaN(Number(d.kenaikanBerat))
+    )
+    .filter((d) => d.minggu >= MIN_MINGGU && d.minggu <= MAX_MINGGU)
+    .sort((a, b) => a.minggu - b.minggu);
 
-  return data
-    .map((d,i)=>{
+  const ibuPath = buildPath(ibuData, (d) => d.minggu, (d) => d.kenaikanBerat, scaleX, scaleY);
 
-      const x = getX(d.bulan);
-      const y = getY(d.value);
+  const xTicks = Array.from({ length: 11 }, (_, i) => i * 4);
+  const yTicks = Array.from({ length: MAX_KG - MIN_KG + 1 }, (_, i) => MIN_KG + i).filter((v) => v % 2 === 0);
 
-      return `${i===0?"M":"L"} ${x} ${y}`;
-
-    })
-    .join(" ");
-
-};
-
-const chart = PregnancyChart.map((item) => {
-const pemeriksaan = data.find(
-  (d) => Number(d.bulan) === item.bulan
-);
-
-
-  return {
-    bulan: item.bulan,
-
-    bawah: item.bawah,
-
-    hijau: item.hijau,
-
-    kuning: item.kuning,
-
-    merah: item.merah,
-
-    zonaHijau: item.hijau - item.bawah,
-
-    zonaKuning: item.kuning - item.hijau,
-
-    zonaMerah: item.merah - item.kuning,
-
-    berat: pemeriksaan?.berat ?? null,
-
-    fundus: pemeriksaan?.fundus ?? null,
-
-    lingkarLengan:
-      pemeriksaan?.lingkarLengan ?? null,
-
-    tekananDarah:
-      pemeriksaan?.tekananDarah ?? "",
-      tanggal: pemeriksaan?.tanggal ?? "",
-  };
-});
-
-
- 
   return (
-
-    <div className="rounded-2xl border bg-white shadow-md p-4">
-
-      <h2 className="text-2xl font-bold text-gray-800">
-
-        Grafik KMS Ibu Hamil
-
+    <div className="w-full max-w-md bg-white rounded-lg border border-gray-200 p-4">
+      <h2 className="text-center font-extrabold text-lg text-gray-900 mb-1">
+        Grafik Peningkatan Berat Badan
       </h2>
-
-      <p className="text-sm text-gray-500 mb-4">
-
-        Grafik perkembangan berat badan ibu hamil berdasarkan usia kehamilan.
-
+      <p className="text-center text-xs text-gray-500 mb-3">
+        Adaptasi dari IOM, 2009
       </p>
 
-      <div className="overflow-x-auto">
-
- <svg
-    width={WIDTH}
-    height={HEIGHT}
-    viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-    className="w-full h-auto"
->
-    {/* Garis Vertikal */}
- {Array.from({ length: 17 }).map((_, i) => {
-
-    const x =
-        LEFT + (i * GRAPH_WIDTH) / 16;
-
-    return (
-
-        <g key={i}>
-
-            <line
-                x1={x}
-                y1={TOP}
-                x2={x}
-                y2={HEIGHT-BOTTOM}
-                stroke="#D1D5DB"
-            />
-
-        </g>
-
-    );
-
-})}
-
-    {/* Garis Horizontal */}
-   {Array.from({ length: 21 }).map((_, i) => {
-
-    const y =
-        TOP + (i * GRAPH_HEIGHT) / 20;
-
-    return (
-
-        <g key={i+50}>
-
-            <line
-                x1={LEFT}
-                y1={y}
-                x2={WIDTH-RIGHT}
-                y2={y}
-                stroke="#D1D5DB"
-            />
-
-        </g>
-
-    );
-
-})}
-<line
-    x1={LEFT}
-    y1={HEIGHT-BOTTOM}
-    x2={WIDTH-RIGHT}
-    y2={HEIGHT-BOTTOM}
-    stroke="black"
-    strokeWidth={2}
-/>
-<line
-    x1={LEFT}
-    y1={TOP}
-    x2={LEFT}
-    y2={HEIGHT-BOTTOM}
-    stroke="black"
-    strokeWidth={2}
-/>
-<line
-    x1={WIDTH-RIGHT}
-    y1={TOP}
-    x2={WIDTH-RIGHT}
-    y2={HEIGHT-BOTTOM}
-    stroke="#2563EB"
-    strokeWidth={2}
-/>
-<defs>
-
-  <linearGradient id="zonaHijau" x1="0" x2="0" y1="0" y2="1">
-    <stop offset="0%" stopColor="#C8F2D0"/>
-    <stop offset="100%" stopColor="#C8F2D0"/>
-  </linearGradient>
-
-  <linearGradient id="zonaKuning" x1="0" x2="0" y1="0" y2="1">
-    <stop offset="0%" stopColor="#FFF3A6"/>
-    <stop offset="100%" stopColor="#FFF3A6"/>
-  </linearGradient>
-
-  <linearGradient id="zonaMerah" x1="0" x2="0" y1="0" y2="1">
-    <stop offset="0%" stopColor="#FFD5E8"/>
-    <stop offset="100%" stopColor="#FFD5E8"/>
-  </linearGradient>
-
-</defs>
-<polygon
-    fill="url(#zonaHijau)"
-    opacity={0.9}
-    points={
-        chart
-        .map(d=>`${getX(d.bulan)},${getYBerat(d.bawah)}`)
-        .join(" ")
-        +" "+
-        chart
-        .slice()
-        .reverse()
-        .map(d=>`${getX(d.bulan)},${getYBerat(d.hijau)}`)
-        .join(" ")
-    }
-/>
-<polygon
-    fill="url(#zonaKuning)"
-    opacity={0.9}
-    points={
-        chart
-        .map(d=>`${getX(d.bulan)},${getYBerat(d.hijau)}`)
-        .join(" ")
-        +" "+
-        chart
-        .slice()
-        .reverse()
-        .map(d=>`${getX(d.bulan)},${getYBerat(d.kuning)}`)
-        .join(" ")
-    }
-/>
-<polygon
-    fill="url(#zonaMerah)"
-    opacity={0.9}
-    points={
-        chart
-        .map(d=>`${getX(d.bulan)},${getYBerat(d.kuning)}`)
-        .join(" ")
-        +" "+
-        chart
-        .slice()
-        .reverse()
-        .map(d=>`${getX(d.bulan)},${getYBerat(d.merah)}`)
-        .join(" ")
-    }
-/>
-<polyline
-
-fill="none"
-stroke="black"
-strokeWidth={1}
-
-points={
-chart
-.map(d=>`${getX(d.bulan)},${getYBerat(d.bawah)}`)
-.join(" ")
-}
-
-/>
-<polyline
-
-fill="none"
-stroke="#2E7D32"
-strokeWidth={2}
-
-points={
-chart
-.map(d=>`${getX(d.bulan)},${getYBerat(d.hijau)}`)
-.join(" ")
-}
-
-/>
-<polyline
-
-fill="none"
-stroke="#D97706"
-strokeWidth={2}
-
-points={
-chart
-.map(d=>`${getX(d.bulan)},${getYBerat(d.kuning)}`)
-.join(" ")
-}
-
-/>
-<polyline
-
-fill="none"
-stroke="#DB2777"
-strokeWidth={2}
-
-points={
-chart
-.map(d=>`${getX(d.bulan)},${getYBerat(d.merah)}`)
-.join(" ")
-}
-
-/>
-<path
-  d={createPath(
-    chart
-      .filter(d=>d.berat!=null)
-      .map(d=>({
-        bulan:d.bulan,
-        value:d.berat!,
-      })),
-    getYBerat
-  )}
-  fill="none"
-  stroke="#16A34A"
-  strokeWidth={4}
-/>
-{chart
-.filter(d=>d.berat!=null)
-.map((d,i)=>(
-
-<circle
-  key={i}
-  cx={getX(d.bulan)}
-  cy={getYBerat(d.berat!)}
-  r={7}
-  fill="#16A34A"
-  stroke="white"
-  strokeWidth={3}
-  style={{ cursor: "pointer" }}
-  onMouseEnter={() =>
-    setHoverData({
-      x: getX(d.bulan),
-      y: getYBerat(d.berat!),
-      data: d,
-    })
-  }
-  onMouseLeave={() => setHoverData(null)}
-/>
-
-))}
-<path
-  d={createPath(
-    chart
-      .filter(d=>d.fundus!=null)
-      .map(d=>({
-        bulan:d.bulan,
-        value:d.fundus!,
-      })),
-    getYTFU
-  )}
-  fill="none"
-  stroke="#2563EB"
-  strokeWidth={4}
-/>
-
-{chart
-.filter(d=>d.fundus!=null)
-.map((d,i)=>(
-
-<circle
-  key={`tfu${i}`}
-  cx={getX(d.bulan)}
-  cy={getYTFU(d.fundus!)}
-  r={6}
-  fill="#2563EB"
-  stroke="white"
-  strokeWidth={3}
-  style={{ cursor: "pointer" }}
-  onMouseEnter={() =>
-    setHoverData({
-      x: getX(d.bulan),
-      y: getYTFU(d.fundus!),
-      data: d,
-    })
-  }
-  onMouseLeave={() => setHoverData(null)}
-/>
-
-))}
-
-<path
-  d={createPath(
-    chart
-      .filter(d=>d.lingkarLengan!=null)
-      .map(d=>({
-        bulan:d.bulan,
-        value:d.lingkarLengan!,
-      })),
-    getYTFU
-  )}
-  fill="none"
-  stroke="#EA580C"
-  strokeWidth={4}
-/>
-{chart
-.filter(d=>d.lingkarLengan!=null)
-.map((d,i)=>(
-
-<circle
-  key={`lila${i}`}
-  cx={getX(d.bulan)}
-  cy={getYTFU(d.lingkarLengan!)}
-  r={6}
-  fill="#EA580C"
-  stroke="white"
-  strokeWidth={3}
-  style={{ cursor: "pointer" }}
-  onMouseEnter={() =>
-    setHoverData({
-      x: getX(d.bulan),
-      y: getYTFU(d.lingkarLengan!),
-      data: d,
-    })
-  }
-  onMouseLeave={() => setHoverData(null)}
-/>
-
-))}
-{/* Angka Berat Badan */}
-{Array.from({ length:10 }).map((_,i)=>{
-
-   const berat = i * 10;
-
-   return(
-
-      <g key={i}>
-
-         <text
-            x={LEFT-12}
-            y={getYBerat(berat)+5}
-            textAnchor="end"
-            fontSize="15"
-            fontWeight="bold"
-         >
-            {berat}
-         </text>
-
-         <line
-            x1={LEFT-8}
-            y1={getYBerat(berat)}
-            x2={LEFT}
-            y2={getYBerat(berat)}
-            stroke="black"
-            strokeWidth={2}
-         />
-
-      </g>
-
-   );
-
-})}
-
-{/* Angka TFU */}
-{Array.from({ length: 9 }).map((_, i) => {
-
-  const nilai = i * 5;
-
-  return (
-    <g key={`tfu-${i}`}>
-
-      <text
-        x={WIDTH - RIGHT + 10}
-        y={getYTFU(nilai) + 5}
-        fontSize="15"
-        fontWeight="bold"
-        fill="#2563EB"
-      >
-        {nilai}
-      </text>
-
-      <line
-        x1={WIDTH - RIGHT}
-        y1={getYTFU(nilai)}
-        x2={WIDTH - RIGHT + 6}
-        y2={getYTFU(nilai)}
-        stroke="#2563EB"
-        strokeWidth="2"
-      />
-
-
-    </g>
-  );
-
-})}
-{Array.from({ length: 9 }).map((_, i) => {
-
-  const x = getX(i + 1);
-
-  return (
-    <line
-      key={`tickx-${i}`}
-      x1={x}
-      y1={HEIGHT - BOTTOM}
-      x2={x}
-      y2={HEIGHT - BOTTOM + 8}
-      stroke="black"
-      strokeWidth={2}
-    />
-  );
-
-})}
-
-{/* Bulan */}
-{/* Angka Bulan */}
-{Array.from({ length:9 }).map((_,i)=>{
-
-   const bulan=i+1;
-
-   return(
-
-      <text
-         key={`bulan-${bulan}`}
-         x={getX(bulan)}
-         y={HEIGHT-BOTTOM+28}
-         textAnchor="middle"
-         fontSize="15"
-         fontWeight="bold"
-      >
-         {bulan}
-      </text>
-
-   );
-
-})}
-<text
-  x={WIDTH / 2}
-  y={HEIGHT - 28}
-  textAnchor="middle"
-  fontSize={13}
-  fontWeight="600"
->
-  Usia Kehamilan (Bulan)
-</text>
-<text
-  transform={`translate(25 ${HEIGHT / 2}) rotate(-90)`}
-  textAnchor="middle"
-  fontSize="15"
-  fontWeight="600"
->
-  Berat Badan (Kg)
-</text>
-<text
-  transform={`translate(${WIDTH - 20} ${HEIGHT / 2}) rotate(90)`}
-  textAnchor="middle"
-  fontSize="15"
-  fontWeight="600"
-  fill="#2563EB"
->
-  TFU / Lingkar Lengan (cm)
-</text>
-
-<g transform={`translate(${WIDTH / 2 - 190}, ${HEIGHT - 22})`}>
-
-  <circle cx={0} cy={4} r={5} fill="#16A34A"/>
-  <text x={12} y={10} fontSize={15} fontWeight="bold" fill="#16A34A">
-    Berat Badan
-  </text>
-
-  <circle cx={220} cy={4} r={5} fill="#EA580C"/>
-  <text x={232} y={10} fontSize={15} fontWeight="bold" fill="#EA580C">
-    Lingkar Lengan
-  </text>
-
-  <circle cx={430} cy={4} r={5} fill="#2563EB"/>
-  <text x={442} y={10} fontSize={15} fontWeight="bold" fill="#2563EB">
-    TFU
-  </text>
-
-</g>
-
-{/* Tooltip */}
-{hoverData && (
-  <g>
-
-<line
-    x1={hoverData.x}
-    y1={TOP}
-    x2={hoverData.x}
-    y2={HEIGHT-BOTTOM}
-    stroke="#888"
-    strokeDasharray="5 5"
-/>
-    <rect
-      filter="drop-shadow(2px 3px 6px rgba(0,0,0,.25))"
-      x={tooltipX}
-      y={tooltipY}
-      width={240}
-      height={175}
-      rx={10}
-      fill="white"
-      stroke="#16a36d"
-      strokeWidth={2}
-    />
-
-    <text
-      x={tooltipX+10}
-      y={tooltipY + 25}
-      fontWeight="bold"
-      fill="#15803D"
-      fontSize={15}
-    >
-      Bulan {hoverData.data.bulan}
-    </text>
-
-    <text
-      x={tooltipX+10}
-      y={tooltipY + 70}
-      fontSize={14}
-    >
-      Berat :
-      {hoverData.data.berat ?? "-"} Kg
-    </text>
-
-    <text
-      x={tooltipX+10}
-      y={tooltipY + 95}
-      fontSize={14}
-    >
-      TFU :
-      {hoverData.data.fundus ?? "-"} cm
-    </text>
-
-    <text
-      x={tooltipX+10}
-      y={tooltipY + 120}
-      fontSize={14}
-    >
-      Lingkar Lengan :
-      {hoverData.data.lingkarLengan ?? "-"} cm
-    </text>
-
-    <text
-      x={tooltipX+10}
-      y={tooltipY + 145}
-      fontSize={14}
-    >
-      Tekanan Darah :
-      {hoverData.data.tekananDarah || "-"}
-    </text>
-
-<text
-  x={tooltipX + 10}
-  y={tooltipY + 45}
-  fontSize={14}
->
-  Tanggal :
-  {
-    hoverData.data.tanggal
-      ? new Date(hoverData.data.tanggal).toLocaleDateString(
-          "id-ID",
-          {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-          }
-        )
-      : "-"
-  }
-</text>
-  </g>
-)}
-
-</svg>
-
+      <div className="relative">
+        <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="w-full h-auto">
+          {/* Grid horizontal */}
+          {yTicks.map((v) => (
+            <g key={`y-${v}`}>
+              <line x1={PADDING.left} x2={WIDTH - PADDING.right} y1={scaleY(v)} y2={scaleY(v)} stroke="#e0e0e0" strokeWidth={1} />
+              <text x={PADDING.left - 8} y={scaleY(v)} textAnchor="end" dominantBaseline="middle" fontSize={9} fill="#555">
+                {v}
+              </text>
+            </g>
+          ))}
+
+          {/* Grid vertikal */}
+          {xTicks.map((v) => (
+            <g key={`x-${v}`}>
+              <line x1={scaleX(v)} x2={scaleX(v)} y1={PADDING.top} y2={HEIGHT - PADDING.bottom} stroke="#e0e0e0" strokeWidth={1} />
+              <text x={scaleX(v)} y={HEIGHT - PADDING.bottom + 14} textAnchor="middle" fontSize={9} fill="#555">
+                {v}
+              </text>
+            </g>
+          ))}
+
+          {/* Judul sumbu */}
+          <text x={WIDTH / 2} y={HEIGHT - 6} textAnchor="middle" fontSize={10} fontWeight={600} fill="#333">
+            Minggu Kehamilan
+          </text>
+          <text transform="rotate(-90)" x={-(HEIGHT / 2)} y={12} textAnchor="middle" fontSize={10} fontWeight={600} fill="#333">
+            Kenaikan Berat Badan (Kg)
+          </text>
+
+          {/* Semua band kategori ditampilkan setara — tanpa highlight, sesuai kartu asli */}
+          {kategoriInfo.map((k) => (
+            <g key={k.key}>
+              <path
+                d={
+                  buildBandPath(k.key, "min") +
+                  " " +
+                  beratHamil
+                    .slice()
+                    .reverse()
+                    .map((d) => `L ${scaleX(d.minggu).toFixed(2)} ${scaleY(d[k.key].max).toFixed(2)}`)
+                    .join(" ") +
+                  " Z"
+                }
+                fill={k.color}
+                opacity={0.12}
+              />
+              <path d={buildBandPath(k.key, "max")} fill="none" stroke={k.color} strokeWidth={1.5} strokeDasharray="5 3" />
+              <path d={buildBandPath(k.key, "min")} fill="none" stroke={k.color} strokeWidth={1.5} strokeDasharray="5 3" />
+            </g>
+          ))}
+
+          {/* Garis kenaikan berat badan ibu (data aktual) */}
+          {ibuData.length > 0 && (
+            <path d={ibuPath} fill="none" stroke="#9333ea" strokeWidth={2.5} />
+          )}
+          {ibuData.map((d, i) => {
+            const x = scaleX(d.minggu);
+            const y = scaleY(d.kenaikanBerat);
+            return (
+              <circle
+                key={i}
+                cx={x}
+                cy={y}
+                r={4}
+                fill="#9333ea"
+                stroke="#fff"
+                strokeWidth={1.2}
+                style={{ cursor: "pointer" }}
+                onMouseEnter={() => setHover({ x, y, tanggal: d.tanggal, kenaikanBerat: d.kenaikanBerat, minggu: d.minggu })}
+                onMouseLeave={() => setHover(null)}
+              />
+            );
+          })}
+        </svg>
+
+        {hover && (
+          <div
+            className="absolute bg-gray-900 text-white text-[11px] rounded-md px-2.5 py-1.5 shadow-lg pointer-events-none whitespace-nowrap"
+            style={{
+              left: `${(hover.x / WIDTH) * 100}%`,
+              top: `${(hover.y / HEIGHT) * 100}%`,
+              transform: "translate(-50%, -120%)",
+            }}
+          >
+            <div className="font-semibold">{formatTanggal(hover.tanggal)}</div>
+            <div>Usia Gestasi: {hover.minggu} minggu</div>
+            <div>Kenaikan Berat: {hover.kenaikanBerat} kg</div>
+          </div>
+        )}
       </div>
-<div className="flex justify-center items-center gap-8 mt-4 text-sm font-semibold">
 
-  <div className="flex items-center gap-2">
-    <div className="w-4 h-4 rounded bg-green-500"></div>
-    <span className="text-green-700">Zona Normal</span>
-  </div>
-
-  <div className="flex items-center gap-2">
-    <div className="w-4 h-4 rounded bg-yellow-400"></div>
-    <span className="text-yellow-700">Zona Waspada</span>
-  </div>
-
-  <div className="flex items-center gap-2">
-    <div className="w-4 h-4 rounded bg-pink-400"></div>
-    <span className="text-pink-700">Zona Risiko</span>
-  </div>
-
-</div> 
-
+      {/* Legenda kategori — sebagai referensi, bukan status pasien */}
+      <div className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[11px] text-gray-700">
+        {kategoriInfo.map((k) => (
+          <div key={k.key} className="flex items-center gap-1">
+            <span className="inline-block w-3 h-0.5" style={{ backgroundColor: k.color }} />
+            <span>
+              {k.label} (IMT {k.imt}): {k.rekomendasi}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
-
   );
-
 }

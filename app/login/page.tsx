@@ -291,8 +291,8 @@ className="absolute top-5 left-5 flex items-center gap-2 bg-white/80 backdrop-bl
             >
               Sistem Informasi Posyandu Digital
               untuk pelayanan kesehatan
-              masyarakat yang lebih modern,
-              cepat, dan terintegrasi.
+              masyarakat yang lebih modern
+               dan cepat
             </motion.p>
 
             {/* IMAGE */}

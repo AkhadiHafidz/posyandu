@@ -109,7 +109,7 @@ export default function Sidebar() {
   }
 
   return (
-<aside className="w-[240px] min-h-screen bg-gradient-to-b from-green-600 to-emerald-700 text-white p-5 hidden md:flex flex-col justify-between shadow-2xl">
+<aside className="w-[210px] min-h-screen bg-gradient-to-b from-green-600 to-emerald-700 text-white p-4 hidden md:flex flex-col justify-between shadow-xl">
 
       {/* TOP */}
       <div>
@@ -117,11 +117,11 @@ export default function Sidebar() {
         {/* LOGO */}
         <div>
 
-  <h1 className="text-[2rem] font-black tracking-tight">
+  <h1 className="text-2xl font-bold tracking-tight">
     Posyandu
   </h1>
 
-          <p className="text-green-100 text-xs mt-2 leading-relaxed">
+          <p className="text-green-100 text-[11px] mt-1 leading-5">
     Sistem Informasi Posyandu Digital
   </p>
 
@@ -131,7 +131,7 @@ export default function Sidebar() {
        <div className="w-full h-[1px] bg-white/20 my-6"></div>
 
         {/* MENU */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1.5">
 
           {menus.map((menu, index) => {
 
@@ -143,7 +143,7 @@ export default function Sidebar() {
               <Link
               key={index}
               href={menu.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group
+                className={`flex items-center gap-2.5 px-2.5 py-2 rounded-xl transition-all duration-300 group
                   
                   ${
                     isActive
@@ -155,7 +155,7 @@ export default function Sidebar() {
 
                 <div
                   className={`
-                    w-9 h-9 rounded-xl flex items-center justify-center transition
+                    w-8 h-8 rounded-xl flex items-center justify-center transition
 
                     ${
                       isActive
@@ -164,10 +164,10 @@ export default function Sidebar() {
                     }
                   `}
                 >
-                  <Icon size={18} />
+                  <Icon size={16} />
                 </div>
 
-               <span className="text-[15px] font-medium">
+               <span className="text-sm font-medium">
                   {menu.title}
                 </span>
 
