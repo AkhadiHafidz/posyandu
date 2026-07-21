@@ -78,6 +78,7 @@ function StripChart({
     <div className="mb-3">
       <p className="text-xs font-semibold text-gray-700 mb-1">{label} ({unit})</p>
       <svg viewBox={`0 0 ${STRIP_WIDTH} ${STRIP_HEIGHT}`} className="w-full h-auto">
+       
         {yTicks.map((v) => (
           <g key={v}>
             <line x1={STRIP_PADDING.left} x2={STRIP_WIDTH - STRIP_PADDING.right} y1={sy(v)} y2={sy(v)} stroke="#e0e0e0" strokeWidth={1} />
@@ -132,6 +133,37 @@ export default function GrafikEvaluasiKehamilan({ data }: GrafikEvaluasiKehamila
       </p>
       <div className="relative mb-4">
         <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="w-full h-auto">
+            {/* GRID VERTIKAL SETIAP 1 MINGGU */}
+{Array.from(
+    { length: MAX_MINGGU - MIN_MINGGU + 1 },
+    (_, i) => MIN_MINGGU + i
+).map((m) => (
+    <line
+        key={`v-${m}`}
+        x1={scaleX(m)}
+        x2={scaleX(m)}
+        y1={PADDING.top}
+        y2={HEIGHT - PADDING.bottom}
+        stroke={m % 5 === 0 ? "#4a4a4a" : "#bdbdbd"}
+strokeWidth={m % 5 === 0 ? 1.2 : 0.45}
+    />
+))}
+
+{/* GRID HORIZONTAL SETIAP 1 CM */}
+{Array.from(
+    { length: MAX_TFU - MIN_TFU + 1 },
+    (_, i) => MIN_TFU + i
+).map((cm) => (
+    <line
+        key={`h-${cm}`}
+        x1={PADDING.left}
+        x2={WIDTH - PADDING.right}
+        y1={scaleY(cm)}
+        y2={scaleY(cm)}
+       stroke={cm % 5 === 0 ? "#4a4a4a" : "#bdbdbd"}
+strokeWidth={cm % 5 === 0 ? 1.2 : 0.45}
+    />
+))}
           {yTicks.map((v) => (
             <g key={`y-${v}`}>
               <line x1={PADDING.left} x2={WIDTH - PADDING.right} y1={scaleY(v)} y2={scaleY(v)} stroke="#e0e0e0" strokeWidth={1} />
@@ -228,19 +260,33 @@ export default function GrafikEvaluasiKehamilan({ data }: GrafikEvaluasiKehamila
         unit="mmHg"
         color="#1565c0"
       />
+      <StripChart
+  data={data}
+  getValue={(d) => d.nadi}
+  minVal={40}
+  maxVal={140}
+  batasNormalMin={60}
+  batasNormalMax={100}
+  label="Nadi"
+  unit="x/menit"
+  color="#ef6c00"
+/>
   
-    <div className="overflow-x-auto mt-5">
-    <table className="w-full text-sm border">
+    <div className="overflow-x-auto mt-3 max-h-52">
+    <table className="w-full text-[10px] border border-gray-400 text-gray-900 bg-white">
         <thead className="bg-green-50">
             <tr>
-                <th className="border p-2">Minggu</th>
-                <th className="border p-2">TFU</th>
-                <th className="border p-2">DJJ</th>
-                <th className="border p-2">TD</th>
-                <th className="border p-2">Letak Janin</th>
-                <th className="border p-2">Tablet Fe</th>
-                <th className="border p-2">Imunisasi TT</th>
-                <th className="border p-2">Keluhan</th>
+                <th className="border border-gray-400 px-1 py-0.5 text-center">No</th>
+                <th className="border border-gray-400 px-1 py-0.5 text-center">Tanggal</th>
+                <th className="border border-gray-400 px-1 py-0.5 text-center">Minggu</th>
+                <th className="border border-gray-400 px-1 py-0.5 text-center">TFU</th>
+                <th className="border border-gray-400 px-1 py-0.5 text-center">DJJ</th>
+                <th className="border border-gray-400 px-1 py-0.5 text-center">TD</th>
+                <th className="border border-gray-400 px-1 py-0.5 text-center">Nadi</th>
+                <th className="border border-gray-400 px-1 py-0.5 text-center">Letak Janin</th>
+                <th className="border border-gray-400 px-1 py-0.5 text-center">Tablet Fe</th>
+                <th className="border border-gray-400 px-1 py-0.5 text-center">Imunisasi TT</th>
+                <th className="border border-gray-400 px-1 py-0.5 text-center">Keluhan</th>
             </tr>
         </thead>
 
@@ -250,11 +296,18 @@ export default function GrafikEvaluasiKehamilan({ data }: GrafikEvaluasiKehamila
                 .sort((a,b)=>a.minggu-b.minggu)
                 .map((d,index)=>(
                     <tr key={index}>
+                        <td className="border p-2 text-center">
+                            {index + 1}
+                        </td>
+                        <td className="border p-2">{formatTanggal(d.tanggal)}</td>
                         <td className="border p-2">{d.minggu}</td>
                         <td className="border p-2">{d.tfu ?? "-"}</td>
                         <td className="border p-2">{d.djj ?? "-"}</td>
                         <td className="border p-2">
                             {d.sistol}/{d.diastol}
+                        </td>
+                        <td className="border p-2">
+                            {d.nadi ?? "-"}
                         </td>
                         <td className="border p-2">
                             {d.letakJanin ?? "-"}

@@ -454,18 +454,10 @@ className="absolute top-5 left-5 flex items-center gap-2 bg-white/80 backdrop-bl
 
               </motion.div>
 
-              {/* FORGOT */}
-              <div className="text-right">
-
-                <button
-                  type="button"
-                  className="text-sm text-green-600 hover:underline"
-                >
-                  Forgot Password?
-                </button>
-
-              </div>
-
+              
+                        <div className="mt-3 text-center">
+            
+          </div>
               {/* BUTTON */}
               <motion.button
                 whileHover={{
