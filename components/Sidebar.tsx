@@ -118,7 +118,7 @@ export default function Sidebar() {
         <div>
 
   <h1 className="text-2xl font-bold tracking-tight">
-    Posyandu
+    Posyandu Cempaka 2B
   </h1>
 
           <p className="text-green-100 text-[11px] mt-1 leading-5">

@@ -32,7 +32,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-2xl md:text-3xl font-extrabold text-green-700"
           >
-            Posyandu Cempaka
+            Posyandu Cempaka 2B
           </motion.h1>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">

@@ -32,9 +32,7 @@ interface Balita {
 
   jk: string;
 
-  umur: string;
-
-  ibu: string;
+  NamaOrtu: string;
 
   alamat: string;
 }
@@ -84,12 +82,8 @@ export default function BalitaPage() {
             data.jk || ""
           ),
 
-          umur: String(
-            data.umur || ""
-          ),
-
-          ibu: String(
-            data.ibu || ""
+          NamaOrtu: String(
+            data.NamaOrtu || ""
           ),
 
           alamat: String(
@@ -97,6 +91,9 @@ export default function BalitaPage() {
           ),
         });
       });
+
+      // Urutkan data berdasarkan nama balita secara alfabetis (A-Z)
+      result.sort((a, b) => a.nama.localeCompare(b.nama));
 
       setDataBalita(result);
 
@@ -129,6 +126,9 @@ export default function BalitaPage() {
             search.toLowerCase()
           )
       );
+
+    // Urutkan kembali hasil pencarian secara alfabetis (A-Z)
+    filtered.sort((a, b) => a.nama.localeCompare(b.nama));
 
     setFilteredData(filtered);
 
@@ -240,11 +240,7 @@ export default function BalitaPage() {
                 </th>
 
                 <th className="text-left py-4 px-5 text-gray-700 text-sm font-semibold">
-                  Umur
-                </th>
-
-                <th className="text-left py-4 px-5 text-gray-700 text-sm font-semibold">
-                  Nama Ibu
+                  Nama Ortu
                 </th>
 
                 <th className="text-left py-4 px-5 text-gray-700 text-sm font-semibold">
@@ -310,14 +306,9 @@ export default function BalitaPage() {
                         {item.jk || "-"}
                       </td>
 
-                      {/* UMUR */}
-                      <td className="py-4 px-5 text-sm text-gray-600">
-                        {item.umur || "-"}
-                      </td>
-
                       {/* IBU */}
                       <td className="py-4 px-5 text-sm text-gray-600">
-                        {item.ibu || "-"}
+                        {item.NamaOrtu || "-"}
                       </td>
 
                       {/* ALAMAT */}

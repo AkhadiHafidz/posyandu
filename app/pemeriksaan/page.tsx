@@ -12,7 +12,6 @@ import {
   Trash2,
   Eye,
   Search,
-  ClipboardList,
 } from "lucide-react";
 
 import {
@@ -20,6 +19,8 @@ import {
   getDocs,
   deleteDoc,
   doc,
+  query,
+  orderBy,
 } from "firebase/firestore";
 
 import { db } from "@/lib/firebase";
@@ -32,59 +33,62 @@ interface Pemeriksaan {
   beratBadan: string;
   tinggiBadan: string;
   status: string;
+  createdAt?: any;
 }
 
 export default function PemeriksaanPage() {
-  const [dataPemeriksaan, setDataPemeriksaan] =
-    useState<Pemeriksaan[]>([]);
-
-  const [filteredData, setFilteredData] =
-    useState<Pemeriksaan[]>([]);
-
-  const [search, setSearch] =
-    useState("");
-
-  const [loading, setLoading] =
-    useState(true);
+  const [dataPemeriksaan, setDataPemeriksaan] = useState<Pemeriksaan[]>([]);
+  const [filteredData, setFilteredData] = useState<Pemeriksaan[]>([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const getData = async () => {
     try {
-      const querySnapshot = await getDocs(
-        collection(db, "pemeriksaan")
-      );
+      // 1. Mengurutkan query Firestore berdasarkan `createdAt` secara descending (terbaru di atas)
+      let querySnapshot;
+      try {
+        const q = query(collection(db, "pemeriksaan"), orderBy("createdAt", "desc"));
+        querySnapshot = await getDocs(q);
+      } catch (err) {
+        // Fallback jika belum ada index Firestore
+        querySnapshot = await getDocs(collection(db, "pemeriksaan"));
+      }
 
       const result: Pemeriksaan[] = [];
 
       querySnapshot.forEach((document) => {
         const data = document.data();
 
+        // Format Status ke Naik / Tetap / Turun
+        let rawStatus = String(data.status || data.statusPertumbuhan || "");
+        let formattedStatus = rawStatus;
+
+        const sUpper = rawStatus.toUpperCase();
+        if (sUpper === "N" || sUpper.includes("NAIK") || sUpper === "SEHAT") {
+          formattedStatus = "Naik";
+        } else if (sUpper === "T" || sUpper.includes("TETAP") || sUpper === "MONITORING") {
+          formattedStatus = "Tetap";
+        } else if (sUpper === "O" || sUpper === "B" || sUpper.includes("TURUN") || sUpper === "RESIKO") {
+          formattedStatus = "Turun";
+        }
+
         result.push({
           id: document.id,
-
-          jenis: String(
-            data.jenis || "Balita"
-          ),
-
-          nama: String(
-            data.nama || ""
-          ),
-
-          tanggal: String(
-            data.tanggal || ""
-          ),
-
-          beratBadan: String(
-            data.beratBadan || ""
-          ),
-
-          tinggiBadan: String(
-            data.tinggiBadan || ""
-          ),
-
-          status: String(
-            data.status || ""
-          ),
+          jenis: String(data.jenis || "Balita"),
+          nama: String(data.nama || ""),
+          tanggal: String(data.tanggal || ""),
+          beratBadan: String(data.beratBadan || data.bb || ""),
+          tinggiBadan: String(data.tinggiBadan || data.tb || ""),
+          status: formattedStatus || "-",
+          createdAt: data.createdAt,
         });
+      });
+
+      // 2. Sorting JS Tambahan (Keamanan ganda agar data terbaru selalu di urutan teratas)
+      result.sort((a, b) => {
+        const timeA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : (a.tanggal ? new Date(a.tanggal).getTime() : 0);
+        const timeB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : (b.tanggal ? new Date(b.tanggal).getTime() : 0);
+        return timeB - timeA;
       });
 
       setDataPemeriksaan(result);
@@ -101,27 +105,26 @@ export default function PemeriksaanPage() {
   }, []);
 
   useEffect(() => {
-    const filtered =
-      dataPemeriksaan.filter((item) =>
-        item.nama
-          .toLowerCase()
-          .includes(search.toLowerCase())
-      );
+    const filtered = dataPemeriksaan.filter((item) =>
+      item.nama.toLowerCase().includes(search.toLowerCase())
+    );
 
     setFilteredData(filtered);
   }, [search, dataPemeriksaan]);
 
-    const formatTanggal = (tanggal: string) => {
+  const formatTanggal = (tanggal: string) => {
     if (!tanggal) return "-";
 
-    const [tahun, bulan, hari] = tanggal.split("-");
+    const parts = tanggal.split("-");
+    if (parts.length === 3) {
+      const [tahun, bulan, hari] = parts;
+      return `${hari}-${bulan}-${tahun}`;
+    }
 
-  return `${hari}-${bulan}-${tahun}`;
-};
+    return tanggal;
+  };
 
-  const handleDelete = async (
-    id: string
-  ) => {
+  const handleDelete = async (id: string) => {
     const confirmDelete = confirm(
       "Yakin ingin menghapus data pemeriksaan?"
     );
@@ -129,10 +132,7 @@ export default function PemeriksaanPage() {
     if (!confirmDelete) return;
 
     try {
-      await deleteDoc(
-        doc(db, "pemeriksaan", id)
-      );
-
+      await deleteDoc(doc(db, "pemeriksaan", id));
       getData();
     } catch (error) {
       console.log(error);
@@ -147,23 +147,14 @@ export default function PemeriksaanPage() {
         <Header title="Pemeriksaan" />
 
         <div className="mt-6">
-          
-          
-
           <div className="flex flex-col sm:flex-row gap-4">
-
             <div className="flex items-center bg-white border border-green-100 rounded-xl px-3 py-2 shadow-sm w-full sm:w-[250px]">
-              <Search
-                size={18}
-                className="text-green-600"
-              />
+              <Search size={18} className="text-green-600" />
 
               <input
                 type="text"
                 value={search}
-                onChange={(e) =>
-                  setSearch(e.target.value)
-                }
+                onChange={(e) => setSearch(e.target.value)}
                 placeholder="Cari nama..."
                 className="ml-2 w-full outline-none text-xs text-gray-700 placeholder:text-gray-400"
               />
@@ -171,22 +162,18 @@ export default function PemeriksaanPage() {
 
             <Link
               href="/pemeriksaan/tambah"
-className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition"
+              className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-md hover:shadow-lg transition"
             >
               <Plus size={20} />
               Tambah Data
             </Link>
-
           </div>
         </div>
 
         <div className="mt-6 bg-white rounded-2xl shadow-sm overflow-x-auto">
-
           <table className="min-w-[900px] w-full text-gray-800">
-
-            <thead className="bg-green-50 ">
+            <thead className="bg-green-50">
               <tr>
-
                 <th className="text-left py-4 px-5 text-sm font-semibold text-gray-800">
                   Nama
                 </th>
@@ -206,122 +193,102 @@ className="flex items-center justify-center gap-2 bg-gradient-to-r from-green-50
                 <th className="text-center py-4 px-5 text-sm font-semibold text-gray-800">
                   Action
                 </th>
-
               </tr>
             </thead>
 
             <tbody>
-
               {!loading &&
-                filteredData.map(
-                  (item) => (
-                    <tr
-                      key={item.id}
-                      className=" hover:bg-green-50 transition"
-                    >
-                      <td className="py-5 px-6">
-                        <div className="flex items-center gap-4">
-
-                          <div className="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">
-                            {item.nama
-                              ?.charAt(0)
-                              ?.toUpperCase()}
-                          </div>
-
-                          <div>
-                            <h2 className="font-semibold text-sm text-gray-800">
-                              {item.nama}
-                            </h2>
-
-                            <p className="text-xs text-gray-500">
-                              {item.jenis}
-                            </p>
-                          </div>
-
+                filteredData.map((item) => (
+                  <tr key={item.id} className="hover:bg-green-50 transition border-b border-gray-100">
+                    <td className="py-5 px-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">
+                          {item.nama?.charAt(0)?.toUpperCase()}
                         </div>
-                      </td>
 
-                      <td className="py-4 px-5 text-sm text-gray-700">
-                        {item.jenis}
-                      </td>
+                        <div>
+                          <h2 className="font-semibold text-sm text-gray-800">
+                            {item.nama}
+                          </h2>
 
-                      <td className="py-4 px-5 text-sm text-gray-700">
-                         {formatTanggal(item.tanggal)}
-                      </td>
+                          <p className="text-xs text-gray-500">{item.jenis}</p>
+                        </div>
+                      </div>
+                    </td>
 
-                      <td className="py-4 px-5 text-sm text-gray-700">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-semibold
-                          ${
-                            item.status ===
-                            "Sehat"
-                              ? "bg-green-100 text-green-700"
-                              : item.status ===
-                                "Monitoring"
-                              ? "bg-yellow-100 text-yellow-700"
-                              : "bg-red-100 text-red-700"
-                          }`}
+                    <td className="py-4 px-5 text-sm text-gray-700">
+                      {item.jenis}
+                    </td>
+
+                    <td className="py-4 px-5 text-sm text-gray-700">
+                      {formatTanggal(item.tanggal)}
+                    </td>
+
+                    {/* STATUS: NAIK / TETAP / TURUN */}
+                    <td className="py-4 px-5 text-sm text-gray-700">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          item.status === "Naik"
+                            ? "bg-green-100 text-green-700"
+                            : item.status === "Tetap"
+                            ? "bg-amber-100 text-amber-700"
+                            : item.status === "Turun"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-gray-100 text-gray-600"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    </td>
+
+                    <td className="py-5 px-6">
+                      <div className="flex items-center justify-center gap-3">
+                        <Link
+                          href={`/pemeriksaan/detail/${item.id}`}
+                          className="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center hover:scale-105 transition"
                         >
-                          {item.status}
-                        </span>
-                      </td>
+                          <Eye size={16} />
+                        </Link>
 
-                      <td className="py-5 px-6">
-                        <div className="flex items-center justify-center gap-3">
+                        <Link
+                          href={`/pemeriksaan/edit/${item.id}`}
+                          className="w-9 h-9 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center hover:scale-105 transition"
+                        >
+                          <Pencil size={16} />
+                        </Link>
 
-                          <Link
-                            href={`/pemeriksaan/detail/${item.id}`}
-                            className="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center"
-                          >
-                            <Eye size={16} />
-                          </Link>
-
-                          <Link
-                            href={`/pemeriksaan/edit/${item.id}`}
-                            className="w-9 h-9 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center"
-                          >
-                            <Pencil size={16} />
-                          </Link>
-
-                          <button
-                            onClick={() =>
-                              handleDelete(
-                                item.id
-                              )
-                            }
-                            className="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center"
-                          >
-                            <Trash2 size={16} />
-                          </button>
-
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                )}
-
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          className="w-9 h-9 rounded-xl bg-red-100 text-red-600 flex items-center justify-center hover:scale-105 transition"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
 
-{!loading && filteredData.length === 0 && (
-  <div className="py-12 text-center">
-    <h2 className="text-xl font-bold text-gray-700">
-      Data Pemeriksaan Tidak Ada
-    </h2>
+          {!loading && filteredData.length === 0 && (
+            <div className="py-12 text-center">
+              <h2 className="text-xl font-bold text-gray-700">
+                Data Pemeriksaan Tidak Ada
+              </h2>
 
-    <p className="text-sm text-gray-500 mt-2">
-      Belum ada data pemeriksaan.
-    </p>
-  </div>
-)}
-{loading && (
-  <div className="py-12 text-center">
-    <h2 className="text-lg font-semibold text-gray-600">
-      Loading...
-    </h2>
-  </div>
-)}
+              <p className="text-sm text-gray-500 mt-2">
+                Belum ada data pemeriksaan.
+              </p>
+            </div>
+          )}
 
+          {loading && (
+            <div className="py-12 text-center">
+              <h2 className="text-lg font-semibold text-gray-600">
+                Loading...
+              </h2>
+            </div>
+          )}
         </div>
       </main>
     </div>
