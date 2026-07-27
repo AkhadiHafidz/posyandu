@@ -292,7 +292,7 @@ export default function DetailPemeriksaanPage() {
                           <td className="border p-2 text-center">{index + 1}</td>
                           <td className="border p-2 text-center">{formatTanggal(r.tanggal)}</td>
                           <td className="border p-2 text-center">{r.umur ?? "-"}</td>
-                          <td className="border p-2 text-center font-bold text-blue-700">
+                          <td className="border p-2 text-center">
                             {r.beratBadan ? `${r.beratBadan} kg` : "-"}
                           </td>
                           <td className="border p-2 text-center">{r.tinggiBadan ? `${r.tinggiBadan} cm` : "-"}</td>
