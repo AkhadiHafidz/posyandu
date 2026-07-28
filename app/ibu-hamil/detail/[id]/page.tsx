@@ -1,253 +1,168 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import { useParams, useRouter } from "next/navigation";
-
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/header";
 
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+interface IbuHamilData {
+  nik?: string;
+  nama?: string;
+  umur?: string;
+  usiaKehamilan?: string;
+  tanggalLahir?: string;
+  noHp?: string;
+  rt?: string;
+  rw?: string;
+  alamat?: string;
+}
 
-export default function EditIbuHamilPage() {
+export default function DetailIbuHamilPage() {
   const params = useParams();
   const router = useRouter();
 
   const id = params.id as string;
 
-  const [nik, setNik] = useState("");
-  const [nama, setNama] = useState("");
-  const [umur, setUmur] = useState("");
-  const [usiaKehamilan, setUsiaKehamilan] = useState("");
-  const [tanggalLahir, setTanggalLahir] = useState("");
-  const [noHp, setNoHp] = useState("");
-  const [rt, setRt] = useState("");
-  const [rw, setRw] = useState("");
-  const [alamat, setAlamat] = useState("");
+  const [data, setData] = useState<IbuHamilData | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const [loading, setLoading] = useState(false);
-
-  // GET DATA
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const docRef = doc(db, "ibu_hamil", id);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-
-          setNik(data.nik || "");
-          setNama(data.nama || "");
-          setUmur(data.umur || "");
-          setUsiaKehamilan(data.usiaKehamilan || "");
-          setTanggalLahir(data.tanggalLahir || "");
-          setNoHp(data.noHp || "");
-          setRt(data.rt || "");
-          setRw(data.rw || "");
-          setAlamat(data.alamat || "");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    if (id) {
-      getData();
-    }
-  }, [id]);
-
-  // UPDATE DATA
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!/^\d{16}$/.test(nik)) {
-      alert("NIK harus terdiri dari 16 digit angka.");
-      return;
-    }
-
+  // GET DETAIL
+  const getDetail = async () => {
     try {
-      setLoading(true);
+      const docRef = doc(db, "ibu_hamil", id);
+      const docSnap = await getDoc(docRef);
 
-      await updateDoc(doc(db, "ibu_hamil", id), {
-        nik,
-        nama,
-        umur,
-        usiaKehamilan,
-        tanggalLahir,
-        noHp,
-        rt,
-        rw,
-        alamat,
-      });
-
-      alert("Data berhasil diperbarui");
-      router.push("/ibu-hamil");
+      if (docSnap.exists()) {
+        setData(docSnap.data() as IbuHamilData);
+      }
     } catch (error) {
       console.log(error);
-      alert("Gagal memperbarui data");
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (id) {
+      getDetail();
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#F5FFF8] flex">
       <Sidebar />
 
-      <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-hidden">
-        <Header title="Edit Data Ibu Hamil" />
+      <main className="flex-1 p-3 sm:p-5 lg:p-6">
+        <Header title="Detail Ibu Hamil" />
 
-        <div className="mt-4 bg-white rounded-2xl p-5 shadow-sm max-w-3xl">
-          <form
-            onSubmit={handleSubmit}
-            className="grid md:grid-cols-2 gap-3 mt-4"
-          >
-            {/* NIK */}
+        <div className="mt-6 bg-white rounded-2xl p-6 shadow-sm max-w-3xl">
+          {data ? (
             <div>
-              <label className="text-xs font-semibold text-gray-700">
-                NIK
-              </label>
-              <input
-                type="text"
-                value={nik}
-                onChange={(e) =>
-                  setNik(e.target.value.replace(/\D/g, ""))
-                }
-                placeholder="Masukkan NIK"
-                maxLength={16}
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
-              />
-            </div>
+              <div className="grid md:grid-cols-2 gap-5">
+                {/* NIK */}
+                <div>
+                  <p className="text-xs text-gray-500">NIK</p>
+                  <h1 className="text-base font-semibold text-gray-800 mt-1">
+                    {data.nik || "-"}
+                  </h1>
+                </div>
 
-            {/* Nama */}
-            <div>
-              <label className="text-xs font-semibold text-gray-700">
-                Nama Ibu
-              </label>
-              <input
-                type="text"
-                value={nama}
-                onChange={(e) => setNama(e.target.value)}
-                placeholder="Nama Ibu"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
-              />
-            </div>
+                {/* Nama Ibu */}
+                <div>
+                  <p className="text-xs text-gray-500">Nama Ibu</p>
+                  <h1 className="text-lg font-black text-gray-800 mt-1">
+                    {data.nama || "-"}
+                  </h1>
+                </div>
 
-            {/* Umur */}
-            <div>
-              <label className="text-xs font-semibold text-gray-700">
-                Umur
-              </label>
-              <input
-                type="number"
-                value={umur}
-                onChange={(e) => setUmur(e.target.value)}
-                placeholder="Umur"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
-              />
-            </div>
+                {/* Umur */}
+                <div>
+                  <p className="text-xs text-gray-500">Umur</p>
+                  <h1 className="text-base font-semibold text-gray-800 mt-1">
+                    {data.umur || "-"}
+                  </h1>
+                </div>
 
-            {/* Usia Kehamilan */}
-            <div>
-              <label className="text-xs font-semibold text-gray-700">
-                Usia Kehamilan (Bulan)
-              </label>
-              <input
-                type="number"
-                value={usiaKehamilan}
-                onChange={(e) => setUsiaKehamilan(e.target.value)}
-                placeholder="Usia Kehamilan"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
-              />
-            </div>
+                {/* Usia Kehamilan */}
+                <div>
+                  <p className="text-xs text-gray-500">Usia Kehamilan</p>
+                  <h1 className="text-base font-semibold text-gray-800 mt-1">
+                    {data.usiaKehamilan || "-"}
+                  </h1>
+                </div>
 
-            {/* Tanggal Lahir */}
-            <div>
-              <label className="text-xs font-semibold text-gray-700">
-                Tanggal Lahir
-              </label>
-              <input
-                type="date"
-                value={tanggalLahir}
-                onChange={(e) => setTanggalLahir(e.target.value)}
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
-              />
-            </div>
+                {/* Tanggal Lahir */}
+                <div>
+                  <p className="text-xs text-gray-500">Tanggal Lahir</p>
+                  <h1 className="text-base font-semibold text-gray-800 mt-1">
+                    {data.tanggalLahir || "-"}
+                  </h1>
+                </div>
 
-            {/* No HP */}
-            <div>
-              <label className="text-xs font-semibold text-gray-700">
-                No HP
-              </label>
-              <input
-                type="text"
-                value={noHp}
-                onChange={(e) =>
-                  setNoHp(e.target.value.replace(/\D/g, ""))
-                }
-                placeholder="08xxxxxxxxxx"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
-              />
-            </div>
+                {/* No HP */}
+                <div>
+                  <p className="text-xs text-gray-500">No HP</p>
+                  <h1 className="text-base font-semibold text-gray-800 mt-1">
+                    {data.noHp || "-"}
+                  </h1>
+                </div>
 
-            {/* RT */}
-            <div>
-              <label className="text-xs font-semibold text-gray-700">
-                RT
-              </label>
-              <input
-                type="text"
-                value={rt}
-                onChange={(e) =>
-                  setRt(e.target.value.replace(/\D/g, ""))
-                }
-                placeholder="001"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
-              />
-            </div>
+                {/* RT */}
+                <div>
+                  <p className="text-xs text-gray-500">RT</p>
+                  <h1 className="text-base font-semibold text-gray-800 mt-1">
+                    {data.rt || "-"}
+                  </h1>
+                </div>
 
-            {/* RW */}
-            <div>
-              <label className="text-xs font-semibold text-gray-700">
-                RW
-              </label>
-              <input
-                type="text"
-                value={rw}
-                onChange={(e) =>
-                  setRw(e.target.value.replace(/\D/g, ""))
-                }
-                placeholder="002"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
-              />
-            </div>
+                {/* RW */}
+                <div>
+                  <p className="text-xs text-gray-500">RW</p>
+                  <h1 className="text-base font-semibold text-gray-800 mt-1">
+                    {data.rw || "-"}
+                  </h1>
+                </div>
 
-            {/* Alamat */}
-            <div className="md:col-span-2">
-              <label className="text-xs font-semibold text-gray-700">
-                Alamat
-              </label>
-              <textarea
-                rows={2}
-                value={alamat}
-                onChange={(e) => setAlamat(e.target.value)}
-                placeholder="Alamat Lengkap"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
-              />
-            </div>
+                {/* Alamat */}
+                <div className="md:col-span-2">
+                  <p className="text-xs text-gray-500">Alamat</p>
+                  <h1 className="text-base font-semibold text-gray-800 mt-1 leading-relaxed">
+                    {data.alamat || "-"}
+                  </h1>
+                </div>
+              </div>
 
-            {/* BUTTON */}
-            <div className="md:col-span-2">
+              {/* Button Kembali */}
+              <div className="mt-8">
+                <button
+                  onClick={() => router.push("/ibu-hamil")}
+                  className="w-36 bg-[#00A859] hover:bg-[#008f4c] text-white text-sm font-semibold py-2.5 rounded-xl transition shadow-sm"
+                >
+                  Kembali
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="py-4">
+              <p className="text-gray-500 text-sm">Data tidak ditemukan.</p>
               <button
-                type="submit"
-                disabled={loading}
-                className="mt-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow-md hover:shadow-lg transition disabled:opacity-50"
+                onClick={() => router.push("/ibu-hamil")}
+                className="mt-4 w-36 bg-[#00A859] hover:bg-[#008f4c] text-white text-sm font-semibold py-2 rounded-xl transition"
               >
-                {loading ? "Menyimpan..." : "Update Data"}
+                Kembali
               </button>
             </div>
-          </form>
+          )}
         </div>
       </main>
     </div>
