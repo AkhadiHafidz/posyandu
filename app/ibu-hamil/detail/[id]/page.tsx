@@ -52,27 +52,30 @@ export default function DetailIbuHamilPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-500">
-        Loading...
+      <div className="min-h-screen bg-[#F5FFF8] flex flex-col md:flex-row">
+        <Sidebar />
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 flex items-center justify-center text-gray-500">
+          Loading...
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F5FFF8] flex">
+    <div className="min-h-screen bg-[#F5FFF8] flex flex-col md:flex-row">
       <Sidebar />
 
-      <main className="flex-1 p-3 sm:p-5 lg:p-6">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 w-full overflow-x-hidden">
         <Header title="Detail Ibu Hamil" />
 
-        <div className="mt-6 bg-white rounded-2xl p-6 shadow-sm max-w-3xl">
+        <div className="mt-6 bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-sm max-w-3xl w-full mx-auto md:mx-0">
           {data ? (
             <div>
-              <div className="grid md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 {/* NIK */}
                 <div>
                   <p className="text-xs text-gray-500">NIK</p>
-                  <h1 className="text-base font-semibold text-gray-800 mt-1">
+                  <h1 className="text-base font-semibold text-gray-800 mt-1 break-words">
                     {data.nik || "-"}
                   </h1>
                 </div>
@@ -80,7 +83,7 @@ export default function DetailIbuHamilPage() {
                 {/* Nama Ibu */}
                 <div>
                   <p className="text-xs text-gray-500">Nama Ibu</p>
-                  <h1 className="text-lg font-black text-gray-800 mt-1">
+                  <h1 className="text-lg font-black text-gray-800 mt-1 break-words">
                     {data.nama || "-"}
                   </h1>
                 </div>
@@ -112,7 +115,7 @@ export default function DetailIbuHamilPage() {
                 {/* No HP */}
                 <div>
                   <p className="text-xs text-gray-500">No HP</p>
-                  <h1 className="text-base font-semibold text-gray-800 mt-1">
+                  <h1 className="text-base font-semibold text-gray-800 mt-1 break-words">
                     {data.noHp || "-"}
                   </h1>
                 </div>
@@ -134,19 +137,19 @@ export default function DetailIbuHamilPage() {
                 </div>
 
                 {/* Alamat */}
-                <div className="md:col-span-2">
+                <div className="sm:col-span-2">
                   <p className="text-xs text-gray-500">Alamat</p>
-                  <h1 className="text-base font-semibold text-gray-800 mt-1 leading-relaxed">
+                  <h1 className="text-base font-semibold text-gray-800 mt-1 leading-relaxed break-words">
                     {data.alamat || "-"}
                   </h1>
                 </div>
               </div>
 
               {/* Button Kembali */}
-              <div className="mt-8">
+              <div className="mt-8 pt-2">
                 <button
                   onClick={() => router.push("/ibu-hamil")}
-                  className="w-36 bg-[#00A859] hover:bg-[#008f4c] text-white text-sm font-semibold py-2.5 rounded-xl transition shadow-sm"
+                  className="w-full sm:w-36 bg-[#00A859] hover:bg-[#008f4c] text-white text-sm font-semibold py-2.5 rounded-xl transition shadow-sm"
                 >
                   Kembali
                 </button>
@@ -157,7 +160,7 @@ export default function DetailIbuHamilPage() {
               <p className="text-gray-500 text-sm">Data tidak ditemukan.</p>
               <button
                 onClick={() => router.push("/ibu-hamil")}
-                className="mt-4 w-36 bg-[#00A859] hover:bg-[#008f4c] text-white text-sm font-semibold py-2 rounded-xl transition"
+                className="mt-4 w-full sm:w-36 bg-[#00A859] hover:bg-[#008f4c] text-white text-sm font-semibold py-2 rounded-xl transition"
               >
                 Kembali
               </button>

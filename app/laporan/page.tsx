@@ -441,32 +441,36 @@ export default function LaporanPage() {
     }
   };
 
+  // Class styling universal untuk input
+  const inputStyle =
+    "w-full mt-1.5 sm:mt-2 border border-gray-300 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-black focus:ring-2 focus:ring-black/20 transition duration-200 bg-white";
+
   return (
-    <div className="min-h-screen bg-[#F5FFF8] flex">
+    <div className="min-h-screen bg-[#F5FFF8] flex flex-col md:flex-row">
       {/* SIDEBAR */}
       <Sidebar />
 
       {/* CONTENT */}
-      <main className="flex-1 p-3 sm:p-5 lg:p-6 overflow-y-auto">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 w-full overflow-x-hidden">
         {/* HEADER */}
         <Header title="Laporan Posyandu" />
 
         {/* FORM DOWNLOAD */}
-        <div className="mt-4 bg-white rounded-2xl p-6 shadow-sm max-w-xl">
-          <h2 className="text-lg font-black text-gray-800">
+        <div className="mt-4 sm:mt-6 bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-sm max-w-xl w-full mx-auto md:mx-0">
+          <h2 className="text-base sm:text-lg font-black text-gray-800">
             Download Laporan Posyandu
           </h2>
 
-          <div className="space-y-4 mt-5">
+          <div className="space-y-4 mt-4 sm:mt-5">
             {/* BULAN KEGIATAN */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700">
                 Bulan Kegiatan
               </label>
               <select
                 value={bulanKegiatan}
                 onChange={(e) => setBulanKegiatan(e.target.value)}
-                className="w-full border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 bg-white"
+                className={`${inputStyle} cursor-pointer`}
               >
                 <option value="">Pilih Bulan</option>
                 <option value="01">Januari</option>
@@ -486,7 +490,7 @@ export default function LaporanPage() {
 
             {/* TAHUN */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700">
                 Tahun
               </label>
               <input
@@ -494,19 +498,19 @@ export default function LaporanPage() {
                 placeholder="Masukkan tahun"
                 value={tahun}
                 onChange={(e) => setTahun(e.target.value)}
-                className="w-full border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
+                className={inputStyle}
               />
             </div>
 
             {/* JENIS LAPORAN */}
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-semibold text-gray-700">
                 Jenis Pemeriksaan / Laporan
               </label>
               <select
                 value={jenisLaporan}
                 onChange={(e) => setJenisLaporan(e.target.value)}
-                className="w-full border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 bg-white"
+                className={`${inputStyle} cursor-pointer`}
               >
                 <option value="balita">Pemeriksaan Balita</option>
                 <option value="ibu_hamil">Pemeriksaan Ibu Hamil</option>
@@ -518,7 +522,7 @@ export default function LaporanPage() {
               <button
                 onClick={exportLaporan}
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl px-4 py-3 text-sm font-semibold shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl px-4 py-2.5 sm:py-3 text-sm font-semibold shadow-md hover:shadow-lg transition active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <FileSpreadsheet size={18} />
                 {loading ? "Memproses Data..." : "Download Excel"}

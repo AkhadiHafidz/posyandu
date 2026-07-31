@@ -13,8 +13,8 @@ import {
 } from "lucide-react";
 
 import {
-    doc,
-    getDoc,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 
 import { auth, db } from "@/lib/firebase";
@@ -30,7 +30,6 @@ interface ProfileData {
 }
 
 export default function ProfilePage() {
-
   const [data, setData] = useState<ProfileData>({
     nama: "",
     username: "",
@@ -41,219 +40,149 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      try {
+        // ==========================
+        // ADMIN
+        // ==========================
+        if (firebaseUser?.email === "admin@gmail.com") {
+          setData({
+            nama: "Admin",
+            username: "admin",
+            role: "Admin",
+            noHp: "-",
+          });
 
-  const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+          setLoading(false);
+          return;
+        }
 
-    try {
-        
+        // ==========================
+        // USER
+        // ==========================
+        const uid = localStorage.getItem("uid");
 
-      // ==========================
-      // ADMIN
-      // ==========================
-      if (firebaseUser?.email === "admin@gmail.com") {
+        console.log("UID =", uid);
 
-        setData({
-          nama: "Admin",
-          username: "admin",
-          role: "Admin",
-          noHp: "-",
-        });
+        if (!uid) {
+          console.log("UID tidak ada");
+          setLoading(false);
+          return;
+        }
 
+        const docRef = doc(db, "users", uid);
+        const docSnap = await getDoc(docRef);
+
+        console.log("Doc Exists =", docSnap.exists());
+
+        if (docSnap.exists()) {
+          const user = docSnap.data();
+
+          setData({
+            nama: user.nama || "-",
+            username: user.username || "-",
+            role: user.role || "-",
+            noHp: user.noHp || "-",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
         setLoading(false);
-        return;
       }
+    });
 
-      // ==========================
-      // USER
-      // ==========================
-
-      const uid = localStorage.getItem("uid");
-
-      console.log("UID =", uid);
-
-      if (!uid) {
-
-        console.log("UID tidak ada");
-
-        setLoading(false);
-
-        return;
-
-      }
-
-      const docRef = doc(db, "users", uid);
-
-      const docSnap = await getDoc(docRef);
-
-      console.log("Doc Exists =", docSnap.exists());
-
-      if (docSnap.exists()) {
-
-        const user = docSnap.data();
-
-        setData({
-          nama: user.nama || "-",
-          username: user.username || "-",
-          role: user.role || "-",
-          noHp: user.noHp || "-",
-        });
-
-      }
-
-    } catch (error) {
-
-      console.log(error);
-
-    } finally {
-
-      setLoading(false);
-
-    }
-
-  });
-
-  return () => unsubscribe();
-
+    return () => unsubscribe();
   }, []);
 
   return (
-
-    <div className="min-h-screen bg-[#F5FFF8] flex">
-
+    <div className="min-h-screen bg-[#F5FFF8] flex flex-col md:flex-row">
+      {/* SIDEBAR */}
       <Sidebar />
 
-      <main className="flex-1 p-3 sm:p-4 lg:p-5 overflow-hidden">
-
+      {/* CONTENT */}
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 w-full overflow-x-hidden">
+        {/* HEADER */}
         <Header title="Profile Saya" />
 
-        <div>
-
-          <div className="mt-3 bg-white rounded-2xl shadow-sm p-4 w-full max-w-sm">
-
-            {/* FOTO */}
-            <div className="flex flex-col items-center">
-
-              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center">
-
+        <div className="mt-4 sm:mt-6">
+          <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 lg:p-8 w-full max-w-md mx-auto md:mx-0">
+            {/* FOTO & HEADER PROFILE */}
+            <div className="flex flex-col items-center border-b border-gray-100 pb-5">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 flex items-center justify-center shadow-md">
                 <UserCircle2
-                  size={35}
+                  size={44}
                   className="text-white"
                 />
-
               </div>
 
-              <h1 className="mt-2 text-base font-bold text-gray-800">
-
+              <h1 className="mt-3 text-base sm:text-lg font-bold text-gray-800 text-center break-words">
                 {loading ? "Loading..." : data.nama}
-
               </h1>
 
-              <p className="text-xs text-green-600 font-medium">
-
+              <p className="text-xs text-green-600 font-semibold capitalize mt-0.5">
                 {loading ? "" : data.role}
-
               </p>
-
             </div>
 
-            {/* DATA */}
-
-            <div className="mt-4 space-y-2">
-
-              <div className="mt-4 space-y-2">
-
-                <p className="text-xs text-gray-500">
-                  Nama
-                </p>
-
-                <h2
-               className="mt-1 text-sm font-semibold text-gray-800"
-                >
-                {data.nama}
+            {/* DETAIL DATA PROFILE */}
+            <div className="mt-5 space-y-4">
+              {/* NAMA */}
+              <div>
+                <p className="text-xs text-gray-500">Nama</p>
+                <h2 className="mt-1 text-sm font-semibold text-gray-800 break-words">
+                  {loading ? "-" : data.nama}
                 </h2>
-
               </div>
 
-              <div className="mt-4 space-y-2">
-
-                <p className="text-xs text-gray-500">
-                  Username
-                </p>
-
-                <h2
-               className="mt-1 text-sm font-semibold text-gray-800"
-                >
-                {data.username}
+              {/* USERNAME */}
+              <div>
+                <p className="text-xs text-gray-500">Username</p>
+                <h2 className="mt-1 text-sm font-semibold text-gray-800 break-words">
+                  {loading ? "-" : data.username}
                 </h2>
-
               </div>
 
-              <div className="mt-4 space-y-2">
-
-                <p className="text-xs text-gray-500">
-                  Role
-                </p>
-
-                    <h2
-              className="mt-1 text-sm font-semibold text-gray-800"
-                >
-                {data.role}
+              {/* ROLE */}
+              <div>
+                <p className="text-xs text-gray-500">Role</p>
+                <h2 className="mt-1 text-sm font-semibold text-gray-800 capitalize">
+                  {loading ? "-" : data.role}
                 </h2>
-
               </div>
 
-              <div className="mt-4 space-y-2">
-
-                <p className="text-xs text-gray-500">
-                  No HP
-                </p>
-
-                <h2
-               className="mt-1 text-sm font-semibold text-gray-800"
-                >
-                {data.noHp}
+              {/* NO HP */}
+              <div>
+                <p className="text-xs text-gray-500">No HP</p>
+                <h2 className="mt-1 text-sm font-semibold text-gray-800 break-words">
+                  {loading ? "-" : data.noHp}
                 </h2>
-
               </div>
-
             </div>
 
-            {/* BUTTON */}
-            {data.role !== "Admin" && (
-            <div className="flex gap-3 mt-8">
-                
-                
-              <Link
-                href="/profil/edit"
-               className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold rounded-xl py-2 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition"
-              >
+            {/* BUTTON APLIKASI */}
+            {!loading && data.role !== "Admin" && (
+              <div className="flex flex-col sm:flex-row gap-3 mt-8 pt-2">
+                <Link
+                  href="/profil/edit"
+                  className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-xs sm:text-sm font-semibold rounded-xl py-2.5 sm:py-3 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition active:scale-95"
+                >
+                  <Pencil size={16} />
+                  Edit Profile
+                </Link>
 
-                <Pencil size={16} />
-
-                Edit Profile
-
-            </Link>
-
-              <Link
-                href="/profil/password"
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 flex items-center justify-center gap-2"
-              >
-
-                <KeyRound size={16} />
-
-              Ubah Password
-
-            </Link>
-
-            </div>
+                <Link
+                  href="/profil/password"
+                  className="flex-1 bg-green-600 hover:bg-green-700 text-white text-xs sm:text-sm font-semibold rounded-xl py-2.5 sm:py-3 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition active:scale-95"
+                >
+                  <KeyRound size={16} />
+                  Ubah Password
+                </Link>
+              </div>
             )}
           </div>
-
         </div>
-
       </main>
-
     </div>
-
   );
 }

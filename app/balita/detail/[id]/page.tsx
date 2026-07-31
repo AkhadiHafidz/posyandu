@@ -52,27 +52,28 @@ export default function DetailBalitaPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
+      <div className="min-h-screen flex items-center justify-center bg-[#F5FFF8]">
+        <div className="text-gray-600 font-medium">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F5FFF8] flex">
+    <div className="min-h-screen bg-[#F5FFF8] flex flex-col md:flex-row">
       <Sidebar />
 
-      <main className="flex-1 p-3 sm:p-5 lg:p-6">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 w-full overflow-x-hidden">
         <Header title="Detail Balita" />
 
         <div className="mt-6 bg-white rounded-2xl p-6 shadow-sm max-w-3xl">
-          {data && (
+          {data ? (
             <div>
-              <div className="grid md:grid-cols-2 gap-5">
+              {/* Grid 1 Kolom di HP, Tetap 2 Kolom di Tablet & Laptop */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* NIK */}
                 <div>
                   <p className="text-xs text-gray-500">NIK</p>
-                  <h1 className="text-base font-semibold text-gray-800 mt-1">
+                  <h1 className="text-base font-semibold text-gray-800 mt-1 break-words">
                     {data.nik || "-"}
                   </h1>
                 </div>
@@ -80,7 +81,7 @@ export default function DetailBalitaPage() {
                 {/* Nama Balita */}
                 <div>
                   <p className="text-xs text-gray-500">Nama Balita</p>
-                  <h1 className="text-lg font-black text-gray-800 mt-1">
+                  <h1 className="text-lg font-black text-gray-800 mt-1 break-words">
                     {data.nama || "-"}
                   </h1>
                 </div>
@@ -101,10 +102,10 @@ export default function DetailBalitaPage() {
                   </h1>
                 </div>
 
-                {/* Nama Ibu */}
+                {/* Nama Ortu */}
                 <div>
                   <p className="text-xs text-gray-500">Nama Ortu</p>
-                  <h1 className="text-base font-semibold text-gray-800 mt-1">
+                  <h1 className="text-base font-semibold text-gray-800 mt-1 break-words">
                     {data.NamaOrtu || "-"}
                   </h1>
                 </div>
@@ -133,10 +134,10 @@ export default function DetailBalitaPage() {
                   </h1>
                 </div>
 
-                {/* Alamat */}
+                {/* Alamat - Membentang 2 Kolom pada Tablet/Laptop */}
                 <div className="md:col-span-2">
                   <p className="text-xs text-gray-500">Alamat</p>
-                  <h1 className="text-base font-semibold text-gray-800 mt-1 leading-relaxed">
+                  <h1 className="text-base font-semibold text-gray-800 mt-1 leading-relaxed break-words">
                     {data.alamat || "-"}
                   </h1>
                 </div>
@@ -146,11 +147,15 @@ export default function DetailBalitaPage() {
               <div className="mt-8">
                 <button
                   onClick={() => router.push("/balita")}
-                  className="w-36 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold py-2 rounded-xl shadow-md hover:shadow-lg transition"
+                  className="w-full sm:w-36 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold py-2 rounded-xl shadow-md hover:shadow-lg transition active:scale-95"
                 >
                   Kembali
                 </button>
               </div>
+            </div>
+          ) : (
+            <div className="text-center text-gray-500 py-8">
+              Data balita tidak ditemukan.
             </div>
           )}
         </div>

@@ -214,19 +214,30 @@ export default function DetailPemeriksaanPage() {
     })
     .filter((d) => !isNaN(d.minggu));
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#F5FFF8] flex flex-col md:flex-row">
+        <Sidebar />
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 flex items-center justify-center text-gray-500">
+          Loading...
+        </main>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#F5FFF8] flex">
+    <div className="min-h-screen bg-[#F5FFF8] flex flex-col md:flex-row">
       <Sidebar />
 
-      <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-x-hidden">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 w-full overflow-x-hidden">
         <Header title="Detail Pemeriksaan" />
 
-        <div className="mt-6 bg-white rounded-[30px] p-4 md:p-6 shadow-sm max-w-7xl mx-auto">
+        <div className="mt-4 sm:mt-6 bg-white rounded-2xl sm:rounded-[30px] p-4 sm:p-6 shadow-sm max-w-7xl mx-auto">
           {/* Identitas Pasien */}
-          <div className="flex gap-8 mb-6 border-b border-gray-100 pb-4">
+          <div className="flex flex-wrap gap-4 sm:gap-8 mb-6 border-b border-gray-100 pb-4">
             <div>
               <p className="text-xs text-gray-500">Nama</p>
-              <p className="text-base font-bold text-gray-800 mt-0.5">
+              <p className="text-base font-bold text-gray-800 mt-0.5 break-words">
                 {data?.nama || "-"}
               </p>
             </div>
@@ -269,10 +280,10 @@ export default function DetailPemeriksaanPage() {
               )}
 
               {/* TABEL RIWAYAT PEMERIKSAAN BALITA DI BAWAH KEDUA GRAFIK */}
-              <div className="mt-6 bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+              <div className="mt-6 bg-white rounded-2xl border border-gray-200 p-3 sm:p-5 shadow-sm">
                 <h3 className="font-bold text-sm text-gray-800 mb-3">Tabel Riwayat Pemeriksaan Balita</h3>
-                <div className="overflow-x-auto border rounded-md">
-                  <table className="w-full text-[11px] border-collapse text-gray-800 bg-white">
+                <div className="overflow-x-auto border border-gray-100 rounded-md">
+                  <table className="w-full text-[11px] border-collapse text-gray-800 bg-white min-w-[650px]">
                     <thead className="bg-emerald-50">
                       <tr>
                         <th className="border px-3 py-2 text-center">No</th>
@@ -325,10 +336,10 @@ export default function DetailPemeriksaanPage() {
               </div>
 
               {/* TABEL RIWAYAT PEMERIKSAAN IBU HAMIL DI BAWAH KEDUA GRAFIK */}
-              <div className="mt-6 bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+              <div className="mt-6 bg-white rounded-2xl border border-gray-200 p-3 sm:p-5 shadow-sm">
                 <h3 className="font-bold text-sm text-gray-800 mb-3">Tabel Riwayat Pemeriksaan Ibu Hamil</h3>
-                <div className="overflow-x-auto border rounded-md">
-                  <table className="w-full text-[11px] border-collapse text-gray-800 bg-white">
+                <div className="overflow-x-auto border border-gray-100 rounded-md">
+                  <table className="w-full text-[11px] border-collapse text-gray-800 bg-white min-w-[750px]">
                     <thead className="bg-emerald-50">
                       <tr>
                         <th className="border px-3 py-2 text-center">No</th>
@@ -369,12 +380,15 @@ export default function DetailPemeriksaanPage() {
             </div>
           )}
 
-          <button
-            onClick={() => router.push("/pemeriksaan")}
-            className="mt-8 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-2.5 rounded-2xl font-medium hover:opacity-95 transition-all shadow-sm"
-          >
-            Kembali
-          </button>
+          {/* Button Kembali */}
+          <div className="mt-6 sm:mt-8 pt-2">
+            <button
+              onClick={() => router.push("/pemeriksaan")}
+              className="w-full sm:w-auto bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-2.5 rounded-2xl font-medium hover:opacity-95 transition-all shadow-sm text-sm"
+            >
+              Kembali
+            </button>
+          </div>
         </div>
       </main>
     </div>

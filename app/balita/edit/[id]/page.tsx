@@ -102,24 +102,28 @@ export default function EditBalitaPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
+      <div className="min-h-screen flex items-center justify-center bg-[#F5FFF8]">
+        <div className="text-gray-600 font-medium">Loading...</div>
       </div>
     );
   }
 
+  // Class styling universal untuk efek focus Hitam
+  const inputStyle =
+    "w-full mt-1.5 sm:mt-2 border border-gray-300 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-black focus:ring-2 focus:ring-black/20 transition duration-200";
+
   return (
-    <div className="min-h-screen bg-[#F5FFF8] flex">
+    <div className="min-h-screen bg-[#F5FFF8] flex flex-col md:flex-row">
       {/* SIDEBAR */}
       <Sidebar />
 
       {/* CONTENT */}
-      <main className="flex-1 px-4 py-3">
+      <main className="flex-1 p-3 sm:p-5 lg:p-6 w-full overflow-x-hidden">
         <Header title="Edit Data Balita" />
 
-        <div className="mt-4 bg-white rounded-2xl p-5 shadow-sm max-w-3xl">
-          {/* FORM */}
-          <div className="grid md:grid-cols-2 gap-3 mt-4">
+        <div className="mt-4 sm:mt-6 bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-sm max-w-3xl mx-auto md:mx-0">
+          {/* FORM GRID */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 mt-2">
             {/* NIK */}
             <div>
               <label className="text-xs font-semibold text-gray-700">
@@ -136,7 +140,7 @@ export default function EditBalitaPage() {
                 }
                 placeholder="Masukkan NIK"
                 maxLength={16}
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
+                className={inputStyle}
               />
             </div>
 
@@ -155,7 +159,7 @@ export default function EditBalitaPage() {
                   })
                 }
                 placeholder="Nama balita"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
+                className={inputStyle}
               />
             </div>
 
@@ -172,7 +176,7 @@ export default function EditBalitaPage() {
                     jk: e.target.value,
                   })
                 }
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800"
+                className={`${inputStyle} bg-white cursor-pointer`}
               >
                 <option value="">Pilih Jenis Kelamin</option>
                 <option value="Laki-laki">Laki-laki</option>
@@ -195,11 +199,11 @@ export default function EditBalitaPage() {
                   })
                 }
                 placeholder="2 Tahun"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
+                className={inputStyle}
               />
             </div>
 
-            {/* IBU */}
+            {/* IBU / ORTU */}
             <div>
               <label className="text-xs font-semibold text-gray-700">
                 Nama Ortu
@@ -214,7 +218,7 @@ export default function EditBalitaPage() {
                   })
                 }
                 placeholder="Nama Ortu"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
+                className={inputStyle}
               />
             </div>
 
@@ -232,7 +236,7 @@ export default function EditBalitaPage() {
                     tanggalLahir: e.target.value,
                   })
                 }
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
+                className={`${inputStyle} bg-white cursor-pointer`}
               />
             </div>
 
@@ -251,7 +255,7 @@ export default function EditBalitaPage() {
                   })
                 }
                 placeholder="001"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
+                className={inputStyle}
               />
             </div>
 
@@ -270,7 +274,7 @@ export default function EditBalitaPage() {
                   })
                 }
                 placeholder="002"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
+                className={inputStyle}
               />
             </div>
 
@@ -289,7 +293,7 @@ export default function EditBalitaPage() {
                 }
                 rows={2}
                 placeholder="Alamat lengkap"
-                className="w-full mt-2 border border-green-200 rounded-xl px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400"
+                className={inputStyle}
               />
             </div>
           </div>
@@ -298,7 +302,7 @@ export default function EditBalitaPage() {
           <div className="flex justify-end mt-6">
             <button
               onClick={handleUpdate}
-              className="bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition"
+              className="w-full sm:w-auto bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition active:scale-95"
             >
               Update Data
             </button>
